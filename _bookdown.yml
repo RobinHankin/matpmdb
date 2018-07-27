@@ -1,0 +1,5 @@
+book_filename: "stat601_manual"
+language:
+  ui:
+    chapter_name: "Week "
+delete_merged_file: true
