@@ -4,8 +4,6 @@
 <https://en.wikipedia.org/wiki/Fisher%27s_exact_test>
 ```
 
-
-
 Suppose I am interested in the prevalence of left handedness and wish
 to determine whether there is a difference between boys and girls.  I
 might survey some students and end up with a dataset like the
@@ -41,10 +39,10 @@ careful analysis.
 <https://en.wikipedia.org/wiki/Hypergeometric_distribution>
 ```
 
-Suppose we have a bag with $m$ white and $n$ black balls, and we draw
+Suppose we have an urn with $m$ white and $n$ black balls, and we draw
 out $k$ balls and write down their colour.  Note carefully that we are
-drawing *without replacement*: we draw a ball from the bag and then do
-not put it back in the bag (if we were to replace the ball in the bag,
+drawing *without replacement*: we draw a ball from the urn and then do
+not put it back in the urn (if we were to replace the ball in the urn,
 the number of white balls would be binomial with size $k$ and
 probability $\frac{m}{m+n}$).
 
@@ -57,20 +55,75 @@ replacement?  Well, it can be shown that
 \end{equation}
 
 where $X$ is the random variable corresponding to the number of white
-balls drawn and $x$ is an integer.  We can make the following mapping
-between drawing balls out of a bag and left/right male/female dataset
-as follows:
+balls drawn and $x$ is an integer.  The R idiom for this is
+```dhyper()``` which calculates the density function.  We have the
+standard quartet of functions: ```rhyper()```, ```dhyper()```,
+```qhyper()``` and ```phyper()``` which are documented together.  The
+```dhyper()``` function takes a number of arguments.
+
+Consult the R help page for details, but the basic command is
+```dhyper(x,m,n,k)``` where $x$ is the number of white balls drawn,
+$m$ number of white balls in the urn, $n$ number of black balls in the
+urn, and $k$ is the number of balls drawn.
+
+We can make the following mapping between drawing balls out of a urn
+and left/right male/female dataset as follows:
 
 * white ball $\longrightarrow$ left handed
 * black ball $\longrightarrow$ right handed
-* drawn from bag $\longrightarrow$ male
-* left in bag $\longrightarrow$ female
-
+* drawn from urn $\longrightarrow$ male
+* left in urn $\longrightarrow$ female
 
 Alternatively we might say 
 
 * white ball $\longrightarrow$ male
 * black ball $\longrightarrow$ female
-* drawn from bag $\longrightarrow$ left handed
-* left in bag $\longrightarrow$ right handed
+* drawn from urn $\longrightarrow$ left handed
+* left in urn $\longrightarrow$ right handed
 
+Taking the second  of the two identifications, we have
+
+* number of white balls = number of males =5+2=7
+* number of black balls = number of females = 6+14=20
+* drawn from urn = left handed = 5+6=11
+* left in urn = right handed = 2+14=15
+
+With this identification, the *observation* is the number of white
+balls drawn from the urn (= the number of left handed males) which is
+5.
+
+The probability of this occurring if the null is true is
+
+```{r}
+dhyper(5,7,20,11)
+```
+
+Recall the definition of p-value: "the probability, if the null is
+true, of obtaining the observation or an observation more extreme".
+In this case (if we use a one-sided test), "more extreme" means
+greater than the observation of 5; and we know that the number of left
+handed males (=white balls drawn) cannot be larger than 7.  So the
+p-value is
+
+```{r}
+sum(dhyper(5:7,7,20,11))
+```
+
+Showing that the p-value of about 7\% is not significant (the
+professional uses ```phyper(4,7,20,11,lower.tail=FALSE)```).  We can
+get a visual impression easily, using R; study the idiom carefully:
+
+```{r}
+x <- 0:7
+plot(x,dhyper(x,7,20,11),type='h',lwd=4,col=c(rep("black",5),rep("red",3)))
+legend("topright",lwd=4, col=c("black","red"),legend=c("regular points","more extreme"))
+```
+
+Fortunately, R can deal with all this with the ```fisher.test()``` function:
+
+```{r}
+fisher.test(a, alternative="greater")
+```
+
+(recall that R variable ```a``` was defined at the beginning of the
+chapter).
