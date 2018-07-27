@@ -2,9 +2,9 @@
 .Rhistory
 .RData
 .Ruserdata
- _book/*
- _bookdown_files/*
- _main.Rmd
- packages.bib
- stat601.Rproj
+_book/*
+_bookdown_files/*
+_main.Rmd
+packages.bib
+stat601.Rproj
 
