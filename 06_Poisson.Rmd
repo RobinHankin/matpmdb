@@ -1,0 +1,134 @@
+# The Poisson distribution {#poisson}
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Poisson_distribution>
+```
+
+We have considered what happens to the binomial distribution in the
+limit of large $n$ and constant $p$: the distribution approaches a
+Gaussian with mean $np$ and variance $np(1-p)$.
+
+In this chapter we will consider a different limiting process, in
+which we allow $n$ to grow very large, but require $p$ to become small
+in such a way as to hold the product $np$ constant.  Consider the
+following table, showing values of $n$ becoming larger and larger, and
+$p$ adjusted so that the product $np$ is always equal to $4$:
+
+```
+n        p    np    np(1-p)
+10      0.4
+100     0.04
+1000
+10000
+1e6
+```
+
+See how the variance rapidly approaches 4 as $n$ approaches infinity.
+We can get a visual impression of the limiting process by examining
+the following diagram which shows a range of $n$:
+
+```{r}
+n <- 10^(1:3)
+x <- 0:10
+plot(x,x*0.03,type='n')
+cols <- c("red","orange", "yellow", "green", "blue", "purple")
+for(i in seq_along(n)){
+    points(x,dbinom(x,n[i],4/n[i]),pch=16,col=cols[i])
+}
+points(x,dpois(x,4),type='l')
+legend("topright",
+       legend=c("n=10, p=0.4","n=100, p=0.04", "n=1000, p=0.004","poisson"),
+       pch=c(16,16,16,NA),col=c(cols[seq_along(n)],"black"),lty=c(NA,NA,NA,1))
+```
+
+
+The diagram above includes "poisson" as the result of the limiting
+process.  The Poisson distribution arises naturally whenever we
+consider a binomial distribution with large $n$, small $p$, and
+moderate $np$.  Examples would include the number of car accidents on
+any given day (here $n$ would be the number of drivers and $p$ the
+(small) probability of having an accident); number of goals scored in
+a football match (here $n$ would be the number of minutes in a match
+and $p$ the small probability of scoring a goal in any given minute);
+or the number of calls received in one hour at a call center ($n$ the
+number of potential callers, and $p$ the small probability of any
+given caller calling the center in the hour in question).
+
+The Poisson distribution has only one parameter, $\lambda$, which in
+our limiting case is the value of the product $np$.  The probability
+mass function of the Poisson is
+
+\begin{equation}
+\prob{X=n}=e^{-\lambda}\frac{\lambda^n}{n!},\qquad n=0,1,2,\ldots
+\end{equation}
+
+where $\lambda>0$ is the parameter of the distribution.
+
+## The poisson distribution in R
+
+In the following, we will investigate the Poisson distribution with
+$\lambda=4.5$ in R.  The relevant functions are ```dpois()```,
+```rpois()```, etc; remember to consult the R help pages for
+reference.  First of all, we will sample from the distribution:
+
+
+```{r}
+rpois(40,lambda=4.5)
+```
+
+See how random observations from the Poisson are non-negative
+integers.  We can verify that the probabilities of the Poisson add up
+to 1:
+
+```{r}
+sum(dpois(0:100,lambda=4.5))
+```
+
+(mathematically, the above will be slightly less than 1 because we are
+not including numbers over 100; but the difference will be small).
+The mean of the Poisson distribution is known to be $\lambda$ (this is
+inherited from the binomial), and we can verify this numerically:
+
+```{r}
+mean(rpois(1e6,lambda=4.5))
+mean(rpois(1e6,lambda=4.5))
+mean(rpois(1e6,lambda=4.5))
+```
+
+
+## Estimation of the parameter $\lambda$
+
+In the above, we have tacitly assumed that the value of $\lambda$ is
+known.  However, in practice we have to estimate it and likelihood is
+an easy technique to use.
+
+Recall that likelihood is defined as the probability of seeing the
+data, given the hypothesis (multiplied by an arbitrary constant).
+Suppose we observe $n=3$ counts.  Then a likelihood function for
+$\lambda$ is just ```dpois(3,lambda)```.
+
+Think about that for a moment.  It is anodyne, boringly self-evident,
+and almost trivial; yet it it is simultaneously the most profound
+statement in the whole of this course.
+
+It is easy to plot a likelihood curve:
+
+
+```{r}
+lambda <- seq(from=1,to=7,len=100)
+plot(lambda,dpois(3,lambda),main='likelihood function for lambda')
+```
+
+and a support curve is easy too:
+		
+```{r}
+lambda <- seq(from=1,to=7,len=100)
+supp <- dpois(3,lambda,log=TRUE)
+plot(lambda,supp-max(supp),main='support function for lambda')
+```
+
+(in the above, I subtract ```max(supp)``` so the curve maxes out at
+zero).  See how the maximum likelihood estimate for $\lambda$ is just
+$3$, the observation (in general, the MLE is equal to the
+observation).
+

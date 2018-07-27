@@ -1,0 +1,275 @@
+# Type I and type II errors  {#type_1_2}
+
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Type_I_and_type_II_errors>
+```
+
+In the previous chapter we considered the p-value as an inferential
+tool.  The rule was to reject the null if $p<0.05$.  Here we introduce
+a different approach which allows us to consider different types of
+error.  We will make heavy use of random sampling from known
+distributions.
+
+The basic approach is to define a *critical region* and reject the
+null hypothesis if our observation falls in this critical region.  The
+standard critical region is to reject $H_0$ if our observation exceeds
+a particular critical value.
+
+It is possible to define the critical region as we wish, and in this
+chapter we discuss desiderata for assessing different critical values.
+For simplicity we will consider only one-sided tests.
+
+If we have observations from $N(\mu,1)$ [that is, Gaussian with
+unknown mean $\mu$ and standard deviation 1], we may wish to test
+$H_0\colon\mu=0$.
+
+Our test statistics will be $\overline{x}$, the sample mean.  We know
+from previous chapters that, if $H_0$ is true we will have
+$\overline{x}\sim N\left(0,\frac{1}{\sqrt{n}}\right)$.  Suppose for
+concretness that $n=10$: we have 10 observations.  Then we reject
+$H_0$ if $\overline{x}$ exceeds a certain critical value.  We want to
+ensure that, if the null is true, the null is rejected only 5\% of the
+time, so the critical value is given by:
+
+```{r}
+qnorm(0.95,0,1/sqrt(10))
+```
+
+we will call this 0.52 for simplicity.  Below is the R idiom for
+testing $H_0\colon\mu=0$; the dollar construction extracts just the
+p-value:
+
+```{r}
+set.seed(0)
+t.test(rnorm(10),alternative="greater")$p.value
+```
+
+In the above, the null was true (see the help page for ```rnorm```).
+The p-value exceeds the critical value of 0.05, so we fail to reject
+the null as we should.  However, we can repeatedly try the same test
+with the ```replicate()``` command:
+
+```{r}
+f <- function(n,mean=0){
+ t.test(rnorm(n,mean=mean),alternative="greater")$p.value
+}
+set.seed(0)
+replicate(7,f(n=10))
+```
+
+Study the R idiom above carefully.  We are repeatedly carrying out a
+t-test on random data for which the null is *known* to be true.  In
+this case, noe of the tests rejected the null.  However, if we carry
+out the test a large number of times we see:
+
+```{r}
+set.seed(0)
+table(replicate(1000,f(n=10)) < 0.05)
+```
+
+So in the above, we incorrectly reject the null hypothesis 48 times
+(the ```set.seed(0)``` command ensures that results are repeatable).
+Rejecting the null hypothesis when it is true is known as a *type I
+error*.  We want this to be rare.  Studying the diagram below:
+
+```{r}
+set.seed(0)
+hist(replicate(1000,f(n=10)),col='pink')
+```
+
+shows that the p-value is uniformly distributed from 0 to 1^[We will
+see many examples of statistical tests and they all should have a
+uniform distribution of p-values].  We can deduce that the probability
+of rejecting the null hypothesis---that is, the probability of
+committing a type I error---is 0.05.  We say that the *size* of the
+test is the probability of committing a type I error and in this case
+the test is of size 0.05 (because that is the p-value that we
+selected).  In statistics, one usually denotes the size of a test as
+$\alpha$.
+
+Observe that we can make the size of the test $\alpha$ any probability
+we like (by choosing the critical p-value) but it is usually required
+that the size of any test be less than 5\%.  For example, we could
+have a test of size 0.01 by rejecting the null if the p-value is less
+than 0.01.
+
+## critical region
+
+The Pearsonian approach is to define a "critical region" for a test
+statistic.  This is usually the tail region of the null distribution
+of the test statistic, and has a small probability (usually 5\%).  The
+idea is that if the test statistic falls in the critical region, we
+reject the null; observe that if the null is true we reject it only
+with a small probability.  Study the following diagram:
+
+```{r}
+x <- seq(from=-5,to=5,len=100)
+plot(x,dnorm(x),type='n',xlab='sample mean',ylab='probability density')
+abline(v=qnorm(0.95))
+
+xx <- seq(from=qnorm(0.95),to=5,len=100)
+jj <- c(xx,rev(xx))
+polygon(x=jj,y=c(dnorm(xx),xx*0),border=NA,col='gray')
+points(x,dnorm(x),type='l',lwd=2,col='black')
+```
+
+## Type II errors
+
+The type I error has an inverse.  A *type II error* is the failure to
+reject the null hypothesis when it is false.  If the null is false,
+the correct course of action is to reject it, and failure to do so is
+an error: a type II error.  A type II error is a sort of inverted
+version of a type I error.
+
+###  Power of a test
+
+We usually denote the probability of committing a type II error as
+$\beta$.  Note carefully that the value of $\beta$ depends on the
+alternative hypothesis we are considering.
+
+The *power* of a test is defined as $1-\beta$. The power is thus the
+probability of correctly detecting that the null is incorrect.
+
+### Visual representation
+
+The following diagram shows the different types of errors visually.
+ Study the R idiom carefully.
+
+```{r}
+x <- seq(from=-5,to=5,len=100)
+plot(x,dnorm(x),type='n',lwd=2,xlab='sample mean',ylab='probability density')
+
+xx <- seq(from=-5,to=qnorm(0.95),len=100)
+jj <- c(xx,rev(xx))
+polygon(x=jj,y=c(dnorm(xx,mean=1),xx*0),border=NA,col='pink')
+points(x,dnorm(x,mean=1),type='l',lwd=2,col='red')
+
+xx <- seq(from=qnorm(0.95),to=5,len=100)
+jj <- c(xx,rev(xx))
+polygon(x=jj,y=c(dnorm(xx),xx*0),border=NA,col='gray')
+points(x,dnorm(x),type='l',lwd=2)
+
+text(qnorm(0.95),0.05,'reject H0',pos=2)
+text(qnorm(0.95),0.05,'do not reject H0',pos=4)
+abline(v=qnorm(0.95),lwd=3)
+
+legend("topleft",
+     lwd=c(2,2,10,10),
+     col=c("black","red","gray","pink"),
+     legend=c("null","alternative","alpha","beta")
+     )
+```
+
+Type I errors and type II errors have a mutual relationship in that
+making $\alpha$ larger forces $\beta$ to be smaller, although the
+relationship is not simple.
+
+In the limit, one may achieve $\alpha=0$ by never rejecting the null;
+but this has the effect of making $\beta=1$.  Similarly, one may have
+$\beta=0$ but this will entail $\alpha=1$.
+
+Again, one usually insists that $\alpha\leq 0.05$ and hope that
+$\beta$ is not too big; one standard requirement is that $\beta\leq
+0.2$ or equivalently that the power should exceed 0.8.
+
+## Some numerical simulations
+
+In the following we will keep $\alpha=0.05$ and $H_0\colon\mu=0$
+unless stated otherwise.  For convenience I will show some earlier
+work here.  First a helper function:
+
+```{r}
+f <- function(n,mean=0){ t.test(rnorm(n,mean=mean),alternative="greater")$p.value}
+```
+
+In the above, argument $n$ is the number of observations to take.
+Then, if the null is true (that is, $\mu=0$, or in R idiom,
+```mean=0```), we check that the probability of committing a type I
+error is indeed 0.05:
+
+```{r}
+set.seed(0)
+table(replicate(1000,f(n=6)) < 0.05)
+```
+
+In the above, the ```TRUE``` count shows the type I errors: in this
+case 67 out of 1000, or a little above 5\%.  Now, we can force the
+null to be incorrect and assess $\beta$:
+
+```{r}
+set.seed(0)
+table(replicate(1000,f(n=6,mean=1)) < 0.05)
+```
+
+In the above, the ```TRUE``` count *correctly* rejects the null, and
+the ```FALSE``` count commits a type II error.  So $\beta$ is about
+33\% and the power is about 67\%.  It is possible to improve upon the
+power by taking more observations.  Above, we had $n=6$ observations
+but now we try $n=10$:
+
+```{r}
+set.seed(0)
+table(replicate(1000,f(n=10)) < 0.05)
+table(replicate(1000,f(n=10,mean=1)) < 0.05)
+```
+
+In the above, the size ($\alpha$) of the test is fixed at 5\% but the
+power is increased to over 90\% as this is the proportion of tests
+which correctly reject the null.  This is what more observations buys
+you.
+
+### Changing the alternative
+
+If we keep $n=10$ we can investigate the effect of changing the
+alternative. In the previous section we had an alternative
+$H_A\colon\mu=1$ but suppose we try $H_A\colon\mu=0.5$.  We might
+expect that the power would decrease on the grounds that there is less
+difference between the null and alternative than previously, and this
+is indeed the case:
+
+
+```{r}
+set.seed(0)
+table(replicate(1000,f(n=10)) < 0.05)
+table(replicate(1000,f(n=10,mean=0.5)) < 0.05)
+```
+
+### Changing the size of the test.
+
+Earlier I said that type I and type II errors were exchangeable in the
+sense that increasing $\alpha$ decreases $\beta$.  Here I show that
+this is true using numerical simulation.  We will return to
+$H_A\colon\mu=1$.
+
+```{r}
+set.seed(0)
+table(replicate(1000,f(n=10)) < 0.05)
+table(replicate(1000,f(n=10,mean=1)) < 0.05)
+table(replicate(1000,f(n=10)) < 0.01)
+table(replicate(1000,f(n=10,mean=1)) < 0.01)
+```
+
+In the above, I have changed the size of the test from 0.05 in the
+first two lines to 0.01 in the second.  See how $\alpha$ changes from
+about 5\% to 1\%, while $\beta$ increases from
+
+
+### Histograms
+
+We will now show how the distribution of p-values changes depending on
+the null and alternative hypothesis.
+
+```{r}
+f <- function(n,mean=0){ t.test(rnorm(n,mean=mean),alternative="greater")$p.value}
+par(mfrow=c(2,1))
+hist(replicate(1000,f(n=10,mean=0)),col='pink')
+hist(replicate(1000,f(n=10,mean=0.5)),col='pink')
+```
+
+In the above diagram, the top histogram shows the distribution of
+p-values when the null is true: a uniform distribution between 0 and
+1.  The lower histogram shows the distribution of p-values when the
+null is incorrect and the mean is 0.5.  See how the p-values are
+shifted towards zero: there is---as there should be---a higher
+probability of rejecting the null when it is incorrect.

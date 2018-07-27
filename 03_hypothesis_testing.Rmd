@@ -1,0 +1,540 @@
+# Hypothesis testing   {#hypothesis}
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Statistical_hypothesis_testing>
+```
+
+It is a very frequent occurence in science that we are investigating
+an effect and seek evidence that it has occurred.  The general terms
+discussed in this chapter are
+
+- hypothesis testing
+- standard error of the mean
+- null hypothesis
+- p-value
+- critical region
+- confidence interval
+
+We will use a standard dataset drawn from the ```iris``` to illustrate
+the general theory.  First we will take our data, drawn from a classic
+dataset describing sepal lengths of iris flowers:
+
+
+```{r}
+d <- iris3[,1,"Virginica"]
+d
+hist(d,col='gray')
+```
+
+## Standard error of the mean
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Standard_error>
+```
+
+What we want to do is to calculate the *population* mean for sepal
+lengths.  That is, we assume that sepal lengths are a random variable
+drawn from $N(\mu,\sigma)$ [Gaussian distribution] but with unknown
+mean $\mu$.  Of course we can calculate the *sample* mean of our data:
+
+```{r}
+mean(d)
+```
+
+But what is the *uncertainty* of this estimate?  Observe that the true
+population mean of sepal lengths may well be 6.589 or 5.787; but we
+would be uncomfortable stating that the true population mean is as
+114.2 or -232.  Observe carefully that we are using the *sample mean*
+to estimate the *population mean*.
+
+### Sampling distribution of the mean
+
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Sampling_distribution>
+```
+
+It is a mathematical fact that if $x_1,x_2,\ldots,x_n$ are independent
+and drawn from $N(\mu,\sigma)$, then 
+
+\begin{equation}
+(\#eq:SEM)
+\overline{x}\sim N\left(\mu,\frac{\sigma}{\sqrt{n}}\right)
+\end{equation}
+
+where $\overline{x}=\frac{1}{n}\sum_{i=1}^n x_i$ is the sample mean.
+The standard deviation of the sample mean is known as tthe *standard
+error of the mean*.  We can test that equation \@ref(eq:SEM) is
+correct by numerical sampling; we use a standard Gaussian $N(0,1)$ on
+the grounds that we know the true value of the mean and standard
+deviation.  Supposing we have a sample of size 40:
+
+```{r}
+mean(rnorm(40))
+mean(rnorm(40))
+mean(rnorm(40))
+```
+
+the above shows some of the variability of the sample mean.  Because
+each of the observations is $N(0,1)$, equation \@ref(eq:SEM) shows
+that the sample mean is distributed as
+$N\left(0,\frac{1}{\sqrt{40}}\right)$.  We can verify this using
+```replicate()```:
+
+```{r}
+width <- 0.05
+n <- 100000
+sample_means <- replicate(n,mean(rnorm(40)))
+hist(sample_means,breaks=seq(from=-1,to=1,by=width),col='pink')
+x <- seq(from=-1,to=1,len=100)
+points(x,n*width*dnorm(x,sd=1/sqrt(40)),type="l",lwd=6)
+legend("topleft",lwd=c(6,12),col=c("black","pink"),legend=c("theory","numerical"))
+```
+
+In the above, the black line shows the distribution function for the
+theoretical Gaussian, closely matching the observations.
+
+
+## Null Hypothesis
+
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Null_hypothesis>
+```
+
+Returning to the sepal lengths, suppose we know that last year the
+population mean was exactly 6.4.  Is there evidence that this year the
+sepals are longer?
+
+Well, the sample mean certainly exceeds 6.4:
+
+```{r}
+mean(d)
+```
+
+But as we saw above, there is sampling uncertainty on the mean (the
+standard deviation of the sample mean is the standard error of the
+mean), so it is not clear whether the sample mean is actually evidence
+of a real change, or the result of random variability.
+
+To proceed, we define a *null hypothesis* $H_0$, which is the
+statement that there is no change.  The concept of null hypothesis is
+difficult and not altogether consistent so I will not define it
+formally here.  It usually means something along the lines of "the
+effect we are investigating is not present".  The idea is that we give
+the null hypothesis a fair go and if it does not account for our
+observations we infer that the null is incorrect and that the effect
+is real.  We then consider what the null predicts.
+
+If the null is true, we have a standard error of
+$\frac{\sigma}{\sqrt{n}}$:
+
+
+```{r}
+x <- seq(from=6.1,to=6.8,len=100)
+n <- length(d)
+SEM <- sd(d)/sqrt(n)
+plot(x,dnorm(x,mean=6.4,sd=SEM),xlab="sample mean",type="l",lwd=4)
+legend("topleft",lwd=c(4),col=c("black"),legend=c("null hypothesis"))
+abline(v=mean(d),lwd=5,col='red')
+text(mean(d),2,"observed sample mean")
+```
+
+
+## p-value
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/P-value>
+```
+
+
+We can assess whether an observation is consistent with a particular
+null by calculating the p-value.  We measure consistency by calculating the p-value:
+
+
+the p-value is defined as the probability, if the null is true, of
+obtaining the observation or an observation more extreme.  Here, "more
+extreme" means "larger than the observed sample mean", although other
+interpretations are possible and considered later.
+
+```{r}
+x <- seq(from=6.1,to=6.8,len=100)
+n <- length(d)
+SEM <- sd(d)/sqrt(n)
+plot(x,dnorm(x,mean=6.4,sd=SEM),xlab="sample mean",type="l",lwd=4)
+legend("topleft",lwd=c(4,14),col=c("black","gray"),legend=c("null hypothesis","pvalue"))
+text(mean(d),2,"observed sample mean")
+jj <- seq(from=mean(d),to=6.8,len=100)
+jj1 <- c(jj,rev(jj))
+polygon(jj1,c(jj*0,dnorm(rev(jj),mean=6.4,sd=SEM)),col='gray')
+abline(v=mean(d),lwd=5,col='red')
+```
+
+It is easy to calculate the pvalue in R:
+
+
+```{r}
+1-pnorm(mean(d),6.4,SEM)
+```
+
+We compare the pvalue with 0.05 (that is, 5\%), and if it is smaller
+than 0.05 we *reject* the null and infer that the null is incorrect.
+If, on the other hand, $p$ is greater than 0.05, we fail to reject the
+null, and come to no conclusion.
+
+In this case the p-value is about 1.8\%, which is less than 0.05 so we
+reject the null and conclude that this year the sepals are in fact
+longer.
+
+##  Student t-test
+
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Student's_t-test>
+```
+
+In the above, we have used the estimated value of the standard
+deviation given by R idiom ```sd()```.  However, the estimated value
+is uncertain, as we can see by numerical sampling, here with sample
+size 100:
+
+
+```{r}
+replicate(6,sd(rnorm(100)))
+```
+
+and if the number of observations is smaller, say 4, then the uncertainty is higher:
+
+```{r}
+replicate(6,sd(rnorm(4)))
+```
+
+This does not cause a problem if the number of observations is greater
+than about 30 but for small sample sizes the error becomes serious.
+It is possible to correct the error using a technique called the
+*Student t test*.
+
+The concepts are the same but the sampling distribution changes to
+reflect the fact that we are conditioning on an estimated value of the
+variance.  In any event, the R idiom is straightforward:
+
+
+```{r}
+t.test(d,mu=5.6,alternative="greater")
+```
+
+Giving a similar p-value to the Z test above.
+
+## One-sided and two-sided tests
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/One-_and_two-tailed_tests>
+```		
+
+Recall the definition of p-value: "the probability, if the null is
+true, of obtaining the observation or an observation *more extreme*".
+Here, we will investigate what "more extreme" means.
+
+Up to now, "more extreme" has meant "larger" but it could easily mean
+"further away from the null mean" and we would get an image like the
+following:
+
+```{r}
+x <- seq(from=6.1,to=6.8,len=100)
+n <- length(d)
+SEM <- sd(d)/sqrt(n)
+plot(x,dnorm(x,mean=6.4,sd=SEM),xlab="sample mean",type="l",lwd=4)
+legend("topleft",lwd=c(4,14),col=c("black","gray"),legend=c("null hypothesis","pvalue"))
+text(mean(d),2,"observed sample mean")
+f <- function(x){
+  jj <- c(x,rev(x))
+  polygon(jj,c(x*0,dnorm(rev(x),mean=6.4,sd=SEM)),col='gray')
+}
+y <- seq(from=mean(d),to=6.8,len=100)
+f(y)
+f(6.4+(6.4-y))
+abline(v=mean(d),lwd=5,col='red')
+```
+
+In this case the p-value will be double the one-sided value:
+
+```{r}
+2*(1-pnorm(mean(d),6.4,SEM))
+```
+
+In general one uses a one-sided (right tail) test when we are testing
+for the population mean *exceeding* the null mean, a one sided (left
+tail) test when we are testing for the population mean being *less
+than* the the null mean; and a two-sided test when we are testing for
+the population mean *differing* from the null mean.
+
+The decision to use a one-sided or two-sided test is often subtle.  In
+this course, there will always be a linguistic clue such as "it is not
+clear whether we expect an increase or a decrease" (indicating a
+two-sided test), or "the experiment is designed to detect an increase
+in mean" or some similar wording.  See previous exam papers for
+examples.
+
+
+## Two-sample hypothesis testing
+
+Although the one-sample test considered above is the simplest case, it
+is more common to consider two samples and ask whether they have a
+different mean.
+
+If $x_1,\ldots,x_n\sim N(\mu_x,\sigma_x^2)$ and $y_1,\ldots,y_m\sim
+N(\mu_y,\sigma_y^2)$ then a sensible null hypothesis might be
+$\mu_x=\mu_y$.  Note that the actual values of $\mu_x$ and $\mu_y$ are
+not interesting; we are interested in whether they differ.  Also
+observe that we are not interested in the values of the standard
+deviations $\sigma_x,\sigma_y$.  Again, one-sided or two-sided tests
+may be used.
+
+The details are rather messy but the Student t-test described above
+may be modified to cope.  Observe that we are comparing two population
+means, neither of which is known with certainty.  They have different
+uncertainties which makes life difficut.
+
+The t-test uses $\delta=\overline{x}-\overline{y}$ to test the null.
+If the null is true, then $\delta$ has a particular distribution (it
+is again a modified student t distribution).  The details are
+complicated but R makes life easy.
+
+### Example of two-sample hypothesis testing.
+
+Suppose we collect weights kiwi birds from two forests, forest A and
+forest B, and want to know whether the kiwi from A and B differ.
+The data is
+
+```{r}
+kiwi_a <- c(0.9, 1.02, 1.07, 0.92, 0.84, 0.9, 1.06, 1.01, 1.14, 0.96)
+kiwi_b <- c(1.09, 1.14, 1.15, 1.03, 1.18, 1.04, 1.18, 1.17, 1.08, 1.02, 
+0.99, 1.06, 1.03)
+```
+
+We can calculate the *sample* means easily:
+
+```{r}
+mean(kiwi_a)
+mean(kiwi_b)
+```
+
+But to assess whether this is evidence for the *population* means differing we need a t-test:
+
+```{r}
+t.test(kiwi_a,kiwi_b)
+```
+
+and we can see from the small p-value (0.007558) that we may reject
+the null hypothesis, and infer that the kiwi weights do in fact differ
+between the forests.
+
+### Paired test
+
+Sometimes we have a slightly different structure in a dataset, in
+which the elements of the two datasets may be paired.  This often
+occurs when the two datasets represent the same object but before and
+after some treatment or the passage of time.  For example, suppose we
+collect exam scores for students before and after some instruction,
+and want to investigate whether the instruction was effective.  The
+data is:
+
+```{r}
+before <- c(smith=112, jones=199, robinson=120, taylor=89, williams=100, brown=110)
+after  <- c(smith=119, jones=201, robinson=137, taylor=91, williams=104, brown=109)
+before
+after
+```
+
+Observe how the different students have very different score, but each
+one changes a small amount.  Because the datasets have a natural
+pairing with each other (we would compare smith _before_ with smith
+_after_).
+
+There are two natural approaches.  The simplest is to consider the
+difference in scores and perform a t-test on that:
+
+```{r}
+t.test(before-after,alternative="less")
+```
+
+(also, observe that we use a one-sided test: noone expects the
+instruction to *decrease* exam scores).  But this approach effectively
+assumes that the variance is unaltered by the instruction, which might
+be incorrect (why?).  We can adjust for this by using the *paired*
+t-test:
+
+```{r}
+t.test(before,after, var.equal=TRUE, paired=TRUE,alternative="less")
+```
+
+## Binomial distribution and testing
+
+The definition of p-value: "the probability, if the null is true, of
+obtaining the observation or an observation more extreme" applies to a
+wide variety of null hypotheses and distributions.  Consider, for
+example, bernoulli trials of a coin landing heads or tails.  We
+suspect that the coin is biased towards heads, that is, the
+probability of success $p > \frac{1}{2}$.  Our data is 58 heads out of
+100 trials.
+
+To proceed, we specify a null hypothesis $H_0\colon p=\frac{1}{2}$ and
+try to obtain a p-value.  The p-value is directly computable in R:
+
+```{r}
+sum(dbinom(58:100,100,1/2))
+```
+
+See how the above is a *direct* implementation of the definition of
+p-value.  In this case, the p-value is 6.6\% so we fail to reject the
+null.  Visually:
+
+```{r}
+x <- 0:100
+plot(x,dbinom(x,100,1/2),col=c(rep("black",59),rep("red",42)),type="h",lwd=2,main="null distribution; observation=58")
+legend("topleft",lty=1,lwd=2,col=c("red","black"),legend=c("more extreme","distribution"))
+```
+
+In the above, the red shows the probability, if the null is true, of
+obtaining the observation (58 in this case), or an observation more
+extreme ($>58$).  This is precisely the definition of p-value.
+Incidentally, the professional would use ```pbinom()```:
+
+```{r}
+pbinom(57,100,1/2,lower.tail=FALSE)
+```
+
+### Two-sided binomial tests
+
+The above reasoning applies to two-sided tests.  Suppose we have a
+null of $p=1/2$ but are not sure whether the true value of $p$ is
+greater than, or less than, 1/2.  Then a two-sided test would be
+appropriate because "more extreme" could be interpreted as "further
+away from half"
+
+Suppose we observed 69 heads.  Then "more extreme" would mean either
+$>69$ heads or $<31$ heads, these values being equally distant from
+50.
+
+The p-value would then be 
+
+```{r}
+sum(dbinom(c(0:31,69:100),100,1/2))
+```
+
+and the p-value is less than 5\% so we reject the null.  Observe that
+in this case the two-sided p-value is exactly twice the one-sided
+p-value.
+
+
+## Critical region
+
+There is another view of statistical hypothesis testing, associated
+with statistician Karl Pearson.  In his view we consider the null
+distribution of our test statistic and regard the tail region of this
+as a "rejection region".  The main difference between this approach
+and the p-value approach is that we decide *in advance* on a p-value,
+then report a yes/no finding: did we reject the null, or not?  In
+practice the two approaches are used interchangeably although to be
+absolutely consistent one should use one or the other and not mix the
+notations (but everyone does).
+
+
+
+## Confidence interval
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Confidence_interval>
+```
+
+
+The concept of *confidence interval* is a common one in statistics.
+The formal definition is quite hard, and the interpretation difficult.
+
+("Interval" is another word for "range"; .  The basic idea is that we
+estimate a *range* of values within which our parameter lies.  We
+arrange things so that the probability of this range including the
+true value of the parameter is 95\% (other values such as 99\% or
+99.5\% are sometimes used, but we will stick to 95\% here).
+
+To fix ideas, consider the following dataset, representing weights of
+kiwi birds:
+
+
+```{r}
+kiwi <- c(0.95, 0.56, 0.86, 0.83, 0.88, 0.77, 1.09)
+mean(kiwi)
+```
+
+Thus the mean value of the kiwi weights is about 0.85kg.  We might
+hypothesise that the population mean $\mu$ is 0.9kg, and test this
+hypothesis using ```t.test()```:
+
+```{r}
+t.test(kiwi,mu=0.9)$p.value
+```
+
+where the p-value has been extracted (from the full output calculated
+by ```t.test()```) using a dollar construction.  We can see that we
+fail to reject the null that $\mu=0.9$, on the grounds that the
+p-value exceeds 0.05.  This says that the population mean being 0.9 is
+somehow consistent with our data.  We can now test the hypothesis that
+$\mu=1.2$:
+
+```{r}
+t.test(kiwi,mu=1.2)$p.value
+```
+
+and in this case we may reject the hypothesis that $\mu=1.2$.  It is
+clear that we reject values for the mean that are far removed from the
+bulk of the data, and we fail to reject values for the mean that are
+close to the bulk of the data.  The *confidence interval* for the mean
+is all values $x$ for which we would fail to reject the null
+hypothesis that $\mu=x$.  From the above, we would conclude that 0.9
+is *inside* the confidence interval [because we fail to reject the
+null that $\mu=0.9$] and 1.2 is *outside* the confidence interval
+[because we rejected the null that $\mu=1.2$].
+
+
+All of this complicated reasoning is carried out by ```t.test()```:
+
+```{r}
+t.test(kiwi)
+```
+
+which includes the confidence interval (it doesn't matter here, but
+the reported p-value refers to a null of $\mu=0$).
+
+The confidence interval is constructed so that it contains the true
+value of the population mean with probability 95\%.  Note carefully
+that this is not the same as saying "the true value of the mean is
+contained within this confidence interval with probability 95\%".  The
+confidence interval is a random variable, the result of a randomly
+observed dataset.  It is constructed so that it is rare
+[i.e. probability 5\%] for the true value of the mean to be outside
+the confidence interval.
+
+
+```{r}
+f <- function(n){ as.vector(t.test(rnorm(n))$conf.int) }
+
+set.seed(0)
+plot(c(-4,4),c(1,10),axes=FALSE,xlab='',ylab='',type='n')
+for(i in 1:100){
+    jj <- f(10)
+    if(prod(jj)<0){col <- 'black' } else {col <- 'red'}
+    segments(x0=jj[1],y0=i/10,x1=jj[2],y1=i/10,col=col,lwd=2)
+}
+abline(v=0)    
+```
+
+The figure above shows 100 confidence intervals generated from a
+distribution where the true mean $\mu=0$.  See how the majority of the
+intervals contain the true value but occasionally (with probability
+5\%) the interval lies completely to one side of the true value, and
+such intervals are shown in red.  See how much of the R idiom you can
+understand.
+
+Note that although confidence interval has a univeral definition, it
+is not without it problems and many workers [including your lecturer!]
+question the validity of this form of reasoning.>

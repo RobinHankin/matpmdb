@@ -1,0 +1,287 @@
+# Point estimation #  {#estimation}
+
+
+So far we have been considering distributions with *known* parameters.
+In the case of the Gaussian distribution we have the mean
+
+However, in practice we very frequently do not know the true values of
+a parameter.  Consider the binomial distribution $B(n,p)$ with known
+$n$ but *unknown* $p$.  We wish to estimate $p$ from observational
+data.
+
+Suppose $n=100$ and we observe $r=35$ successes.  We might estimate
+that $p=0.35$, on the basis that 35\% of the 100 trials were
+successes.  However, observe carefully that, if $p$ really was 0.35,
+then we would not observe exactly 35 successes:
+
+```{r}
+rbinom(20, 100, 0.35)
+```
+
+Recall from the previous chapter that the observations have a mean of
+0.35 and a variance of $100\times 0.35\times (1-0.35)=22.75$.
+
+Conversely, if $p=0.36$ then we might well observe $r=35$ successes.
+Thus the observation that $r=35$ does not allow us to distinguish
+between the two possibilities that $p=0.35$ and $p=0.36$.
+
+However, we would be surprised if $p$ turned out to be, say, 0.99.  It
+is not at all obvious why $p=0.99$ is "unacceptable" in some sense
+while $p=0.35$ is OK.
+
+What we want to do is find a *range* of values for $p$ which are
+consistent with our observations.
+
+
+## Likelihood ##
+
+Suppose three people, A, B, and C are discussing the observation of 35
+successes out of 100 trials, and wish to make inferences about $p$,
+the unknown probability of success.  Person A says that $p=0.2$,
+person B says that $p=0.3$, and person C says that $p=0.5$.
+
+To compare these three estimates for $p$, it is natural (after a
+while) to calculate the probability of making the observation [of 35
+successes out of 100 trials], given that $p$ takes in turn each of the
+values specified by the three people.  This is easy in R:
+
+```{r}
+dbinom(35,100,p=0.2)
+dbinom(35,100,p=0.3)
+dbinom(35,100,p=0.5)
+```
+
+Think about what this means.  Take the first line: if the probability
+truly was 0.2, then the probability of actually seeing the data [35
+out of 100 trials] is 0.00019.  If it truly was 0.3, the probability
+of seeing the data is about 0.047, and if it truly is 0.5, the
+probability would be 0.00086.  Of these three possibilities, 0.3 is
+preferable because this has the highest probability.  We say that
+$p=0.3$ is more *likely* than the other two guesses.
+
+## The likelihood function
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Likelihood_function>
+```
+
+The above line of reasoning can be streamlined and extended by
+allowing $p$, the supposed probability of success, to be *any* value
+between zero and one.  It makes sense to plot the probability of
+observing the data [35 successes out of 100 trials] as a function of
+the supposed probability of success.  This is easy in R:
+
+
+```{r}
+p <- seq(from=0, to=1, len=100)
+plot(p,dbinom(35,100,p))
+abline(v=0.35)
+```
+
+The above plot shows a *likelihood* function: the probability of
+seeing the data, as a function of the assumed probability of success.
+We can see that the likelihood function is maximized at $p=0.35$^[This
+fact can be verified by using differential calculus but this course is
+not using calculus].  The graph also shows why $p=0.9$ is a poor
+estimate: the likelihood is much smaller than the likelihood for
+$p=0.35$.
+
+The *likelihood function* is a general-purpose tool used in many
+branches of statistical inference.  It is used when we are considering
+a statistical distribution that has one or more unknown parameters.
+In this example, the unknown parameter is the probability $p$ of
+success.  The likelihood function is a function $\mathcal{L}(\cdot)$
+of the unknown parameter, with $\like{p}= \prob{D|p}$.  In English we
+say "the probability of seeing the data $D$, given the true value of
+the parameter is $p$".  Sometimes we call the parameter the
+"hypothesized value", or 'hypothesis" for short and write
+$\prob{D|H}$.
+
+The formal definition of likelihood function is a little harder: We
+may multiply the likelihood function as described above by an
+arbitrary positive value $C$ and come to the same conclusions.  The
+wikipedia page gives more details.
+
+For the example of 35 successes out of 100 trials the likelihood
+function is
+
+\begin{equation}
+\like{p}=C.{100\choose 35}p^{35}(1-p)^{65}
+\end{equation}
+
+We can choose the constant $C$ to be any positive number.  If we
+choose $C=\frac{1}{{100\choose 35}}$, then the combinatorial term in
+the binomial cancels out and we are left with
+
+\begin{equation}
+\like{p}=\frac{1}{{100\choose 35}}{100\choose 35}=p^{35}(1-p)^{65}
+\end{equation}
+
+which is easier to deal with^[Actually, "*the* likelihood function" is
+a slight misnomer, because it is defined only up to a multiplicative
+constant.  We really should say "*a* likelihood function", by which we
+mean any function that is proportional to $\prob{D|H}$.].  In R it is just 
+
+```
+function(p){p^35*(1-p)^65
+```
+
+and later when we consider Bayesian analysis we will see how this line
+of reasoning allows us to pursue a different form of statistical
+inference.
+
+
+## Likelihood functions for the Gaussian
+
+Another nice example of likelihood functions is given by the Gaussian
+distribution.  Suppose we have observations drawn from a Gaussian
+distribution $N(\mu,1)$: so we know that the standard deviation is 1,
+but we do not know what the mean $\mu$ is, and want to make inferences
+about its true value.
+
+Our data is:
+
+
+```{r}
+d <- c(6.1, 6.7, 6.3, 5.7)
+```
+
+Of course we could calculate the *sample* mean:
+
+```{r}
+mean(d)
+```
+
+but what is the uncertainty on this?  The likelihood function is, in R
+idiom, easy to calculate.  The idea is that the *data* stays fixed but
+allow the putative mean $\mu$ to vary.  Suppose we start with
+$\mu=5.8$.  Then the likelihood would be
+
+```{r}
+dnorm(6.1,mean=5.8)*
+dnorm(6.7,mean=5.8)*
+dnorm(6.3,mean=5.8)*
+dnorm(5.7,mean=5.8)
+```
+
+and we might compare this with the likelihood for $\mu=5.9$:
+
+```{r}
+dnorm(6.1,mean=5.9)*
+dnorm(6.7,mean=5.9)*
+dnorm(6.3,mean=5.9)*
+dnorm(5.7,mean=5.9)
+```
+
+Comparing these two, we see that $\mu=5.9$ is marginally more likely
+than $\mu=5.8$ on the basis that the likelihood is (slightly) higher.
+We can plot a likelihood function:
+
+```{r}
+like <- function(m){prod(dnorm(d,mean=m))}
+m <- seq(from=4,to=8,len=100)
+plot(m,sapply(m,like))
+abline(v=mean(d))
+```
+
+Study the above carefully: there is a lot going on.  Make sure you
+understand exactly what is happening before moving on.  Note the use
+of the ```sapply()``` construction here, needed to vectorize the
+```like()``` function.  See how the likelihood is maximized at the
+*sample* mean.
+
+
+## The support function
+
+The likelihood function $\like{\cdot}$ is defined as the probability
+of obtaining the data, given the hypothesis~$H$, multiplied by an
+arbitrary constant $C$.
+
+The *support* function $\supp{\cdot}$ is defined as the logarithm of
+the likelihood:
+
+\begin{equation}
+\supp{H} = \log(\like{H})
+\end{equation}
+
+But because the likelihood has an arbitrary multiplicative
+constant $C$, the formula is
+
+\begin{equation}
+\supp{H} = \log(\prob{D|H}) + \log(C)
+\end{equation}
+
+Thus support is a function defined up to an *additive* constant (all
+logs are natural logs).  Using the Gaussian example in the previous
+section we can plot a support function:
+
+```{r}
+support <- function(m){sum(dnorm(d,mean=m,log=TRUE))}
+m <- seq(from=4,to=8,len=100)
+plot(m,sapply(m,support))
+abline(v=mean(d))
+```
+
+Remembering that we can add or subtract an arbitrary constant, we may
+as well ensure that our curve has a maximum at zero:
+
+```{r}
+support <- function(m){sum(dnorm(d,mean=m,log=TRUE))}
+m <- seq(from=4,to=8,len=100)
+s <- sapply(m,support)
+plot(m,s-max(s))
+abline(v=mean(d))
+abline(h=0)
+abline(h=-2)
+```
+
+
+### Credible interval
+
+The two horizontal lines correspond to the maximum likelihood estimate
+for the mean, and the line of $\suppval=-2$.  Two units of support is
+the standard measure of "a lot of support", so this gives a region of
+reasonably well-supported values of the mean that are above the line
+$\suppval=-2$; this is known as a *credible interval*.  From the
+graph, the credible interval is from about 5.2 to 7.1.
+
+The way to think about this is to ask how much "extra" support one can
+achieve from any given starting point.  Suppose one started at
+$\mu=4$.  On the graph above, we can see that this has a support of
+about -10, which would correspond to a likelihood of $e^{-10}\simeq
+4.54\times 10^{-5}$.  Then by moving from $\mu=4$ to $\mu=6.2$ we can
+slide up the support curve and achieve an *extra* 10 units of support.
+This is more than the 2-units-of-support criterion, so we can be
+reasonably sure that $\mu=4$ is not the true value; but $\mu=6$ is
+acceptable.
+
+
+## Note on likelihood and support as relative measures of credibility
+
+The arbitrary constant $C$ in the definitions of support and
+likelihood reminds us that only *relative* values of support and
+likelihood are meaningful.  You cannot calculate "the support" of any
+single hypothesis; the concept is only meaningful when comparing two
+hypotheses.
+
+Going back to our example of 35 successes out of 100 trials, we have
+been calculating the likelihood as $p^{35}(1-p)^{65}, and the support
+will be $35\log p+65\log(1-p)$.  However, as stated above we are only
+interested in relative changes of support, and relative support
+support is unchanged by addition of an arbitrary constant $C$.  The
+diagram below shows a number of support curves:
+
+
+```{r}
+p <- seq(from=0.1,to=0.5,len=100)
+plot(p,35*log(p)+65*log(1-p)+i,col=rainbow(10)[i],type='l',ylab='support')
+
+for(i in 1:10){
+  points(p,35*log(p)+65*log(1-p)+i,col=rainbow(10)[i],type='l')
+}
+```			
+
+Observe how the actual value of the y-axis is immaterial.  One would
+make the same inferences from any of the support curves shown, which
+is why the arbitrary constant $\log C$ may be added to the support
+function.

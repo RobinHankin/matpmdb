@@ -1,0 +1,76 @@
+# Fisher's exact test {#fisher}
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Fisher%27s_exact_test>
+```
+
+
+
+Suppose I am interested in the prevalence of left handedness and wish
+to determine whether there is a difference between boys and girls.  I
+might survey some students and end up with a dataset like the
+following:
+
+
+```{r}
+a <- matrix(c(5,2,6,14),2,2,byrow=TRUE)
+dimnames(a) <- list(gender=c("M","F"),lefthanded=c(T,F))
+a
+```
+
+Such a dataset is known as a contingency table and is surprisingly
+common in statistics.  I would say that over half of the statistical
+analyses I perform for clients is on contingency tables like the one
+above.
+
+Is there any evidence that handedness differs by gender?  Just looking
+at the table, we can see that the majority of males are left handed
+and the majority of females are right handed.  We need to provide
+statistical analysis of this question which means providing a p-value.
+
+The starting point would be to provide a null hypothesis, which is
+that handedness is independent of gender.  We would thus have
+$H_0\colon\prob{L|M}=\prob{L}$.  This is mathematically identical to
+the assertion that $\prob{L|M}=\prob{L|F}$.  It certainly looks as
+though there is a difference, but to quantify this we need a more
+careful analysis.
+
+## The hypergeometric distribution
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Hypergeometric_distribution>
+```
+
+Suppose we have a bag with $m$ white and $n$ black balls, and we draw
+out $k$ balls and write down their colour.  Note carefully that we are
+drawing *without replacement*: we draw a ball from the bag and then do
+not put it back in the bag (if we were to replace the ball in the bag,
+the number of white balls would be binomial with size $k$ and
+probability $\frac{m}{m+n}$).
+
+What is the distribution of the number of white balls drawn without
+replacement?  Well, it can be shown that
+
+\begin{equation}
+\prob{X=x}=
+\frac{{m\choose x}{n \choose k-x}}{{m+n\choose k}}
+\end{equation}
+
+where $X$ is the random variable corresponding to the number of white
+balls drawn and $x$ is an integer.  We can make the following mapping
+between drawing balls out of a bag and left/right male/female dataset
+as follows:
+
+* white ball $\longrightarrow$ left handed
+* black ball $\longrightarrow$ right handed
+* drawn from bag $\longrightarrow$ male
+* left in bag $\longrightarrow$ female
+
+
+Alternatively we might say 
+
+* white ball $\longrightarrow$ male
+* black ball $\longrightarrow$ female
+* drawn from bag $\longrightarrow$ left handed
+* left in bag $\longrightarrow$ right handed
+

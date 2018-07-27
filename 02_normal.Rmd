@@ -1,0 +1,397 @@
+# The normal distribution {#normal}
+
+
+## Limit of large n
+
+Suppose we consider the binomial distribution but with larger and
+larger values of n.  The following few figures show table plots of
+binomial distributions with p=1/3 and n=10,100,1000,10000:
+
+```{r}
+plot(table(rbinom(1e6,10,1/3)))
+plot(table(rbinom(1e6,100,1/3)))
+plot(table(rbinom(1e6,1000,1/3)))
+plot(table(rbinom(1e6,10000,1/3)))
+```
+
+Apart from some small-scale irregularities, it is clear that the
+distributions are approaching a bell-shaped distribution.  This is
+known as the *Normal*, or the *Gaussian* distribution.
+
+
+## The Gaussian distribution
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Normal_distribution>
+```
+
+The Gaussian distribution is the most commonly encountered
+distribution in the whole of statistics, and has a characteristic
+shape which we can plot using the ```dnorm()``` function.
+
+```{r}
+x <- seq(from= -3,to=3,len=100)
+plot(x,dnorm(x),type='l')
+```
+
+(the ```seq()``` function gives a sequence; see ```?seq``` for
+details).  
+
+The probability density function for the Gaussian is:
+
+  \begin{equation}
+\frac{1}{\sqrt{2\pi}}\exp\left(\frac{-x^2}{2}\right)
+\end{equation}
+
+But R provides a builtin function, ```dnorm()```, which is easier to
+use, faster, and more accurate.  Remember you can type "```?dnorm```"
+at the R prompt to get more help.  
+
+The Gaussian distribution has two adjustable parameters, the *mean*
+(written "$\mu$" in mathematics) and the *standard deviation* (written
+"$\sigma$").  These govern the position and width of the distribution.
+We can change the mean and standard deviation by supplying the
+appropriate arguments to ```dnorm()```:
+
+
+```{r}
+x <- seq(from= -3,to=3,len=100)
+  plot(x,dnorm(x,mean=0,sd=1  ),type="l",lwd=3,col="black")
+points(x,dnorm(x,mean=1,sd=1  ),type="l",lwd=3,col="red")
+points(x,dnorm(x,mean=0,sd=2  ),type="l",lwd=3,col="blue")
+points(x,dnorm(x,mean=1,sd=0.5),type="l",lwd=3,col="green")
+legend("topleft",
+	legend=c("mean=0,sd=1",
+                 "mean=1,sd=1",
+                 "mean=0,sd=2",
+                 "mean=1,sd=0.5"),
+lwd=3,col=c("black","red","blue","green"))
+```
+
+From the R help page ```?dnorm``` we can see that the mean and
+standard deviation have default values of 0 and 1 respectively, which
+is what was plotted in black above.  This is known as the *standard
+Normal distribution* and is denoted $N(0,1)$.
+
+In the above figure, see how the different mean and sd arguments are
+passed to ```dnorm()```.  The green curve is higher than the others
+and is truncated at the top, but all the curves have the same area.
+
+If we want the probability that a Gaussian random variable is less
+than a particular value we can use the ```pnorm()``` function.
+
+Suppose we have X drawn from a Gaussian distribution with a mean of
+1.3 and a standard deviation of 2.2.  What is the probability that
+$X\leq 3.1$?
+
+```{r}
+pnorm(3.1, mean=1.3, sd=2.2)
+```
+
+that is, a probability of about 79\%.  We can get two different
+pictorial versions of this as follows:
+
+```{r}
+x <- seq(from=-5,to=7,len=100)
+plot(x,dnorm(x,1.3,2.2),type="l")
+x1 <- seq(from=-5,to=3.1,len=100)
+polygon(c(x1,rev(x1)),c(x1*0,rev(dnorm(x1,1.3,2.2))),col='gray')
+```
+
+(see how we pass the mean and standard deviation directly to
+```dnorm()```).  The 79\% figure is the grey area in the above figure.
+
+## Cumulative distribution function
+
+The other way to do this would be to plot the *cumulative*
+distribution function ```pnorm()``` which gives the probability that
+$X$ is *less than or equal to* a particular value.  Thus:
+
+
+```{r}
+x <- seq(from=-5,to=7,len=100)
+plot(x,pnorm(x,1.3,2.2),type="l")
+abline(v=3.1)
+```
+
+If we want to find the probability that $X$ lies between two values
+$a$ and $b$, then this would be represented as the compound statement
+$(X>a)\quad\&\quad(X<b)$ as there are two conditions present^[for
+simplicity I am ignoring the difference between "$<$" and "$\leq$"].
+This is more usually written $a<X<b$.  We can visualise this easily.
+Suppose we have a standard Gaussian $N(0,1)$ and want the probability
+that $-0.4<X<1.1$:
+
+
+```{r}
+x <- seq(from=-4,to=4,len=100)
+plot(x,dnorm(x),type="l")
+x1 <- seq(from=-0.4,to=1.1,len=100)
+polygon(c(x1,rev(x1)),c(x1*0,rev(dnorm(x1))),col='gray')
+```
+
+The R idiom to calculate the area is
+
+```{r}
+pnorm(1.1) - pnorm(-0.4)
+```
+
+### Quantile function
+
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Quantile_function>
+```
+
+The remaining R function for the Gaussian distribution is the quantile
+function ```qnorm()```.  In R, ```qnorm(p)``` gives the value of x for
+which
+
+\begin{equation}
+Prob(X\leq x) = p
+\end{equation}
+
+For example, suppose we have $X\sim N(0,1)$ and want to find the value
+of X that is exceeded with a probability of 0.05, or 5\%.  This means
+that $Prob(X\leq x)$ is 0.95 so the R idiom would be:
+
+
+```{r}
+qnorm(0.95)
+```
+
+## Numerical verification
+
+All of the above results using ```pnorm()``` etc should be verified by
+numerical sampling.  We can use the function ```rnorm()``` to generate
+random numbers from the Gaussian.  
+
+```{r}
+rnorm(10)
+```
+
+(in the above, the argument 10 specifies the number of observations to
+sample).  Function ```rnorm()``` takes arguments to specify the mean
+and standard deviation if necessary:
+
+```{r}
+rnorm(10,mean=100)
+rnorm(10,mean=100,sd=0.01)
+```
+
+We can use R to "ask a question" with the "<" and ">" symbols.  If we
+sample from a standard Gaussian and are interested in whether the
+observation is greater than, say, 1.3, then the idiom would be:
+
+```{r}
+rnorm(10) > 1.3
+```
+
+and if we wanted to, we could use the ```table()``` function to summarize:
+
+```{r}
+table(rnorm(1e6) > 1.3)
+```
+
+In the above, we had ```1e6``` (that is, $10^6$ or one million)
+samples, of which 96312 were over 1.3.  This corresponds to a
+probability of 96312/1000000, or a little over 0.096
+
+
+We can make a different visualization of the same situation as follows:
+
+
+```{r}
+plot(rnorm(1000))
+abline(h=1.3)
+```
+
+and in the above plot we can see that about 10\% of the points are
+above the line as we would expect.
+
+
+### Example 1
+
+"If $X$ is drawn from a standard Gaussian, find the probability that
+$X<1.1$"
+
+*Theoretical answer* 
+
+```{r}
+pnorm(1.1)
+```
+
+*Numerical verification*
+
+```{r}
+table(rnorm(1e6) < 1.1)/1e6
+```
+
+In the above I have divided the table results by the number of obsevations so the numbers represent probabilities.
+
+### Example 2
+
+"If $X$ is drawn from a Gaussian distribution with mean 5 and standard
+deviation 1.4, find the probability that: (i), $X<6; (ii) $X>7$.
+Verify your findings numerically."
+
+
+#### part (i)
+
+```{r}
+pnorm(6, mean=5, sd=1.4)
+table(rnorm(1e6,5,1.4) < 6)/1e6
+```
+
+
+#### part (ii)
+
+To get the probability that X is *greater than* 7, we need one minus the probability that X is *less than* 7:
+
+```{r}
+1-pnorm(7, mean=5, sd=1.4)
+table(rnorm(1e6,5,1.4)  > 7)/1e6
+```
+
+Another way to do this is to use the following construction:
+
+```{r}
+pnorm(7, mean=5, sd=1.4, lower.tail=FALSE)
+```
+
+
+### Example 3
+
+"If $X$ is drawn from a Gaussian distribution with mean 10 and
+standard deviation 0.4, find the probability that $X$ lies in the
+range 10.1-10.3" and verify your findings numerically."
+
+
+*Theoretical answer* 
+
+```{r}
+pnorm(10.3,10,0.4)-pnorm(10.1,10,0.4)
+```
+
+*Numerical verification*
+
+```{r}
+x <- rnorm(1e6,10,0.4)
+table((x>10.1) & ( x<10.4))/1e6
+```
+
+
+## Meaning of population mean and standard deviation
+
+I have been using the terms mean and standard deviation rather
+loosely.  Here I will give a more precise definition of them.
+
+### Mean of a distribution
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Mean#Mean_of_a_probability_distribution>
+<https://en.wikipedia.org/wiki/Expected_value>
+```
+
+The mean of a distribution [sometimes "population mean"] has a
+technical meaning but here we can say that it is defined as the
+long-run average of observations drawn from that distribution.  The
+mean of the Gaussian distribution is~$\mu$, and this is easy to
+demonstrate in R:
+
+
+```{r}
+mean(rnorm(100,10,2))
+mean(rnorm(100,10,2))
+mean(rnorm(100,10,2))
+```
+
+In the above, we have one hundred samples from a $N(10,2)$
+distribution, and the average of these is roughly 10 (but not exactly,
+due to the finite sample size).  Observe carefully that we cannot tell
+from a sample what the population mean is.
+
+If we wanted a more precise verification, we would have to use a
+larger sample size:
+
+```{r}
+mean(rnorm(1e6,10,2))
+mean(rnorm(1e6,10,2))
+mean(rnorm(1e6,10,2))
+```
+
+The mean of the Gaussian distribution is identical to its mode and
+median, as it is symmetric and unimodal.
+
+Note that some distributions do not have a mean (for example, the
+Cauchy distribution).
+
+### Variance and standard deviation of a distribution
+
+The standard deviation measures the "width" of a distribution, again
+with a specific technical meaning.  In R, we can estimate the standard
+deviation of a sample using the ```sd()``` command:
+
+```{r}
+sd(rnorm(100,10,2))
+sd(rnorm(100,10,2))
+sd(rnorm(100,10,2))
+```
+
+See the higher variability than the mean.  We can again use a larger
+sample size:
+
+
+```{r}
+sd(rnorm(1e6,10,2))
+sd(rnorm(1e6,10,2))
+sd(rnorm(1e6,10,2))
+```
+
+and we see that the estimated standard deviation is approximately the
+true value of 2.
+
+The *variance* is just the square of the standard deviation
+(alternatively, the standard deviation is the square root of the
+variance).
+
+
+The mathematical notation for mean and standard deviation of a random
+variable $S$ is $\mathbb{E}(X)$ and $\mathbb{V}(X)$ respectively.  The
+mean is usually denoted with Greek letter $\mu$ and standard deviation
+is Greek sigma, $\sigma$.  Variance is usually $\sigma^2$.
+
+## Binomial distribution: mean and standard deviation
+
+As we saw at the beginning of this chapter, if we consider a binomial
+distribution with fixed $p$ but allow $n$ to grow very large, we have
+approximately a normal distribution.
+
+Even if $n$ is small, the binomial distribution $B(n,p)$ has a
+well-defined mean $\mu$ and variance $\sigma^2$ given by
+
+\begin{equation}
+\mu=np\qquad\sigma^2=np(1-p)
+\end{equation}
+
+Thus, for example, if $n=6$ and $p=\frac{1}{3}$ we would have a mean
+of $np=6\times\frac{1}{3}=2$ and a variance of
+$np(1-p)=6\times\frac{1}{3}\times\frac{2}{3}=\frac{4}{3}$.  Verifying
+this numerically is straightforward:
+
+```{r}
+mean(rbinom(1e6,6,1/3))
+mean(rbinom(1e6,6,1/3))
+mean(rbinom(1e6,6,1/3))
+```
+
+and 
+
+```{r}
+sd(rbinom(1e6,6,1/3))
+sd(rbinom(1e6,6,1/3))
+sd(rbinom(1e6,6,1/3))
+```
+
+We will see the same technique used for other distributions later in
+the course.

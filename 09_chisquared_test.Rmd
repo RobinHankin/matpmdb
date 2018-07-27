@@ -1,0 +1,6 @@
+# Pearson's chi-square test {#chisquare}
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Chi-squared_test>
+```
+
