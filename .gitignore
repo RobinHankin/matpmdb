@@ -3,6 +3,8 @@
 .RData
 .Ruserdata
 _book/*
+_book/libs/*
+_book/stat601_manual_files/*
 _bookdown_files/*
 _main.Rmd
 packages.bib
