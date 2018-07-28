@@ -76,3 +76,96 @@ mathematical form, called the *chi-squared distribution*.
 The chi squared distribution, sometimes denoted $\chi^2$, is useful
 for many reasons but here we need it because it tells us about the
 distribution of $B$ if the null is true.
+
+The $\chi^2$ distribution does not have parameters in the same way
+that the Gaussian distribution has $\mu$ and $\sigma$.  But it does
+have "degrees of freedom" which is an nonnegative integer usually
+written as a subscript: $\chi^2_n$.  The degrees of freedom varies
+from problem to problem but is easy to calculate.  The R idiom below
+shows some chi-square distributions.
+
+```{r}
+x <- seq(from=0,to=20,len=1000)
+plot(1:10,1:10,type='n',xlim=c(0,10),ylim=c(0,0.5),xlab='x',ylab='PDF',main='chi-squared distribution')
+for(i in 1:10){
+    points(x,dchisq(x,df=i),type='l',lwd=2,col=rainbow(10)[i])
+}
+legend("topright",lwd=2,col=rainbow(10),legend=paste("df= " ,1:10,sep=""))
+```
+
+Study the above R idiom carefully, and note how the distributions move
+to the right with increasing degrees of freedom.
+
+## The chi squared distribution and Pearson's chi-squared test
+
+It turns out that if the null is true then $B$, the badness of fit
+measure defined above, follows a chi-squared distribution.  The number
+of degrees of freedom is given by the number of cells (in the students
+choosing colours example above, this would be 4) minus one, which
+would be $4-1=3$ degrees of freedom.  The reason you subtract one from
+the number of cells is that knowing three cells is enough to calculate
+the fourth, because we know how many students are in the class.
+
+
+```{r}
+x <- seq(from=0,to=12,len=1000)  # set up x-axis
+plot(x,dchisq(x,df=3),type='l',lwd=2,main="Pearson's chi square test")  # setup axes
+B <- 7.8  # value of Badness from above
+abline(v=B) # draw vertical line
+jj <- seq(from=B,to=12,len=100)  # temporary variable
+polygon(c(jj,rev(jj)),c(jj*0,dchisq(rev(jj),df=3)),col='gray',border=NA)  #shade pvalue
+text(7.8,0.1,"observed B",pos=2)  
+```
+
+In the above figure, the p-value is shown in gray: it is the
+probability, if the null is true, of obtaining the observation or an
+observation more extreme.  In this case, the observation is $B=7.8$
+and its null distribution is $\chi^2_3$.  Calculating the pvalue is straightforward:
+
+```{r}
+pchisq(7.8,df=3,lower.tail=FALSE)
+```
+
+just short of the 5\% critical value, so we fail to reject the null.
+
+## Numerical verification
+
+Above, I stated that $B$ has a chi-square distribution with 3 degrees
+of freedom.  Here I demonstrate that this is true.  We can generate
+synthetic observations using the ```sample()``` function:
+
+
+```{r}
+sample(1:4,40,replace=T)  # census of the class
+tabulate(sample(1:4,40,replace=TRUE))  # how many students prefer each colour
+
+```
+
+(we identify red=1, green=2, etc).  We can calculate B for such
+synthetic data:
+
+```{r}
+o <- tabulate(sample(1:4,40,replace=TRUE))  # synthetic obseravations
+e <- 10                                  # expectation under the null
+B <- sum((o-e)^2/e)                      # Badness-of-fit
+B
+```
+
+And I assert that $B$ is drawn from $\chi^2_3$.  This is straightforward to verify in R:
+
+```{r}
+f <- function(...){
+   o <- tabulate(sample(1:4,40,replace=TRUE))  # synthetic obseravations
+   e <- 10
+   return(sum((o-e)^2/e))
+}
+hist(replicate(1000,f()),col='red')
+```
+
+
+## Another example
+
+Here I will give an example along the same lines as above but with a
+different null.  Suppose we give 40 students a coin and tell them to
+toss it 5 times.  We can then ask each student to write down the
+number of heads they get. 
