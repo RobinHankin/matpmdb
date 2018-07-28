@@ -4,3 +4,75 @@
 <https://en.wikipedia.org/wiki/Chi-squared_test>
 ```
 
+Suppose I poll a class of 40 students and ask each one for their
+favourite colour out of red, green, blue, and yellow.  My observations are:
+
+```{r}
+o <- c(red=8, green=10, blue=17, yellow= 5)
+o
+```
+
+("o" for "observation").  Thus 8 students chose red, 10 chose green,
+etc.  Is there any evidence that there is a systematic bias towards
+some colours?  Well, the first step is to formulate a null hypothesis
+$H_0\colon p_\mathrm{red} = p_\mathrm{green} = p_\mathrm{blue} =
+p_\mathrm{yellow}=\frac{1}{4}$, where $p_\mathrm{colour}$ is the
+probability of a student choosing that colour.  If the null is true,
+we would expect to observe 10 students choosing each colour:
+
+```{r}
+e <- c(red=10, green=10, blue=10, yellow= 10)
+e
+```
+
+("e" for "expectation").  We need to quantify the difference between
+observation and expectation^[Remember: the whole of science reduces to
+a comparison between observation and expectation] as a single number.
+What we want is to calculate a number which is *small* if the
+observations are close to expectations, and *large* if the
+observations are far away from expectations.  I usually call this
+number $B$, for "badness of fit".
+
+It turns out that one particular definition of $B$ has nice properties
+that we can work with:
+
+\begin{equation}
+B=\sum_i\frac{\left(e_i-o_i\right)^2}{e_i}
+\end{equation}
+
+where $o_i$ is the $i^\mathrm{th}$ observation and $e_i$ is the
+$i^\mathrm{th}$ expectation.  This is easy to calculate:
+
+```{r}
+(8-10)^2/10 + (10-10)^2/10 + (17-10)^2/10 + (5-10)^2/10
+```
+
+but of course there is an easier way:
+
+```{r}
+B <- sum((o-e)^2/e)
+B
+```
+
+See how the definition of $B$ ensures that if the observations were
+exactly equal to the expectations, $B$ would be zero.  We can also see
+that $B$ cannot be negative (because each term is a squared number
+divided by a positive number), and also that $B$ is large if the
+expectations are very different from the observations.
+
+Recall the definition of p-value: "the probability, if the null is
+true, of obtaining the observation or an observation more extreme".
+Here, our observation is the value of $B=7.8$.  Our job is to figure
+out what the distribution of $B$ is, given that the null is true.  It
+turns out that the null distribution of $B$ has a pleasing
+mathematical form, called the *chi-squared distribution*.
+
+## The chi squared distribution
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Chi-squared_distribution>
+```
+
+The chi squared distribution, sometimes denoted $\chi^2$, is useful
+for many reasons but here we need it because it tells us about the
+distribution of $B$ if the null is true.
