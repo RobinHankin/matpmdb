@@ -1,3 +1,52 @@
 # Linear Regression {#linreg}
 
-words here
+In this chapter we investigate linear dependencies between two
+datasets.  We will consider a second hand cars, with price of a car
+being a function of age.  The dataset is:
+
+```{r}
+carprice <- data.frame(
+   age = c(4.2, 2.1, 4.8, 2.1, 2.9, 4.3, 4.3, 3.3, 3.8, 3.4, 4.2, 3.3, 
+4.1, 2.1, 4.2, 2.9, 2.4, 3.9, 4.9, 3.6, 4.5, 4.6, 2.4, 4.2, 4.3, 
+4.7, 2.4, 4.6, 3.7, 3.8, 3, 2.6, 4.2, 3.4, 3.6, 2.2, 4.6, 2.2, 
+2.9, 3.8),
+  price = c(1897, 2897, 2256, 2780, 2852, 1957, 1985, 2030, 2361, 1909, 
+1962, 2370, 1601, 3647, 2296, 2181, 2300, 2161, 1627, 2470, 2174, 
+2040, 3073, 2300, 2401, 1689, 3297, 1308, 2161, 2892, 2842, 3565, 
+2159, 2889, 1924, 2536, 1665, 1999, 2900, 2679)
+```
+
+THE FIRST AND NON-NEGOTIABLE STEP TO INVESTIGATING DATA OF THIS NATURE
+IS TO DRAW A SCATTERGRAPH.  THE TECHNIQUES PRESENTED HERE ARE TOTALLY
+WORTHLESS IF YOU DO NOT DRAW A SCATTERGRAPH.  IF YOU CONDUCT A LINEAR
+ANALYSIS WITHOUT A SCATTERGRAPH YOU WILL GET ZERO COURSE CREDIT.
+
+
+```{r}
+plot(price~age, data=carprices)
+```
+
+In the above, the "```~```" symbol is read "is a function of".  See
+how the two variables age and pricae appear to be related, with older
+cars having a smaller price.  We will use R to quantify this
+relationship.
+
+First, observe that the vertical axis (price) depends on the
+horizontal axis (age).  Older cars are worth less.  In this example,
+it is obvioious which variable appears as the horizontal and which on
+the vertical axis.  However, sometimes it is less clear.
+
+## Linear regression
+
+In general, we have variables $x_1,x_2,\ldots x_n$ which are drawn on
+the horizontal axis.  These are the *independent* variables: they may
+be specified as we wish.  We also have variables $y_1,y_2,\ldots y_n$
+which are drawn on the vertical axis.  These variables respond in some
+way to x's and we call these the *dependent* variables, because they
+depend on the x's.
+
+The relationship we usually use is as follows:
+
+\[
+y_i=\alpha + \beta x_i + \epsilon_i,\qquad i=1,2,\ldots n
+\]
