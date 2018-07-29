@@ -11,8 +11,8 @@ following:
 
 
 ```{r}
-a <- matrix(c(5,2,6,14),2,2,byrow=TRUE)
-dimnames(a) <- list(gender=c("M","F"),lefthanded=c(T,F))
+a <- matrix(c(5,2,6,14),2,2,byrow=TRUE)   # define matrix 
+dimnames(a) <- list(gender=c("M","F"),lefthanded=c(T,F))  # display only
 a
 ```
 
@@ -114,8 +114,8 @@ professional uses ```phyper(4,7,20,11,lower.tail=FALSE)```).  We can
 get a visual impression easily, using R; study the idiom carefully:
 
 ```{r}
-x <- 0:7
-plot(x,dhyper(x,7,20,11),type='h',lwd=4,col=c(rep("black",5),rep("red",3)))
+x <- 0:7  # define x-axis
+plot(x,dhyper(x,7,20,11),type='h',lwd=4,col=c(rep("black",5),rep("red",3))) 
 legend("topright",lwd=4, col=c("black","red"),legend=c("regular points","more extreme"))
 ```
 
