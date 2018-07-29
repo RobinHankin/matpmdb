@@ -34,13 +34,11 @@ characterised by $p$, the probability of success.
 Given `n` independent Bernoulli trials^[Independence to be defined
 formally later in the course; here we say that the drials do not
 affect one another.] we are interested in the random variable `r`, the
-total number of successes.
-
-We can observe straightaway that $1\leq r\leq n$ as it is impossible
-to have more than $n$ successes, or less than zero.
-
-If the random variable $X$ denotes the number of successes out of $n$
-trials each of probability $p$, it is straightforward to show that
+total number of successes.  We can observe straightaway that $1\leq
+r\leq n$ as it is impossible to have more than $n$ successes, or less
+than zero.  If the random variable $X$ denotes the number of successes
+out of $n$ trials each of probability $p$, it is straightforward to
+show that
 
 \begin{equation}
 P(X=r) = \frac{n!}{r!(n-r)!}p^r(1-p)^{n-r}
