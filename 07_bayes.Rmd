@@ -27,26 +27,23 @@ estimate would be that 30\% of statisticians are Bayesians.
 knitr::include_graphics("intersection_union.pdf")
 ```
 
-In the figure we see four set diagrams. Top left, set union $A\cup B$;
-top right; set intersection $A\cap B$; lower left, the complement of
-$A$, $\overline{A}$, that is, everything not in $A$; lower right,
-symmetric difference $A\triangle B$.  Think of A and B being events
-with specific probabilities, a good example might be A="it is raining"
-and B="Robin cycles to work".  Note that Robin very rarely cycles to
-work if it is raining (he gets the bus instead).  We can define
-probabilities $\prob{A}$ and $\prob{B}$.  We can also define
-$\prob{A|B}$ as the probability of A given B.  This would be the
-probability of it raining, given that Robin cycles to work.  Observe
-that this differs from $\prob{B|A}$, the probability of B given A,
-which would be the probability of cycling to work given that it is
-raining.
+In figure \@ref(fig:venn) we see four set diagrams. Top left, set
+union $A\cup B$; top right; set intersection $A\cap B$; lower left,
+the complement of $A$, $\overline{A}$, that is, everything not in $A$;
+lower right, symmetric difference $A\triangle B$.  Think of A and B
+being events with specific probabilities, a good example might be
+A="it is raining" and B="Robin cycles to work".  Note that Robin very
+rarely cycles to work if it is raining (he gets the bus instead).  We
+can define probabilities $\prob{A}$ and $\prob{B}$.  We can also
+define $\prob{A|B}$ as the probability of A given B.  This would be
+the probability of it raining, given that Robin cycles to work.
+Observe that this differs from $\prob{B|A}$, the probability of B
+given A, which would be the probability of cycling to work given that
+it is raining.
 
 It should be clear that $\prob{A} = \prob{B}\prob{A|B} +
 \prob{\overline{B}}\prob{A|\overline{B}}$, as set $A$ has two
 nonoverlapping components.
-
-
-
 
 We can see that
 $\prob{A|B}=\frac{\prob{A\cap B}}{\prob{B}}$, and also that
@@ -54,7 +51,7 @@ $\prob{B|A}=\frac{\prob{B\cap A}}{\prob{A}}$.  Noting that $A\cap
 B\equiv B\cap A$, and rearranging, we arrive at *Bayes's theorem*:
 
 \begin{equation}
-\frac{\prob{A|B}}{\prob{A}} = 
+\frac{\mbox{$\prob{A|B}$}}{\prob{A}} = 
 \frac{\prob{A|B}}{\prob{B}}
 \end{equation}
 
