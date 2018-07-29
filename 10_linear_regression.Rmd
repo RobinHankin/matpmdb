@@ -5,15 +5,18 @@ datasets.  We will consider a second hand cars, with price of a car
 being a function of age.  The dataset is:
 
 ```{r}
-carprice <- data.frame(
-   age = c(4.2, 2.1, 4.8, 2.1, 2.9, 4.3, 4.3, 3.3, 3.8, 3.4, 4.2, 3.3, 
-4.1, 2.1, 4.2, 2.9, 2.4, 3.9, 4.9, 3.6, 4.5, 4.6, 2.4, 4.2, 4.3, 
-4.7, 2.4, 4.6, 3.7, 3.8, 3, 2.6, 4.2, 3.4, 3.6, 2.2, 4.6, 2.2, 
-2.9, 3.8),
-  price = c(1897, 2897, 2256, 2780, 2852, 1957, 1985, 2030, 2361, 1909, 
-1962, 2370, 1601, 3647, 2296, 2181, 2300, 2161, 1627, 2470, 2174, 
-2040, 3073, 2300, 2401, 1689, 3297, 1308, 2161, 2892, 2842, 3565, 
-2159, 2889, 1924, 2536, 1665, 1999, 2900, 2679)
+carprices <- data.frame(
+   age =
+   c(4.2, 2.1, 4.8, 2.1, 2.9, 4.3, 4.3, 3.3, 3.8, 3.4, 4.2, 3.3, 
+     4.1, 2.1, 4.2, 2.9, 2.4, 3.9, 4.9, 3.6, 4.5, 4.6, 2.4, 4.2,
+     4.3, 4.7, 2.4, 4.6, 3.7, 3.8, 3.0, 2.6, 4.2, 3.4, 3.6, 2.2,
+     4.6, 2.2, 2.9, 3.8),
+  price =
+  c(1897, 2897, 2256, 2780, 2852, 1957, 1985, 2030, 2361, 1909, 
+    1962, 2370, 1601, 3647, 2296, 2181, 2300, 2161, 1627, 2470,
+    2174, 2040, 3073, 2300, 2401, 1689, 3297, 1308, 2161, 2892,
+    2842, 3565, 2159, 2889, 1924, 2536, 1665, 1999, 2900, 2679)
+)
 ```
 
 THE FIRST AND NON-NEGOTIABLE STEP TO INVESTIGATING DATA OF THIS NATURE
@@ -50,3 +53,11 @@ The relationship we usually use is as follows:
 \[
 y_i=\alpha + \beta x_i + \epsilon_i,\qquad i=1,2,\ldots n
 \]
+
+Here,
+
+* $x_i$ are the independent variables
+* $y_i$ are the dependent variables
+* $\alpha,\beta$ are the intercept and slope of the straight line which expresses the relationship  between $x_i$ and $y_i$
+* $\epsilon_i\sim N(0,\lambda^2)$ is an error term.  Observe that the $\epsilon_i$ are independent and identically distributed.
+
