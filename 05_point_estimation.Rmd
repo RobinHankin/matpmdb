@@ -279,9 +279,6 @@ plot(p,p*0,type='n',ylab='support',ylim=c(-70,-55))  # set up axes
 for(i in 1:10){  # loop over i
   points(p,35*log(p)+65*log(1-p)+i,col=rainbow(10)[i],type='l')  # plot curves
 }
-
-
-}
 ```			
 
 Observe how the actual value of the y-axis is immaterial.  One would
