@@ -273,11 +273,14 @@ diagram below shows a number of support curves:
 
 
 ```{r}
-p <- seq(from=0.1,to=0.5,len=100)
-plot(p,35*log(p)+65*log(1-p)+i,col=rainbow(10)[i],type='l',ylab='support')
+p <- seq(from=0.1,to=0.5,len=100)  # set up horizontal axis
+plot(p,p*0,type='n',ylab='support',ylim=c(-70,-55))  # set up axes
 
-for(i in 1:10){
-  points(p,35*log(p)+65*log(1-p)+i,col=rainbow(10)[i],type='l')
+for(i in 1:10){  # loop over i
+  points(p,35*log(p)+65*log(1-p)+i,col=rainbow(10)[i],type='l')  # plot curves
+}
+
+
 }
 ```			
 
