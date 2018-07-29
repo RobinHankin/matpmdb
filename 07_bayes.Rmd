@@ -130,9 +130,6 @@ probabilities of $A$ and $B$ occurring separately.  If this is the
 case, we say that $A$ and $B$ are *independent*.
 
 
-
-
-
 ## Bayes's theorem as a formal mechanism for updating beliefs
 
 Observe the role of *knowledge* in the preceding discussion.  The
@@ -153,7 +150,7 @@ In the cycling example we had two hypotheses but it is straightforward
 to generalize to three.  Suppose we have $H_1$, $H_2$ and $H_3$ being
 three hypotheses one of which is true.  Then
 
-\begin{equation}
+\[
 \prob{H_i|D} = \prob{H}
 \frac{\prob{D|H_i}
 }{
@@ -161,28 +158,28 @@ three hypotheses one of which is true.  Then
 \prob{H_2}\prob{D|H_2} 
 \prob{H_3}\prob{D|H_3}
 }
-\end{equation}
+\]
 
 where $i$ is equal to 1,2 or 3 depending on which of $H_1,H_2, H_3$ we
 are interested in.  This may be extended further.  If we have
 hypotheses $H_1,H_2,\ldots H_n$ we would have
 
-\begin{equation}
+\[
 \prob{H_i|D} = \prob{H}
 \frac{\prob{D|H_i}
 }{
 \sum_{i=1}^n
 \prob{H_i}\prob{D|H_i} 
 }
-\end{equation}
+\]
 
 and (although the formal mathematics gets a little gnarly) we can have
 an infinite number of hypotheses indexed by a parameter $x\in X$:
 
-\begin{equation}
+\[
 \prob{H_y|D} = \prob{H}
 \frac{\prob{D|H_y}}{\int_{x\in X} P(x)\prob{D|H_x} dx}
-\end{equation}
+\]
 
 where $H_y$ is some particular hypothesis we are interested in, and
 $P(x)$ is the prior probability density function of $H_x$.  We will
@@ -247,12 +244,11 @@ but are otherwise arbitrary.  The figure below shows a variety of beta
 distributions; study the R idiom carefully.
 
 ```{r}
-M <- matrix(c(0.5,0.5, 1,1, 1,3, 4,1, 3,3),ncol=2,byrow=TRUE)
-
-p <- seq(from=0,to=1,len=100)
-plot(p,p*5,type='n',ylab='PDF',main='the beta distribution')
-for(i in seq_len(nrow(M))){
-points(p,dbeta(p, M[i,1], M[i,2]),type='l',lwd=3,col=rainbow(nrow(M))[i])
+M <- matrix(c(0.5,0.5, 1,1, 1,3, 4,1, 3,3),ncol=2,byrow=TRUE) #each row=params
+p <- seq(from=0,to=1,len=100)  # probability for x-axis
+plot(p,p*5,type='n',ylab='PDF',main='the beta distribution')  # setup plot
+for(i in seq_len(nrow(M))){  # iterate through rows of M
+points(p,dbeta(p, M[i,1], M[i,2]),type='l',lwd=3,col=rainbow(nrow(M))[i]) #draw
 }
 legend(
 "topleft",
