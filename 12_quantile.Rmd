@@ -1,0 +1,17 @@
+# Quantile methods {#quantile}
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Quantile_function>
+```
+
+You will recall the deficiencies of the histogram.  Consider, for
+example, the following diagram:
+
+
+```{r}
+set.seed(0)
+d <- rnorm(30)
+hist(d)
+```
+
+In the above, we see 
