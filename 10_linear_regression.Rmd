@@ -1,22 +1,24 @@
 # Linear Regression {#linreg}
 
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Linear_regression>
+```
+
 In this chapter we investigate linear dependencies between two
 datasets.  We will consider a second hand cars, with price of a car
 being a function of age.  The dataset is:
 
 ```{r}
 carprices <- data.frame(
-   age =
-   c(4.2, 2.1, 4.8, 2.1, 2.9, 4.3, 4.3, 3.3, 3.8, 3.4, 4.2, 3.3, 
-     4.1, 2.1, 4.2, 2.9, 2.4, 3.9, 4.9, 3.6, 4.5, 4.6, 2.4, 4.2,
-     4.3, 4.7, 2.4, 4.6, 3.7, 3.8, 3.0, 2.6, 4.2, 3.4, 3.6, 2.2,
-     4.6, 2.2, 2.9, 3.8),
-  price =
-  c(1897, 2897, 2256, 2780, 2852, 1957, 1985, 2030, 2361, 1909, 
-    1962, 2370, 1601, 3647, 2296, 2181, 2300, 2161, 1627, 2470,
-    2174, 2040, 3073, 2300, 2401, 1689, 3297, 1308, 2161, 2892,
-    2842, 3565, 2159, 2889, 1924, 2536, 1665, 1999, 2900, 2679)
-)
+age =
+      c(4.2, 2.1, 4.8, 2.1, 2.9, 4.3, 4.3, 3.3, 3.8, 3.4, 4.2,
+        3.3, 4.1, 2.1, 4.2, 2.9, 2.4, 3.9, 4.9, 3.6, 4.5, 4.6,
+	2.4, 4.2, 4.3, 4.7, 2.4, 4.6, 3.7, 3.8, 3.0, 2.6, 4.2,
+	3.4, 3.6, 2.2, 4.6, 2.2, 2.9, 3.8),
+price =
+  c(686, 886, 526, 1971, 860, 161, 218, 494, 445, 1812, 535, 384, 216, 903, 314, 569, 
+1019, 272, 320, 265, 281, 361, 960, 546, 337, 366, 1545, 212, 
+247, 456, 591, 619, 294, 394, 709, 1765, 491, 801, 1299, 388))
 ```
 
 THE FIRST AND NON-NEGOTIABLE STEP TO INVESTIGATING DATA OF THIS NATURE
@@ -31,15 +33,19 @@ plot(price~age, data=carprices)
 
 In the above, the "```~```" symbol is read "is a function of".  See
 how the two variables age and pricae appear to be related, with older
-cars having a smaller price.  We will use R to quantify this
-relationship.
+cars having a smaller price.  The scattergraph shows directly that a
+linear fit might be a good idea: the relationship is linear, there are
+no serious outliers, and the variability is roughly constant along the
+x-axis.  Having established that a linear model is a good starting
+point, we will use R to quantify the relationship between the two
+variables.
 
-First, observe that the vertical axis (price) depends on the
-horizontal axis (age).  Older cars are worth less.  In this example,
-it is obvioious which variable appears as the horizontal and which on
-the vertical axis.  However, sometimes it is less clear.
+Observe that the vertical axis (price) depends on the horizontal axis
+(age).  Older cars are worth less.  In this example, it is obvioious
+which variable appears as the horizontal and which on the vertical
+axis.  However, sometimes it is less clear.
 
-## Linear regression
+## Linear regression in R
 
 In general, we have variables $x_1,x_2,\ldots x_n$ which are drawn on
 the horizontal axis.  These are the *independent* variables: they may
@@ -61,3 +67,66 @@ Here,
 * $\alpha,\beta$ are the intercept and slope of the straight line which expresses the relationship  between $x_i$ and $y_i$
 * $\epsilon_i\sim N(0,\lambda^2)$ is an error term.  Observe that the $\epsilon_i$ are independent and identically distributed.
 
+Observe that we cannot observe $\alpha,\beta$ directly so have to
+estimate them.  The standard approach is to find the maximum
+likelihood estimate for $\hat{\alpha},\hat{\beta}$ and the R idiom to
+do so to use the ```lm()``` function:
+
+```{r}
+lm(price~age,data=carprices)
+```
+
+This shows that the line of best fit is $y=3852-421*x$.  It is
+straightforward to plot this on the graph:
+
+```{r}
+plot(price~age,data=carprices)
+abline(lm(price~age,data=carprices))
+```
+
+However, at this point we are not sure how accurately the fit
+parameters are known, or in particular whether the slope is
+statistically significant.  To answer such questions we specify
+$H_0\colon\beta=0$ and seek a p-value.  R provides functionality to do
+this:
+
+```{r}
+summary(lm(price~age,data=carprices))
+```
+
+The p-value reported is two-sided; to get the one-sided equivalent,
+simply divide by 2.
+
+
+### Critical evaluation and logarithmic transform
+
+The above analysis is not perfect.  For example, the structure of the
+model has two defects: firstly, the price of the car becomes negative
+after a certain amount of time, which is unrealistic.
+
+We can mitigate this by considering a logarithmic transform:
+
+```{r}
+plot(log10(price)~age,data=carprices)
+```
+
+Here we use logs to the base 10.  This looks suitable for linear regression:
+
+```{r}
+summary(lm(log10(price)~age,data=carprices))
+```
+
+See how the p-value is about the same in this case.  One way to
+objectively compare the two approaches is to look at the correlation
+coefficient, often called $R^2$.  According to the linear model above,
+these two models are about the same.
+
+The transformed model would be
+
+\[
+\log(\mathrm{price}) = 3.54 - 0.233*\mathrm{age}
+\]
+
+which would translate to about $3500\times 1.71^mathrm{age}$.  Note
+that this model cannot predict negative prices as exponenentials are
+always strictly positive.
