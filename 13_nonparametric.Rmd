@@ -14,7 +14,7 @@ assumptions and operate correctly independently of the underlying
 distributions.  The general word for such techniques is
 *nonparametric* methods.
 
-# Kolmogorov Smirnov test
+## Kolmogorov Smirnov test
 
 
 ```{block2, type='wikipedia'}
@@ -22,4 +22,110 @@ distributions.  The general word for such techniques is
 ```
 
 
+Consider the example in the previous chapter, with the two fish
+populations, reproduced here for convenience:
 
+```{r}
+fish_a <-
+c(31.2, 26.3, 24.5, 25.9, 29.5, 29.1, 36.7, 28.3, 32.2, 29.0, 25.4, 
+  25.2, 37.9, 35.1, 24.7, 34.9, 29.6, 31.8, 26.0, 25.9, 25.5, 35.3, 
+  25.7, 28.3, 32.4, 39.2, 33.5, 26.4, 41.3, 37.1, 44.2, 49.0, 46.2, 
+  41.1, 55.3, 47.6, 44.7, 45.5, 45.4, 46.7, 47.0, 46.7, 46.4, 43.6, 
+  43.0, 47.9, 45.5, 46.0, 42.9, 43.4, 48.1, 38.5, 46.5, 45.4, 46.8, 
+  46.8, 50.6, 43.2, 42.9, 45.5, 49.1, 47.7, 49, 46.7, 47.2)
+fish_b <-
+c(44.7, 42.5, 38.9, 38.9, 28.8, 27.6, 44.8, 56.6, 51.3, 40.2, 35.4,
+  39.7, 47.2, 40.1, 36.6, 37.2, 33.5, 42.8, 42.3, 26.5, 37.7, 28.3,
+  47.2, 37.2, 41.3, 29.2, 32.4, 28.6, 30.0, 38.1, 41.4, 36.6, 27.0,
+  41.1, 50.8, 36.3, 47.5, 47.4, 32.6, 41.9, 32.5, 32.5, 48.3, 37.9,
+  47.4, 23.4, 30.6, 23.8, 46.1, 29.9)
+```
+
+We observed that the ```qqplot()``` technique suggested a difference.
+One way to refine this is to plot their empirical cumulative
+distribution functions on the same axes:
+
+```{r}
+plot(ecdf(fish_a))
+plot(ecdf(fish_b),add=TRUE,col='red')
+legend("topleft",col=c("black","red"),legend=c("fish A", "fish B"),lty=1)
+```
+
+The two ECDFs show a difference, but is it significant?  To answer
+this, we need to quantify the differnce between the two curves.  One
+way to do this is to find the maximum (vertical) distance between the
+curves.  Frmol the graph, it klooks like this is at about $x=42$; at
+this point, the black line is at about 0.49 and the red line is at
+about 0.76, giving a difference $D$ of about $0.76-0.49=0.33$.
+
+It turns out that $D$ has a certain probability distribution---a
+Kolmogorov distribution---if the two datasets are indeed drawn from
+the same distribution.  The details are messy (see the wikipedia page
+for details) but R has a builtin function:
+
+```{r}
+ks.test(fish_a,fish_b)
+```
+
+showing, by virtue of the p-value of 3.5\%, that the difference is
+indeed statistically significant.
+
+Note carefully that the Student t-test does not reveal a difference:
+
+```{r}
+t.test(fish_a,fish_b)
+```
+
+This is because the t-test tests a null of identical means under the
+assumption that the observations are Gaussian, which is not the case
+here.
+
+In general, the KS test is not very powerful when compared with more
+specialist tests (with specific alternatives) such as the Student
+t-test.   But the KS test 
+
+##  Mann-Whitney-Wilcoxon test
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test>
+```
+
+The Mann-Whitney-Wilcoxon test is an even more general test than the
+Kolmogorov test discussed above.  It tests a rather peculiar null that
+is more general than that of the Kolmogorov test, specifically that it
+is equally likely that a randomly selected value from one sample will
+be less than or greater than a randomly selected value from a second
+sample.  The test is often used for races in which the actual times
+are not important, and only the order of finishing matters.
+
+The test statistic is the total, over observations $a$ in dataset A,
+of observations dataset B beaten by $a$.  As an example, suppose we
+have two cycling teams, red and blue.  We stand at the finishing line
+and observe the colour of the cyclists as they cross the line:
+
+```{r}
+Red <- 0
+Blue <- 1
+d <- c(Red, Blue, Blue, Blue, Blue, Blue, Red, Red, Red, Red, Red, Blue)
+```
+
+Thus the first across the line was Red, the second Blue, and so on.
+We take each Red in turn, and count the number of Blues he beats,
+getting 6, 1, 1, 1, 1, 1.  We add these to get $U = 11$
+(alternatively, we could take each Blue in turn, and count the number
+of Red he beats).
+
+If the null is true, then $U$ has approximately a Gaussian
+distribution with mean $n_1n_2/2$ and variance
+$\frac{n_1n_2\left(n_1+n_2+1\right)}{12}$.
+
+All of this is calculated in R using ```wilcoxon.test()```:
+
+
+```{r}
+wilcox.test(which(d==0),which(d==1))
+```
+
+showing no signficant difference.  The Wilcoxon test has many
+variants, documented under ```?wilcox.test```, and the R function has
+many arguments; only the simplest case is presented here.
