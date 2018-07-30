@@ -4,8 +4,8 @@
 <https://en.wikipedia.org/wiki/Quantile_function>
 ```
 
-You will recall the deficiencies of the histogram.  Consider, for
-example, the following diagram:
+You will recall the deficiencies of the histogram for independent
+observations.   Consider, for example, the following diagram:
 
 
 ```{r}
@@ -14,4 +14,127 @@ d <- rnorm(30)
 hist(d)
 ```
 
-In the above, we see 
+In the above, we see that the precise values of the observations are
+hidden by the bins of the histogram.  We can of course plot the entire dataset:
+
+```{r}
+plot(d)
+```
+
+but this introduces a spurious and possibly misleading aspect to the
+plot, namely the order in which the datapoints are plotted.  Because
+the observations are independent, the order in which they appear can
+should have no effect on any inferences we make.  We can exploit this
+fact by plotting the *order statistic*, which is the dataset we
+observe but sorted from smallest to largest:
+
+
+```{r}
+plot(sort(d))
+abline(v=15.5)
+```
+
+In the figure above, the median has been shown as a vertical line.
+However, it is more convenient to transpose the axes, and the R idiom
+for this is ```ecdf()``` [the letters stand for empirical cumulative
+distribution function]:
+
+
+```{r}
+plot(ecdf(d))
+```
+
+In the figure above, the vertical axis has been scaled to represent a
+probability rather than a count, and horizontal lines have been added
+for convenience.  The function shown is an empirical [data-driven]
+approximation to the cumulative distribution function,
+$F(x)=\prob{X\leq x}$.  Note that the points appear at the *left* of
+the horizontal lines, showing that the function approximated is
+$\prob{X\leq x}$ and not $\prob{X<x}$.
+
+We can use R to investigate the properties of the empirical cumulative
+distribution function for Gaussian data with a large number of
+observations:
+
+```{r}
+plot(ecdf(rnorm(1000)))
+x <- seq(from=-3,to=3,len=100)
+points(x,pnorm(x),col="red",type="l")
+legend("topleft",col=c("black","red"),legend=c("empirical","theoretical"))
+```
+
+In the figure above, see how the distribution function ```pnorm()```
+of the Gaussian is approximated.  However, the theoretical (red) line
+is not straight, and this makes visual assessment harder.  It would be
+a nice if we could distort the horizontal axis so that the theoretical
+line is straight, and this would make visual comparison easier.  The
+appropriate way to do this is to transform the horizontal axis with
+the ```pnorm()``` function.  The technique works nicely even if the
+mean and standard deviation are modified; the appropriate R idiom for
+this is ```qqnorm()```:
+
+```{r}
+qqnorm(rnorm(40,mean=4,sd=2))
+abline(4,2)
+```
+
+In the figure above, see how the data fall approximately on a straight
+line; it turns out that the mean is approximated by the intercept and
+the standard deviation by the slope, which are drawn on the diagram
+
+The ```qqnorm()``` function may be used to detect non-normality.
+Suppose we sample from a chi-squared distribution:
+
+```{r}
+qqnorm(rchisq(100,df=4))
+```
+
+In the figure above, we see a marked curve on the line indicating that
+the distribution is not Gaussian.
+
+
+## Quantile-quantile plots
+
+We may apply similar techniques to compare two datasets.  Simply by
+plotting the two datasets' order statistics against each other, we
+have a powerful visual tool to compare two datasets:
+
+```{r}
+plot(sort(rnorm(50)),sort(rnorm(50)))
+abline(0,1)
+```
+
+In the above, we are plotting the smallest observation against the
+smallest, the second smallest against the second smallest, and so on,
+up to the largest observation.  If the two datasets are drawn from the
+same distribution then the points will be close to the $45^\circ$
+line, as they are in this case.
+
+If we have different numbers of observations then the R idiom gets trickier and we can use the builtin function ```qqplot()```:
+
+```{r}
+qqplot(rnorm(20),rnorm(40,mean=1,sd=2))
+abline(0,1)
+```
+
+In the above figure, the points are not close to the $45^\circ$ line
+showing that the two distributions are different (note that the
+function deals with different sample sizes: 20 and 40).  However, the
+points do fall on a *straight* line which shows that the two
+distributions are related by a linear transform, in this case we can
+see that the means and standard deviations differ.  If the
+distributions are of different shapes, then this shows up as a curved
+line:
+
+
+```{r}
+qqplot(rnorm(20),rchisq(40,df=3))
+```
+
+
+We can use these techniques in a more practical setting.  Suppose we
+have two lakes and we sample fish in the lakes, measuring their lengths:
+
+```{r}
+fish_a <-  c(
+fish_b <- 
