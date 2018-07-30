@@ -127,6 +127,6 @@ The transformed model would be
 \log(\mathrm{price}) = 3.54 - 0.233*\mathrm{age}
 \]
 
-which would translate to about $3500\times 1.71^mathrm{age}$.  Note
-that this model cannot predict negative prices as exponenentials are
-always strictly positive.
+which would translate to about $3500*1.71^{-\mathrm{age}}$.  Note that
+this model cannot predict negative prices as exponenentials are always
+strictly positive.
