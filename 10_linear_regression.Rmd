@@ -130,3 +130,4 @@ The transformed model would be
 which would translate to about $3500*1.71^{-\mathrm{age}}$.  Note that
 this model cannot predict negative prices as exponenentials are always
 strictly positive.
+
