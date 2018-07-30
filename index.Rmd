@@ -1,5 +1,5 @@
 --- 
-#title: "Course outline: STAT61"
+#title: "Course outline: STAT601"
 author: "Robin Hankin"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
@@ -19,11 +19,9 @@ description: "This is the course manual for STAT61 (statistical methods)"
 # Overview {-}
 
 This is the handbook for STAT601.  Details of the course structure,
-including assessment and timetables, may be found on AUTonline.
-
-```robin.hankin@aut.ac.nz``` 
-
-The whole course is based around R and RStudio which may be downloaded from 
+including assessment and timetables, may be found on AUTonline.  The
+whole course is based around R and RStudio which may be downloaded
+from
 
 ```https://cran.r-project.org/```
 
@@ -54,9 +52,8 @@ This manual is distributed under the GNU GPL and is available at
 
 ```https://github.com/RobinHankin/stat601```
 
-Please feel free to send corrections, bug reports, fanmail, etc to the issues page
+Please feel free to send corrections, bug reports, fanmail, etc to the
+issues page
 
 ```https://github.com/RobinHankin/stat601/issues```
-
-
 
