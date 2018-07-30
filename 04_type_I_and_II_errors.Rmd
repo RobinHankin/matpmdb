@@ -262,9 +262,9 @@ the null and alternative hypothesis.
 
 ```{r}
 f <- function(n,mean=0){ t.test(rnorm(n,mean=mean),alternative="greater")$p.value}
-par(mfrow=c(2,1))
-hist(replicate(1000,f(n=10,mean=0)),col='pink')
-hist(replicate(1000,f(n=10,mean=0.5)),col='pink')
+par(mfrow=c(2,1))    # makes R plot two histograms in the same figure
+hist(replicate(1000,f(n=10,mean=0)),col='pink')   # null is true
+hist(replicate(1000,f(n=10,mean=0.5)),col='pink') # null is false
 ```
 
 In the above diagram, the top histogram shows the distribution of
