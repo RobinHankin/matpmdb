@@ -1,3 +1,117 @@
 # Logistic regression {#logistic}
 
-sdasddsdfs
+Here we continue to use the formula structure of R to deal with
+Bernoulli response variables.
+
+Suppose we are studying how performance improves with practice.  We
+ask a subject to perform a task repeatedly.  We expect the person to
+become more adept with practice, and we seek to estimate the
+probability of success as a function of the number of attempts.
+Consider the following dataset:
+
+```{r}
+y <- 
+c(0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 
+0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 
+0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 1, 1, 1, 0, 
+1, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 
+0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 0, 1, 1, 0, 1, 
+1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 
+0, 1, 1, 1, 1)
+```
+
+Here, "0" represents failure and "1" success. Thus the first trial was
+a fail, the second a success, and so on.  Bernoulli responses such as
+this cannot be handled with conventional regression techniques because
+any straight line will either be constant, or extend beyond the
+$(0,1)$ allowable range for a probability.
+
+The first step is, as with any regression, to PLOT the data:
+
+```{r}
+x <- 1:100
+plot(y~x)
+```
+
+It is a little difficult to see, but we can perhaps detect a slight
+improvement in performance from left to right; the success points are
+a little thicker at the right of the graph compared with the left.
+
+In order to make sense of this dataset, we do not try and predict the
+probability on the vertical axis; we consider instead the *odds*.
+Odds are defined as the probability of success divided by the
+probability of failure.  Thus an event which has probability $p$ has
+odds $\frac{p}{1-p}$.
+
+Regression then operates on the *log odds*,
+$LO=\log\left(\frac{p}{1-p}\right)$.  This means that
+$p=\frac{e^{LO}}{1+e^{LO}}$; observe that this correctly ensures that
+$p$ is always between 0 and 1, while log-odds can be any real value,
+positive or negative.  The regression is then
+
+\[
+LO=\alpha + \beta x
+\]
+
+where $\alpha$ and $\beta$ have the same meanings (intercept and
+slope) as they do in conventional regression.  Inverting this formula
+gives
+
+\[
+p = \frac{e^{\alpha + \beta x}}{1+e^{\alpha + \beta x}}
+\]
+
+These functions are easy to translate into R idiom:
+
+```{r}
+LO <- function(p){log(p/(1-p))}  # log odds
+pr <- function(LO){exp(LO)/(1+exp(LO))}
+```
+
+It is relatively straightforward to calculate a support function
+for $\alpha,\beta$:
+
+```{r}
+f <- function(params){
+    alpha <- params[1]
+    beta  <- params[2]
+    success <- x[which(y==1)]
+    failure <- x[which(y==0)]
+    return(
+     sum(log(  pr(alpha + beta * success))) +   
+     sum(log(1-pr(alpha + beta * failure)))
+    )
+}
+```
+
+Thus ```f(alpha,beta)``` takes a sum of log-probabilities for the
+successes and a sum of logs of probabilities of failures.  See how the
+data remains fixed while alpha and beta change.  We can maximize the
+support numerically, using ```optim()```:
+
+This is easy to optimize in R:
+
+```{r}
+optim(c(-0.5, 0.01),f,control=list(fnscale= -1))  # fnscale<0 means maximize
+```
+
+In the above, the ```$par``` line gives the maximized values of
+```alpha, beta``` as about $(-1.65, 0.038)$.  This may be plotted:
+
+```{r}
+plot(y~x)
+points(x,pr(-1.65 + 0.038*x),type="l")
+```
+
+See how the logistic fit takes an "S" shape (the correct term is
+"ogive").  Of course, R can make things easier:
+
+```{r}
+summary(glm(y~x,family="binomial"))
+```
+
+which gives more details.  See how the coefficients in the two methods
+match (which one is more accurate?).  Observe that the given p-value
+is a two sided test.  We might argue that a one-sided test is more
+appropriate (why?) and, if so, we would simply halve it to give a
+one-sided value.
