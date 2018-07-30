@@ -179,9 +179,9 @@ We can plot a likelihood function:
 
 ```{r}
 like <- function(m){prod(dnorm(d,mean=m))}
-m <- seq(from=4,to=8,len=100)
-plot(m,sapply(m,like))
-abline(v=mean(d))
+m <- seq(from=4,to=8,len=100) # range of plausible population means
+plot(m,sapply(m,like))        # see below for why sapply() is used
+abline(v=mean(d))             # sample man is the maximum likelihood estimator
 ```
 
 Study the above carefully: there is a lot going on.  Make sure you
@@ -216,10 +216,10 @@ logs are natural logs).  Using the Gaussian example in the previous
 section we can plot a support function:
 
 ```{r}
-support <- function(m){sum(dnorm(d,mean=m,log=TRUE))}
-m <- seq(from=4,to=8,len=100)
-plot(m,sapply(m,support))
-abline(v=mean(d))
+support <- function(m){sum(dnorm(d,mean=m,log=TRUE))}  # support function
+m <- seq(from=4,to=8,len=100)    # range of plausible population means
+plot(m,sapply(m,support))        # plot the support
+abline(v=mean(d))                # sample mean is the best-supported value
 ```
 
 Remembering that we can add or subtract an arbitrary constant, we may
@@ -227,12 +227,12 @@ as well ensure that our curve has a maximum at zero:
 
 ```{r}
 support <- function(m){sum(dnorm(d,mean=m,log=TRUE))}
-m <- seq(from=4,to=8,len=100)
-s <- sapply(m,support)
-plot(m,s-max(s))
-abline(v=mean(d))
-abline(h=0)
-abline(h=-2)
+m <- seq(from=4,to=8,len=100)  # range of plausible population means
+s <- sapply(m,support)         # calculate support
+plot(m,s-max(s))               # subtract maximum value so support=0 at max
+abline(v=mean(d))              # best-supported value is the sample mean
+abline(h=0)                    # maximum support = 0
+abline(h=-2)                   # two units of support gives credible interval
 ```
 
 

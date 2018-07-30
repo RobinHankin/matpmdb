@@ -6,13 +6,12 @@
 
 We have considered what happens to the binomial distribution in the
 limit of large $n$ and constant $p$: the distribution approaches a
-Gaussian with mean $np$ and variance $np(1-p)$.
-
-In this chapter we will consider a different limiting process, in
-which we allow $n$ to grow very large, but require $p$ to become small
-in such a way as to hold the product $np$ constant.  Consider the
-following table, showing values of $n$ becoming larger and larger, and
-$p$ adjusted so that the product $np$ is always equal to $4$:
+Gaussian with mean $np$ and variance $np(1-p)$.  In this chapter we
+will consider a different limiting process, in which we allow $n$ to
+grow very large, but require $p$ to become small in such a way as to
+hold the product $np$ constant.  Consider the following table, showing
+values of $n$ becoming larger and larger, and $p$ adjusted so that the
+product $np$ is always equal to $4$:
 
 ```
 n        p    np    np(1-p)
