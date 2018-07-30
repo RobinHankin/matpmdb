@@ -95,6 +95,28 @@ mean(rpois(1e6,lambda=4.5))
 mean(rpois(1e6,lambda=4.5))
 ```
 
+## Some examples
+
+Here we plot a couple of histograms of Poisson distributions.
+
+```{r}
+x <- 0:10
+plot(x,dpois(x,3.2),type='h',lwd=2,main='Poisson distribution, lambda=2')
+```
+
+The Poisson distribution has a characteristic shape, slightly left
+skewed.
+
+
+```{r}
+x <- 0:100
+plot(x,dpois(x,50),type='h',lwd=2,main='Poisson distribution, lambda=50')
+```
+
+The Poisson distribution is approximately Gaussian for large values of
+$\lambda$, with $\operatorname{Pois}(\lambda)$ being close to a
+Gaussian with mean $\lambda$ and standard deviation $\sqrt{\lambda}$.
+
 
 ## Estimation of the parameter $\lambda$
 
