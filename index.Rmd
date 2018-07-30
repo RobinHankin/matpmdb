@@ -16,8 +16,10 @@ description: "This is the course manual for STAT61 (statistical methods)"
 
  \newpage
 
+# Overview {-}
 
-This is the handbook for STAT601.  Details of the course structure, including assessment and timetables, may be found on AUTonline.
+This is the handbook for STAT601.  Details of the course structure,
+including assessment and timetables, may be found on AUTonline.
 
 ```robin.hankin@aut.ac.nz``` 
 
@@ -35,20 +37,26 @@ This course lectures have been recorded and are available on YouTube at:
 
 ```https://www.youtube.com/playlist?list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84```
 
-which you may view at your leisure.  Note that the course as delivered will vary slightly from the YouTube videos and in particular the material might be presented in a different order.
+which you may view at your leisure.  Note that the course as delivered
+will vary slightly from the YouTube videos and in particular the
+material might be presented in a different order.
 
-The videos are available in a slightly different format on Mediasite.  To view, log in to AUTonline and  then
+The videos are also available in a slightly different format on
+Mediasite.  To view, log in to AUTonline and then
 
 ```content system -> institution -> learn -> maths```
 
-takes you to a number of mathematical resources, including the videos which are at ```STAT601```.
+takes you to a number of mathematical resources, including the videos
+which are at ```STAT601```.
 
 
-To compile this example to PDF, you need XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <https://yihui.name/tinytex/>.
+This manual is distributed under the GNU GPL and is available at
 
-```{r include=FALSE}
-# automatically create a bib database for R packages
-knitr::write_bib(c(
-  .packages(), 'bookdown', 'knitr', 'rmarkdown'
-), 'packages.bib')
-```
+```https://github.com/RobinHankin/stat601```
+
+Please feel free to send corrections, bug reports, fanmail, etc to the issues page
+
+```https://github.com/RobinHankin/stat601/issues```
+
+
+
