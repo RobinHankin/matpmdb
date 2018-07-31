@@ -139,3 +139,83 @@ which would translate to about $3500*1.71^{-\mathrm{age}}$.  Note that
 this model cannot predict negative prices as exponenentials are always
 strictly positive.
 
+
+## Multiple and restricted regression
+
+The tilde device for formulae (that is, expressions such as
+"```y~x```") is a very powerful and flexible notation.
+
+Consider the ```swiss``` dataset, built in to R.  Type ```?swiss``` at
+the prompt to get more details.  Here, we are interested in infant
+mortality as a function of fertility and prevalence of Catholicism.
+Symbolically we would write
+
+\[
+I_i = \beta_0 + \beta_1 F_i + \beta_2 C_i + \epsilon_i
+\]
+
+where $\beta_0$ is the intercept and $\beta_1,\beta_2$ are slopes.
+The R idiom is:
+
+```{r}
+summary(lm(Infant.Mortality ~ Fertility + Catholic, data=swiss))
+```
+
+In the above, note how the "```+```" symbol is used to regress infant
+mortality against fertility *and* percentage of Catholics.  In this
+case, see that catholicism is not a significant factor as the p-value
+exceeds 5\%.  Note that it is difficult to draw a scattergraph with
+more than one dependent variable (it is possible but difficult with
+two, and pretty much impossible to do with more than two).  However,
+we can plot the *residuals* which are defined as the difference
+between observation and prediction; $\epsilon_i$ the formula above.
+
+```{r}
+swissfit <- lm(Infant.Mortality ~ Fertility + Catholic, data=swiss)
+hist(residuals(swissfit),col='gray')
+```
+
+The above histogram shows that the residuals are roughly Gaussian, in
+line with te assumptions of linear modelling.  Note in passing that
+```fit``` is a perfectly legit R object and we can examine and
+manipulate it easily.  For example:
+
+```{r}
+coefficients(swissfit)
+```
+
+shows the three coefficients in the model fit.
+
+Multiple regression is a difficult and technical branch of statistical
+theory and it can be a difficult and fraught matter to choose the
+appropriate linear model from similar alternatives.
+
+## Categorical regression
+
+Consider the ```InsectSpray``` dataset, in which different pesticides
+were applied to agricultural units and the number of insects counted.
+First step is to make a plot:
+
+```{r}
+boxplot(count~spray,data=InsectSprays)
+```
+
+It certainly looks as though the different sprays have different
+effects.  To quantify this we can use the ```lm()``` idiom:
+
+```{r}
+summary(lm(count~spray,data=InsectSprays))
+```
+
+In the above, we can see the various estimates for the difference
+between spray A and the other sprays (by default, R takes the "base
+case" to be the first label alphabetically).  Note that ```spray``` is
+a *categorical* variable.  The bottom line gives an overall p-value
+for the null that the sprays are identical.
+
+The tilde notation is a powerful tool and we do not have time to go in
+to all its functionality.  For further details, consult the help page
+at ```?formula```.
+
+
+
