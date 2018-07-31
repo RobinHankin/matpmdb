@@ -41,7 +41,12 @@ available on YouTube at:
 which you may view at your leisure.  The URL should be clickable in
 this and similar boxes throughought the manual.  Note that the course
 as delivered will vary slightly from the YouTube videos and in
-particular the material might be presented in a different order.
+particular the material might be presented in a different order.  Some
+of the links take you to a video which starts midway through a
+lecture; if this is a problem, look at the playlist at the link above
+and this will show all lectures in order.  Note, however, that each
+class is a reasonably self-contained unit, split into three or four
+parts.
 
 The videos are also available in a slightly different format on
 Mediasite.  To view, log in to AUTonline and then
