@@ -12,6 +12,23 @@ IMPORTANT:
 
 Do not get this wrong.
 
+
+```{block2, type='wikipedia'}
+<https://www.youtube.com/watch?v=-q6KG_ZurcU&index=8&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
+```{block2, type='wikipedia'}
+<https://www.youtube.com/watch?v=AK3h_4LPl_Q&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84&index=9>
+```
+
+```{block2, type='wikipedia'}
+<https://www.youtube.com/watch?v=ib7juP-ZBNk&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84&index=10>
+```
+
+```{block2, type='wikipedia'}
+<https://www.youtube.com/watch?v=CxORosyXS5A&index=11&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 In this chapter I will discuss a totally different philosophy for
 statistics, called the *Bayesian* approach.  This is very different
 from the hypothesis testing material presented above; it is arguably

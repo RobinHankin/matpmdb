@@ -35,6 +35,10 @@ consistent with our observations.
 
 ## Likelihood ##
 
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=yeduCyob7DY&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84&index=23>
+```
+
 Suppose three people, A, B, and C are discussing the observation of 35
 successes out of 100 trials, and wish to make inferences about $p$,
 the unknown probability of success.  Person A says that $p=0.2$,

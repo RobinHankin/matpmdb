@@ -4,6 +4,14 @@
 <https://en.wikipedia.org/wiki/Poisson_distribution>
 ```
 
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=KeN73vSsbDg&index=12&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=VrEGI6Om3Sg&index=13&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 We have considered what happens to the binomial distribution in the
 limit of large $n$ and constant $p$: the distribution approaches a
 Gaussian with mean $np$ and variance $np(1-p)$.  In this chapter we

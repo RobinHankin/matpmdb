@@ -5,6 +5,10 @@
 <https://en.wikipedia.org/wiki/Type_I_and_type_II_errors>
 ```
 
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=-q6KG_ZurcU&index=8&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 In the previous chapter we considered the p-value as an inferential
 tool.  The rule was to reject the null if $p<0.05$.  Here we introduce
 a different approach which allows us to consider different types of

@@ -4,6 +4,10 @@
 <https://en.wikipedia.org/wiki/Statistical_hypothesis_testing>
 ```
 
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=yc_SKWZwPBw&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84&index=3>
+```
+
 It is a very frequent occurence in science that we are investigating
 an effect and seek evidence that it has occurred.  The general terms
 discussed in this chapter are
@@ -145,6 +149,10 @@ text(mean(d),2,"observed sample mean")
 
 ```{block2, type='wikipedia'}
 <https://en.wikipedia.org/wiki/P-value>
+```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=-q6KG_ZurcU&index=8&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
 ```
 
 
