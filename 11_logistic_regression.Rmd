@@ -1,5 +1,10 @@
 # Logistic regression {#logistic}
 
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=VlMLL5vaLlo&index=35&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 Here we continue to use the formula structure of R to deal with
 Bernoulli response variables.
 

@@ -4,6 +4,23 @@
 <https://en.wikipedia.org/wiki/Fisher%27s_exact_test>
 ```
 
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=a7ESQKI7nao&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84&index=16>
+```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=O9LUvIFSlRo&index=17&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=IL-2Su9YQ60&index=18&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=HM0oNfNZQlY&index=19&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
+
 Suppose I am interested in the prevalence of left handedness and wish
 to determine whether there is a difference between boys and girls.  I
 might survey some students and end up with a dataset like the

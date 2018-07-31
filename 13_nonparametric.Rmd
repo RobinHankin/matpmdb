@@ -3,6 +3,11 @@
 ```{block2, type='wikipedia'}
 <https://en.wikipedia.org/wiki/Nonparametric_statistics>
 ```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=6vuf753mo64&index=37&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 Up to now, all the techniques that have been used assume that the
 underlying distribution has got a particular form.  The Student
 t-test, for example, assumes that the observations are drawn from a

@@ -4,6 +4,14 @@
 <https://en.wikipedia.org/wiki/Chi-squared_test>
 ```
 
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=OkatmisQs8E&index=14&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=al-2-RRzMek&index=15&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 Suppose I poll a class of 40 students and ask each one for their
 favourite colour out of red, green, blue, and yellow.  My observations are:
 

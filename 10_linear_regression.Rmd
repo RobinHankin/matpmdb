@@ -4,6 +4,14 @@
 <https://en.wikipedia.org/wiki/Linear_regression>
 ```
 
+```{block2,type='youtube'}
+https://www.youtube.com/watch?v=QVFz4idnd6o&index=30&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84
+```
+
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=ynNEEB3UfO8&index=31&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 In this chapter we investigate linear dependencies between two
 datasets.  We will consider a second hand cars, with price of a car
 being a function of age.  The dataset is:

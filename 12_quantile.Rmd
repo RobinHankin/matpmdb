@@ -4,6 +4,10 @@
 <https://en.wikipedia.org/wiki/Quantile_function>
 ```
 
+```{block2, type='youtube'}
+<https://www.youtube.com/watch?v=wJQATecNZHk&index=36&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84>
+```
+
 You will recall the deficiencies of the histogram for independent
 observations.   Consider, for example, the following diagram:
 
