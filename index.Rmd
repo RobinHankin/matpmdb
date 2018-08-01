@@ -46,10 +46,8 @@ of the links take you to a video which starts midway through a
 lecture; if this is a problem, look at the playlist at the link above
 and this will show all lectures in order.  Note, however, that each
 class is a reasonably self-contained unit, split into three or four
-parts.
-
-The videos are also available in a slightly different format on
-Mediasite.  To view, log in to AUTonline and then
+parts.  The videos are also available in a slightly different format
+on Mediasite.  To view, log in to AUTonline and then
 
 ```content system -> institution -> learn -> maths```
 
@@ -65,3 +63,4 @@ issues page
 
 ```https://github.com/RobinHankin/stat601/issues```
 
+\includegraphics{ornamental20} # produced with the knotR package
