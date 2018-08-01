@@ -68,7 +68,7 @@ mass function of the Poisson is
 
 where $\lambda>0$ is the parameter of the distribution.
 
-## The poisson distribution in R
+## The Poisson distribution in R
 
 In the following, we will investigate the Poisson distribution with
 $\lambda=4.5$ in R.  The relevant functions are ```dpois()```,
