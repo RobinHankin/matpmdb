@@ -67,7 +67,7 @@ and drawn from $N(\mu,\sigma)$, then
 \end{equation}
 
 where $\overline{x}=\frac{1}{n}\sum_{i=1}^n x_i$ is the sample mean.
-The standard deviation of the sample mean is known as tthe *standard
+The standard deviation of the sample mean is known as the *standard
 error of the mean*.  We can test that equation \@ref(eq:SEM) is
 correct by numerical sampling; we use a standard Gaussian $N(0,1)$ on
 the grounds that we know the true value of the mean and standard

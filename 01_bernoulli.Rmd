@@ -211,9 +211,7 @@ large number of numerical sampling routines.
 
 Consider, for example, the binomial distribution with size 9 and
 probability 0.4.  We seek the probability that exactly 3 successes are
-observed.
-
-First, calculate the theoretical value:
+observed.  First, calculate the theoretical value:
 
 ```{r}
 dbinom(3,9,0.4)
@@ -260,5 +258,7 @@ axis(side=2,at=seq(from=0,to=0.3,by=0.05))
 abline(0,1)
 ```
 
-In the plot above, exact agreement would mean the points are exactly
-on the diagonal line; see how close the agreement is.
+In the plot above, we plot theoretical value on the horizontal axis
+and numerical values on the vertical axis.  Exact agreement would mean
+the points are exactly on the diagonal line; see how close the
+agreement is.

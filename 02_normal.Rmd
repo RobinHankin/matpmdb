@@ -1,6 +1,5 @@
-# The normal distribution {#normal}
-
-
+# The normal or Gaussian distribution {#normal}
+ 
 
 ```{block2, type='youtube'}
 <https://www.youtube.com/watch?v=2I30Ju4we10&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84&index=6>
@@ -11,10 +10,10 @@
 ```
 
 
-## Limit of large n
+## Binomial distribution in the limit of large n
 
 Suppose we consider the binomial distribution but with larger and
-larger values of n.  The following few figures show table plots of
+larger values of n.  The following three figures show table plots of
 binomial distributions with p=1/3 and n=10,100,1000,10000:
 
 ```{r}
@@ -45,11 +44,11 @@ plot(x,dnorm(x),type='l')
 ```
 
 (the ```seq()``` function gives a sequence; see ```?seq``` for
-details).  
+details).  In the above, we see the Gaussian from -3 to 3 but the
+distribution is infinitely wide.  The probability density function for
+the Gaussian is:
 
-The probability density function for the Gaussian is:
-
-  \begin{equation}
+\begin{equation}
 \frac{1}{\sqrt{2\pi}}\exp\left(\frac{-x^2}{2}\right)
 \end{equation}
 
@@ -87,9 +86,10 @@ In the above figure, see how the different mean and sd arguments are
 passed to ```dnorm()```.  The green curve is higher than the others
 and is truncated at the top, but all the curves have the same area.
 
+## Cumulative distribution function
+
 If we want the probability that a Gaussian random variable is less
 than a particular value we can use the ```pnorm()``` function.
-
 Suppose we have X drawn from a Gaussian distribution with a mean of
 1.3 and a standard deviation of 2.2.  What is the probability that
 $X\leq 3.1$?
@@ -110,9 +110,6 @@ polygon(c(x1,rev(x1)),c(x1*0,rev(dnorm(x1,1.3,2.2))),col='gray')
 
 (see how we pass the mean and standard deviation directly to
 ```dnorm()```).  The 79\% figure is the grey area in the above figure.
-
-## Cumulative distribution function
-
 The other way to do this would be to plot the *cumulative*
 distribution function ```pnorm()``` which gives the probability that
 $X$ is *less than or equal to* a particular value.  Thus:
@@ -123,6 +120,9 @@ x <- seq(from=-5,to=7,len=100)
 plot(x,pnorm(x,1.3,2.2),type="l")
 abline(v=3.1)
 ```
+
+In the above figure, we have drawn a line at $y=3.1$ and this
+intersects the CDF at about 0.79.
 
 If we want to find the probability that $X$ lies between two values
 $a$ and $b$, then this would be represented as the compound statement
@@ -158,12 +158,12 @@ function ```qnorm()```.  In R, ```qnorm(p)``` gives the value of x for
 which
 
 \begin{equation}
-Prob(X\leq x) = p
+\prob{X\leq x} = p
 \end{equation}
 
 For example, suppose we have $X\sim N(0,1)$ and want to find the value
 of X that is exceeded with a probability of 0.05, or 5\%.  This means
-that $Prob(X\leq x)$ is 0.95 so the R idiom would be:
+that $\prob{X\leq x}$ is 0.95 so the R idiom would be:
 
 
 ```{r}
@@ -200,12 +200,15 @@ rnorm(10) > 1.3
 and if we wanted to, we could use the ```table()``` function to summarize:
 
 ```{r}
+set.seed(0)
 table(rnorm(1e6) > 1.3)
 ```
 
-In the above, we had ```1e6``` (that is, $10^6$ or one million)
-samples, of which 96312 were over 1.3.  This corresponds to a
-probability of 96312/1000000, or a little over 0.096
+[do not type the ```set.seed(0)``` command; this is here to ensure
+reproducibility in the manual].  In the above, we had ```1e6``` (that
+is, $10^6$ or one million) samples, of which 96497 were over 1.3.
+This corresponds to a probability of 96497/1000000, or a little over
+0.096
 
 
 We can make a different visualization of the same situation as follows:
@@ -242,7 +245,7 @@ In the above I have divided the table results by the number of obsevations so th
 ### Example 2
 
 "If $X$ is drawn from a Gaussian distribution with mean 5 and standard
-deviation 1.4, find the probability that: (i), $X<6; (ii) $X>7$.
+deviation 1.4, find the probability that: (i), $X<6$; (ii) $X>7$.
 Verify your findings numerically."
 
 
@@ -269,6 +272,7 @@ Another way to do this is to use the following construction:
 pnorm(7, mean=5, sd=1.4, lower.tail=FALSE)
 ```
 
+which would be more accurate.
 
 ### Example 3
 
@@ -287,9 +291,10 @@ pnorm(10.3,10,0.4)-pnorm(10.1,10,0.4)
 
 ```{r}
 x <- rnorm(1e6,10,0.4)
-table((x>10.1) & ( x<10.4))/1e6
+table((x>10.1) & ( x<10.3))/1e6
 ```
 
+So the theoretical and numerical values agree approximately.
 
 ## Meaning of population mean and standard deviation
 
@@ -303,11 +308,12 @@ loosely.  Here I will give a more precise definition of them.
 <https://en.wikipedia.org/wiki/Expected_value>
 ```
 
-The mean of a distribution [sometimes "population mean"] has a
-technical meaning but here we can say that it is defined as the
-long-run average of observations drawn from that distribution.  The
-mean of the Gaussian distribution is~$\mu$, and this is easy to
-demonstrate in R:
+The mean of a distribution [sometimes "population mean", sometimes
+"expectation"] has a technical meaning but here we can say that it is
+defined as the long-run average of observations drawn from that
+distribution.  We sometimes write $\operatorname{\mathbb{E}}(X)$ for
+the expectation.  The expected value of the Gaussian distribution is
+$\mu$, and this is easy to demonstrate in R:
 
 
 ```{r}
@@ -316,10 +322,12 @@ mean(rnorm(100,10,2))
 mean(rnorm(100,10,2))
 ```
 
-In the above, we have one hundred samples from a $N(10,2)$
-distribution, and the average of these is roughly 10 (but not exactly,
-due to the finite sample size).  Observe carefully that we cannot tell
-from a sample what the population mean is.
+In each of the three lines above, we have one hundred random samples
+from a $N(10,2)$ distribution.  The arithmetic mean of these---that
+is, the sample mean---is roughly equal to the population mean, which
+is 10.  The result is not exact, due to the finite sample size.
+Observe carefully that we cannot tell from a sample what the
+population mean is.
 
 If we wanted a more precise verification, we would have to use a
 larger sample size:
@@ -331,16 +339,20 @@ mean(rnorm(1e6,10,2))
 ```
 
 The mean of the Gaussian distribution is identical to its mode and
-median, as it is symmetric and unimodal.
-
-Note that some distributions do not have a mean (for example, the
-Cauchy distribution).
+median, as it is symmetric and unimodal.  Note that some distributions
+do not have a mean (for example, the Cauchy distribution).
 
 ### Variance and standard deviation of a distribution
 
 The standard deviation measures the "width" of a distribution, again
-with a specific technical meaning.  In R, we can estimate the standard
-deviation of a sample using the ```sd()``` command:
+with a specific technical meaning.  
+
+It is easier to start with "deviance" $\mathbb{D}$, which is defined
+as the difference between a random variable and its expectation,
+$\mathbb{D}=X-\operatorname{\mathbb{E}}(X)$.  The variance is the
+expectation of $\mathbb{D}^2$.  Standard deviation is just the square
+root of variance.  In R, we can estimate the standard deviation of a
+sample using the ```sd()``` command:
 
 ```{r}
 sd(rnorm(100,10,2))
@@ -386,8 +398,9 @@ well-defined mean $\mu$ and variance $\sigma^2$ given by
 
 Thus, for example, if $n=6$ and $p=\frac{1}{3}$ we would have a mean
 of $np=6\times\frac{1}{3}=2$ and a variance of
-$np(1-p)=6\times\frac{1}{3}\times\frac{2}{3}=\frac{4}{3}$.  Verifying
-this numerically is straightforward:
+$np(1-p)=6\times\frac{1}{3}\times\frac{2}{3}=\frac{4}{3}$.  Thus the
+standard deviation will be $\sqrt{\frac{4}{}}$, or about
+1.154. Verifying this numerically is straightforward:
 
 ```{r}
 mean(rbinom(1e6,6,1/3))
@@ -403,5 +416,7 @@ sd(rbinom(1e6,6,1/3))
 sd(rbinom(1e6,6,1/3))
 ```
 
-We will see the same technique used for other distributions later in
-the course.
+
+Thus the numerical results closely match the theoretical values.  We
+will see the same technique used for other distributions later in the
+course.
