@@ -17,16 +17,20 @@ distributions.
 
 The basic approach is to define a *critical region* and reject the
 null hypothesis if our observation falls in this critical region.  The
-standard critical region is to reject $H_0$ if our observation exceeds
-a particular critical value.
+standard critical region is defined by the observation exceeding a
+particular critical value.  Thus for example we reject $H_0$ if
+$\overline{x}>V$ for some $V$ that we choose.
+
+The general idea is that it is *rare* for the observation to land in
+the critical region if the null is true.  So if it does land in the
+critical region we have a dichotomy: either something rare has
+occurred, or the null is false.
 
 It is possible to define the critical region as we wish, and in this
 chapter we discuss desiderata for assessing different critical values.
-For simplicity we will consider only one-sided tests.
-
-If we have observations from $N(\mu,1)$ [that is, Gaussian with
-unknown mean $\mu$ and standard deviation 1], we may wish to test
-$H_0\colon\mu=0$.
+For simplicity we will consider only one-sided tests.  If we have
+observations from $N(\mu,1)$ [that is, Gaussian with unknown mean
+$\mu$ and standard deviation 1], we may wish to test $H_0\colon\mu=0$.
 
 Our test statistics will be $\overline{x}$, the sample mean.  We know
 from previous chapters that, if $H_0$ is true we will have
@@ -98,7 +102,7 @@ that the size of any test be less than 5\%.  For example, we could
 have a test of size 0.01 by rejecting the null if the p-value is less
 than 0.01.
 
-## critical region
+## Critical region
 
 The Pearsonian approach is to define a "critical region" for a test
 statistic.  This is usually the tail region of the null distribution
@@ -120,7 +124,7 @@ points(x,dnorm(x),type='l',lwd=2,col='black')
 
 ## Type II errors
 
-The type I error has an inverse.  A *type II error* is the failure to
+The type I error has an converse.  A *type II error* is the failure to
 reject the null hypothesis when it is false.  If the null is false,
 the correct course of action is to reject it, and failure to do so is
 an error: a type II error.  A type II error is a sort of inverted

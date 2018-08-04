@@ -157,13 +157,15 @@ text(mean(d),2,"observed sample mean")
 
 
 We can assess whether an observation is consistent with a particular
-null by calculating the p-value.  We measure consistency by calculating the p-value:
+null by calculating the p-value.  We measure consistency by
+calculating the p-value:
 
 
-the p-value is defined as the probability, if the null is true, of
+The p-value is defined as the probability, if the null is true, of
 obtaining the observation or an observation more extreme.  Here, "more
 extreme" means "larger than the observed sample mean", although other
 interpretations are possible and considered later.
+
 
 ```{r}
 x <- seq(from=6.1,to=6.8,len=100)
@@ -373,7 +375,7 @@ be incorrect (why?).  We can adjust for this by using the *paired*
 t-test:
 
 ```{r}
-t.test(before,after, var.equal=TRUE, paired=TRUE,alternative="less")
+t.test(before, after, paired=TRUE,alternative="less")
 ```
 
 ## Binomial distribution and testing
@@ -399,8 +401,9 @@ null.  Visually:
 
 ```{r}
 x <- 0:100
-plot(x,dbinom(x,100,1/2),col=c(rep("black",59),rep("red",42)),type="h",lwd=2,main="null distribution; observation=58")
-legend("topleft",lty=1,lwd=2,col=c("red","black"),legend=c("more extreme","distribution"))
+plot(x,dbinom(x,100,1/2),col=c(rep("black",59),rep("pink",42)),type="h",lwd=2,main="null distribution; observation=58")
+legend("topleft",lty=1,lwd=2,col=c("pink","black"),
+        legend=c("more extreme","distribution"))
 ```
 
 In the above, the red shows the probability, if the null is true, of
@@ -530,7 +533,7 @@ set.seed(0)
 plot(c(-4,4),c(1,10),axes=FALSE,xlab='',ylab='',type='n')
 for(i in 1:100){
     jj <- f(10)
-    if(prod(jj)<0){col <- 'black' } else {col <- 'red'}
+    if(prod(jj)<0){col <- 'black' } else {col <- 'pink'}
     segments(x0=jj[1],y0=i/10,x1=jj[2],y1=i/10,col=col,lwd=2)
 }
 abline(v=0)    
@@ -540,9 +543,9 @@ The figure above shows 100 confidence intervals generated from a
 distribution where the true mean $\mu=0$.  See how the majority of the
 intervals contain the true value but occasionally (with probability
 5\%) the interval lies completely to one side of the true value, and
-such intervals are shown in red.  See how much of the R idiom you can
+such intervals are shown in pink.  See how much of the R idiom you can
 understand.
 
 Note that although confidence interval has a univeral definition, it
 is not without it problems and many workers [including your lecturer!]
-question the validity of this form of reasoning.>
+question the validity of this form of reasoning.
