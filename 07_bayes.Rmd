@@ -75,7 +75,11 @@ B\equiv B\cap A$, and rearranging, we arrive at *Bayes's theorem*:
 In practice, we re-write $\prob{B}$ and rearrange:
 
 \begin{equation}
-\prob{A|B} = \prob{A}\frac{\prob{B|A}}{\prob{A}\prob{B|A} + \prob{\overline{A}}prob{B|\overline{A}}}
+\prob{A|B} = \prob{A}\frac{
+   \prob{B|A}
+}{
+   \prob{A}\prob{B|A} + \prob{\overline{A}}\prob{B|\overline{A}}
+}
 \end{equation}
 
 With our example, the left hand side of the above equation is "the
@@ -291,7 +295,7 @@ trials] we use equation \@ref(eq:propbayes) with a binomial
 probability distribution:
 
 \begin{equation}
-\prob{p}\propto{10\choose 3}p^a(1-p)^{b}\cdot
+\prob{p}\propto{a+b\choose a\,\, b}p^a(1-p)^{b}\cdot
 \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}p^{\alpha-1}(1-p)^{\beta-1}
 \end{equation}
 
@@ -301,11 +305,20 @@ Clearing the equation of constants we get that the probability density of $p$ is
 Kp^{\alpha+a-1}(1-p)^{\beta+b-1}
 \end{equation}
 
-This is recognisable as another beta distribution with different
-parameters.  By comparing this with teh definition of the beta
-distribution we find that
+(here $K$ is a constant of proportionality set so the area under the
+curve is one).  This is recognisable as another beta distribution with
+different parameters.  By comparing this with the definition of the
+beta distribution we find that
 $K=\frac{\Gamma(a+\alpha)\Gamma(b+\beta)}{\Gamma(a+b+\alpha+\beta)}$
-is a constant whose value ensures that the area under the curve is 1.
+is the value which ensures that the area under the curve is 1.
+
+Note carefully that in this case both the prior and the posterior are
+beta distributions, but with different parameters
+($\alpha\longrightarrow\alpha+\beta$, $\beta\longrightarrow\beta+b$).
+This is a very desirable feature of the beta distribution, as the
+algebra is straightforward.  In general, the phenomenon of a prior
+distribution having the same form as the posterior is known as
+"conjugate prior".
 
 
 ### Example.
