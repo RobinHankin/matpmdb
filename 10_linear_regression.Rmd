@@ -40,7 +40,7 @@ plot(price~age, data=carprices)
 ```
 
 In the above, the "```~```" symbol is read "is a function of".  See
-how the two variables age and pricae appear to be related, with older
+how the two variables age and price appear to be related, with older
 cars having a smaller price.  The scattergraph shows directly that a
 linear fit might be a good idea: the relationship is linear, there are
 no serious outliers, and the variability is roughly constant along the
@@ -176,7 +176,7 @@ hist(residuals(swissfit),col='gray')
 ```
 
 The above histogram shows that the residuals are roughly Gaussian, in
-line with te assumptions of linear modelling.  Note in passing that
+line with the assumptions of linear modelling.  Note in passing that
 ```fit``` is a perfectly legit R object and we can examine and
 manipulate it easily.  For example:
 
@@ -219,3 +219,30 @@ at ```?formula```.
 
 
 
+### Correlation coefficient
+
+The p-value measures the strength of evidence againts the null, but
+this is not informative about the "closeness of fit" of the linear
+regression.  To measure this, we use the correlation coefficient $r$
+where $r=0$ corresponds to no relation $r$ close to $+1$ corresponds
+to close positive association, and $r$ close to $-1$ corresponds to
+close negative association.  Intermediate values correspond to weak
+correlation.  See the following diagram for visualization.
+
+```{r}
+library("mvtnorm")
+f <- function(n,rho){
+    d <- rmvnorm(n,sigma=matrix(c(1,rho,rho,1),2,2))
+ plot(d,xlab='x',ylab='y',main=paste("correlation coefficient ",rho,sep=""))
+}
+
+par(mfrow=c(2,2))
+f(100,0)
+f(100,0.5)
+f(100,0.9)
+f(100,-0.99)
+```
+
+It is common to consider $r^2$ which is non-negative and treats
+positive and negative slopes equally.  in R, use ```summary()``` whih
+reports an estimate for $r^2$.
