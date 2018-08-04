@@ -56,12 +56,14 @@ careful analysis.
 <https://en.wikipedia.org/wiki/Hypergeometric_distribution>
 ```
 
-Suppose we have an urn with $m$ white and $n$ black balls, and we draw
-out $k$ balls and write down their colour.  Note carefully that we are
-drawing *without replacement*: we draw a ball from the urn and then do
-not put it back in the urn (if we were to replace the ball in the urn,
-the number of white balls would be binomial with size $k$ and
-probability $\frac{m}{m+n}$).
+(note that the wikipedia page has different parameterizations from the
+R help page.  Here, I will follow the notation used in R, but be aware
+that other conventions exist).  Suppose we have an urn with $m$ white
+and $n$ black balls, and we draw out $k$ balls and write down their
+colour.  Note carefully that we are drawing *without replacement*: we
+draw a ball from the urn and then do not put it back in the urn (if we
+were to replace the ball in the urn, the number of white balls would
+be binomial with size $k$ and probability $\frac{m}{m+n}$).
 
 What is the distribution of the number of white balls drawn without
 replacement?  Well, it can be shown that
