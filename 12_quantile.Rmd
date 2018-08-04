@@ -84,10 +84,10 @@ abline(4,2)
 
 In the figure above, see how the data fall approximately on a straight
 line; it turns out that the mean is approximated by the intercept and
-the standard deviation by the slope, which are drawn on the diagram
-
-The ```qqnorm()``` function may be used to detect non-normality.
-Suppose we sample from a chi-squared distribution:
+the standard deviation by the slope.  The exact values are drawn on
+the diagram as the diagonal line.  The ```qqnorm()``` function may be
+used to detect non-normality.  Suppose we sample from a chi-squared
+distribution:
 
 ```{r}
 qqnorm(rchisq(100,df=4))
@@ -96,12 +96,13 @@ qqnorm(rchisq(100,df=4))
 In the figure above, we see a marked curve on the line indicating that
 the distribution is not Gaussian.
 
-
 ## Quantile-quantile plots
 
-We may apply similar techniques to compare two datasets.  Simply by
-plotting the two datasets' order statistics against each other, we
-have a powerful visual tool to compare two datasets:
+We may apply similar techniques to compare two datasets without losing
+any data as would be the case if we simply drew two histograms.  By
+plotting the two datasets' order statistics against each other, (one
+on the $x$ axis and one on the $y$ axis), we have a powerful visual tool
+to compare two datasets:
 
 ```{r}
 plot(sort(rnorm(50)),sort(rnorm(50)))

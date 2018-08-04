@@ -6,13 +6,11 @@
 ```
 
 Here we continue to use the formula structure of R to deal with
-Bernoulli response variables.
-
-Suppose we are studying how performance improves with practice.  We
-ask a subject to perform a task repeatedly.  We expect the person to
-become more adept with practice, and we seek to estimate the
-probability of success as a function of the number of attempts.
-Consider the following dataset:
+Bernoulli response variables.  Suppose we are studying how performance
+improves with practice.  We ask a subject to perform a task
+repeatedly.  We expect the person to become more adept with practice,
+and we seek to estimate the probability of success as a function of
+the number of attempts.  Consider the following dataset:
 
 ```{r}
 y <- 
@@ -92,9 +90,8 @@ f <- function(params){
 Thus ```f(alpha,beta)``` takes a sum of log-probabilities for the
 successes and a sum of logs of probabilities of failures.  See how the
 data remains fixed while alpha and beta change.  We can maximize the
-support numerically, using ```optim()```:
-
-This is easy to optimize in R:
+support numerically, using ```optim()```, which is a general-purpose
+suite of optimization routines:
 
 ```{r}
 optim(c(-0.5, 0.01),f,control=list(fnscale= -1))  # fnscale<0 means maximize
