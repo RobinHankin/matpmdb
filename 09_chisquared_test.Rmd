@@ -302,7 +302,10 @@ o <- table(manC)    #'o' for 'observations'
 o
 ```
 
-We need to calculate an expectation to compare this observation against.  The mean number of goals is:
+Thus, we have six matches with zero goals, 7 matches with 1 goal, 13
+matches with 2 goals, and so on.  Now we need to calculate an
+expectation to compare these observations against.  The mean number of
+goals is:
 
 ```{r}
 mean(manC)
