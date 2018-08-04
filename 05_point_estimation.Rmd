@@ -2,12 +2,11 @@
 
 
 So far we have been considering distributions with *known* parameters.
-In the case of the Gaussian distribution we have the mean
-
-However, in practice we very frequently do not know the true values of
-a parameter.  Consider the binomial distribution $B(n,p)$ with known
-$n$ but *unknown* $p$.  We wish to estimate $p$ from observational
-data.
+In the case of the Gaussian distribution we have the mean $\mu$ and
+standard deviation $\sigma$.  However, in practice we very frequently
+do not know the true values of a parameter.  Consider the binomial
+distribution $B(n,p)$ with known $n$ but *unknown* $p$.  We wish to
+estimate $p$ from observational data.
 
 Suppose $n=100$ and we observe $r=35$ successes.  We might estimate
 that $p=0.35$, on the basis that 35\% of the 100 trials were
@@ -188,17 +187,18 @@ plot(m,sapply(m,like))        # see below for why sapply() is used
 abline(v=mean(d))             # sample man is the maximum likelihood estimator
 ```
 
-Study the above carefully: there is a lot going on.  Make sure you
-understand exactly what is happening before moving on.  Note the use
-of the ```sapply()``` construction here, needed to vectorize the
-```like()``` function.  See how the likelihood is maximized at the
-*sample* mean.
+Study the above carefully: it might look simple, but there is a lot
+going on.  Make sure you understand exactly what is happening before
+moving on.  Note the use of the ```sapply()``` construction here,
+needed to vectorize the ```like()``` function.  See how the likelihood
+is maximized at the *sample* mean; this is *why* the sample mean is
+calculated.
 
 
 ## The support function
 
 The likelihood function $\like{\cdot}$ is defined as the probability
-of obtaining the data, given the hypothesis~$H$, multiplied by an
+of obtaining the data, given the hypothesis $H$, multiplied by an
 arbitrary constant $C$.
 
 The *support* function $\supp{\cdot}$ is defined as the logarithm of
@@ -254,10 +254,13 @@ achieve from any given starting point.  Suppose one started at
 $\mu=4$.  On the graph above, we can see that this has a support of
 about -10, which would correspond to a likelihood of $e^{-10}\simeq
 4.54\times 10^{-5}$.  Then by moving from $\mu=4$ to $\mu=6.2$ we can
-slide up the support curve and achieve an *extra* 10 units of support.
-This is more than the 2-units-of-support criterion, so we can be
-reasonably sure that $\mu=4$ is not the true value; but $\mu=6$ is
-acceptable.
+slide up the support curve to the maximum point, and thereby achieve
+an *extra* 10 units of support.  This is more than the
+2-units-of-support criterion, so we can be reasonably sure that
+$\mu=4$ is not the true value; but $\mu=6$ is acceptable.
+
+The point at which the support curve is maximized is the "maximum
+likelihood estimate", also sometimes called the "evaluate".
 
 
 ## Note on likelihood and support as relative measures of credibility
@@ -269,7 +272,7 @@ single hypothesis; the concept is only meaningful when comparing two
 hypotheses.
 
 Going back to our example of 35 successes out of 100 trials, we have
-been calculating the likelihood as $p^{35}(1-p)^{65}, and the support
+been calculating the likelihood as $p^{35}(1-p)^{65}$, and the support
 will be $35\log p+65\log(1-p)$.  However, as stated above we are only
 interested in relative changes of support, and relative support
 support is unchanged by addition of an arbitrary constant $C$.  The
