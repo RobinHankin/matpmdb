@@ -71,9 +71,11 @@ expectations are very different from the observations.
 Recall the definition of p-value: "the probability, if the null is
 true, of obtaining the observation or an observation more extreme".
 Here, our observation is the value of $B=7.8$.  Our job is to figure
-out what the distribution of $B$ is, given that the null is true.  It
-turns out that the null distribution of $B$ has a pleasing
-mathematical form, called the *chi-squared distribution*.
+out what the distribution of $B$ is, given that the null is true.  If
+we assume that the expected number of observations is not too small
+($>5$ is the usual heuristic), it turns out that the null distribution
+of $B$ has a pleasing mathematical form, called the *chi-squared
+distribution*.
 
 ## The chi squared distribution
 
@@ -94,7 +96,8 @@ shows some chi-square distributions.
 
 ```{r}
 x <- seq(from=0,to=20,len=1000)
-plot(1:10,1:10,type='n',xlim=c(0,10),ylim=c(0,0.5),xlab='x',ylab='PDF',main='chi-squared distribution')
+plot(1:10,1:10,type='n',xlim=c(0,10),ylim=c(0,0.5),xlab='x',ylab='PDF',
+  main='chi-squared distribution')
 for(i in 1:10){
     points(x,dchisq(x,df=i),type='l',lwd=2,col=rainbow(10)[i])
 }
@@ -167,7 +170,10 @@ f <- function(...){
    e <- 10
    return(sum((o-e)^2/e))
 }
-hist(replicate(1000,f()),col='red')
+n <- 1e5
+hist(replicate(n,f()),col='red',nclass=30)
+x <- seq(from=0,to=10,len=100)
+points(x,n*dchisq(x,df=3),type='l',lwd=6)
 ```
 
 
@@ -264,3 +270,91 @@ has to be subtracted from the ```pchisq()``` calculation.  Some more
 sophisticated tests involve distributions with multiple parameters;
 one has to subtract one degree of freedom per parameter estimated from
 the data.
+
+rr.ff
+## Chi-square test and the Poisson distribution
+
+The chi-square test works well with the Poisson, but we have to be
+careful with small tail probabilities.  Here we will consider the
+number of goals scored by Manchester City Football club in the
+2016-2017 season, data courtesy of wikipedia.
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/2016%E2%80%9317_Manchester_City_F.C._season>
+```
+
+The dataset is
+
+```{r}
+manC <- c(2,4,3,1,4,3,0,1,1,4,1,2,2,1,2,2,2,3,0,2,0,2,4,2,2,0,1,2,1,3,3,5,3,0,5,2,2,0)
+```
+
+Thus in the first game, they scored 2 goals, in the second 4, and so
+on up to game number 38 which scored zero goals.  We wish to test
+whether the number of goals is Poisson.  This would be a reasonable
+supposition on the grounds that there are a large number of minutes in
+a football match, each one of which would have a small probability of
+scoring a goal.  The first step would be to tabulate the data:
+
+
+```{r}
+o <- table(manC)    #'o' for 'observations'
+o
+```
+
+We need to calculate an expectation to compare this observation against.  The mean number of goals is:
+
+```{r}
+mean(manC)
+```
+
+that is, a little over two goals per match.  We can model the number
+of goals scored in each match as a Poisson distribution with
+$\lambda=2.026$.  We will classify games as having 0,1,2,3,4, or $\geq
+5$ goals (this device prevents expected numbers being too small for
+the Chi square test to operate).  The probabilities of 0-4 goals is
+
+```{r}
+dpois(0:4, lambda=mean(manC))
+```
+
+Then the probability of scoring 5 goals will be the remaining probability, viz
+
+```{r}
+1-sum(dpois(0:4, lambda=mean(manC)))
+```
+
+So the probabilities of $0,1,2,3,4,\geq5$ goals is
+
+```{r}
+probs <- c(dpois(0:4, lambda=mean(manC)), ppois(4,lambda=mean(manC),lower.tail=FALSE))
+probs
+```
+
+check:
+
+```{r}
+sum(probs)
+```
+
+Then the expected number of games with $0,1,2,3,4,\geq 5$ goals is:
+
+```{r}
+e <- length(manC)*probs
+e
+```
+
+Thus we expect to see about 5 games with zero goals, 10 with one goal,
+etc.  The chi-square test is straightforward:
+
+```{r}
+B <- sum((o-e)^2/e)
+pchisq(B,df=4,lower.tail=FALSE)
+```
+
+and we can see that we fail to reject the null: the observations are
+consistent with a Poisson distribution.  For the degrees of freeedom,
+note that we subtract (from 6, the number of entries in the table) one
+because we know the total number of games played, and another one
+because we needed to use the data to estimate $\lambda$ which was used
+to generate the expectations.  Thus we use 6-1-1=4.
