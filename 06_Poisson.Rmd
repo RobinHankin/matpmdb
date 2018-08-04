@@ -17,11 +17,12 @@ limit of large $n$ and constant $p$: the distribution approaches a
 Gaussian with mean $np$ and variance $np(1-p)$.  In this chapter we
 will consider a different limiting process, in which we allow $n$ to
 grow very large, but require $p$ to become small in such a way as to
-hold the product $np$ constant.  Consider the following table, showing
-values of $n$ becoming larger and larger, and $p$ adjusted so that the
-product $np$ is always equal to $4$:
+hold the product $np$ constant.  Consider table
+\@ref(tab:poissonlimit), showing values of $n$ becoming larger and
+larger, and $p$ adjusted so that the product $np$ is always equal to
+$4$:
 
-```{r}
+```{r poissonlimit}
 e <- 1:5
 jj <- data.frame(n=10^e, p=0.4/10^e, np=4, var=4*(1-1/10^e))
 knitr::kable(jj,caption="limiting process for the Poisson distribution")
@@ -41,12 +42,12 @@ for(i in seq_along(n)){
 }
 points(x,dpois(x,4),type='l')
 legend("topright",
-       legend=c("n=10, p=0.4","n=100, p=0.04", "n=1000, p=0.004","poisson"),
+       legend=c("n=10, p=0.4","n=100, p=0.04", "n=1000, p=0.004","Poisson"),
        pch=c(16,16,16,NA),col=c(cols[seq_along(n)],"black"),lty=c(NA,NA,NA,1))
 ```
 
 
-The diagram above includes "poisson" as the result of the limiting
+The diagram above includes "Poisson" as the result of the limiting
 process.  The Poisson distribution arises naturally whenever we
 consider a binomial distribution with large $n$, small $p$, and
 moderate $np$.  Examples would include the number of car accidents on
@@ -98,6 +99,10 @@ mean(rpois(1e6,lambda=4.5))
 mean(rpois(1e6,lambda=4.5))
 mean(rpois(1e6,lambda=4.5))
 ```
+
+In the above, see how the sample mean is very close to the value of
+$\lambda=4.5$; the small differences are due to random variability.
+
 
 ## Some examples
 
