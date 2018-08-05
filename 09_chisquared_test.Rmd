@@ -95,11 +95,11 @@ from problem to problem but is easy to calculate.  The R idiom below
 shows some chi-square distributions.
 
 ```{r}
-x <- seq(from=0,to=20,len=1000)
+x <- seq(from=0,to=20,len=1000)  # values for horizontal axis
 plot(1:10,1:10,type='n',xlim=c(0,10),ylim=c(0,0.5),xlab='x',ylab='PDF',
-  main='chi-squared distribution')
-for(i in 1:10){
-    points(x,dchisq(x,df=i),type='l',lwd=2,col=rainbow(10)[i])
+  main='chi-squared distribution')  # setup plot axes and title
+for(i in 1:10){  # loop over i
+    points(x,dchisq(x,df=i),type='l',lwd=2,col=rainbow(10)[i]) #plot one curve
 }
 legend("topright",lwd=2,col=rainbow(10),legend=paste("df= " ,1:10,sep=""))
 ```
@@ -165,15 +165,15 @@ B
 And I assert that $B$ is drawn from $\chi^2_3$.  This is straightforward to verify in R:
 
 ```{r}
-f <- function(...){
+f <- function(...){  # define single-use function f()
    o <- tabulate(sample(1:4,40,replace=TRUE))  # synthetic observations
-   e <- 10
-   return(sum((o-e)^2/e))
+   e <- 10  # expectations
+   return(sum((o-e)^2/e))  # return badness B
 }
-n <- 1e5
-hist(replicate(n,f()),col='red',nclass=30)
-x <- seq(from=0,to=10,len=100)
-points(x,n*dchisq(x,df=3),type='l',lwd=6)
+n <- 1e5   # number of synthetic observations to take 
+hist(replicate(n,f()),col='red',nclass=30)  # plot the histogram of synth.obs
+x <- seq(from=0,to=10,len=100)   # x-values for theoretical distribution
+points(x,n*dchisq(x,df=3),type='l',lwd=6)  # plot chi-squared, df=3 points
 ```
 
 
