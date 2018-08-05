@@ -15,6 +15,7 @@ description: "This is the course manual for STAT61 (statistical methods)"
 
 
  \newpage
+ \pagenumbering{arabic}
 
 # Overview {-}
 
