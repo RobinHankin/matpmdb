@@ -292,3 +292,90 @@ Observe how the actual value of the y-axis is immaterial.  One would
 make the same inferences from any of the support curves shown, which
 is why the arbitrary constant $\log C$ may be added to the support
 function.
+
+## Bias
+
+
+```{block2, type='wikipedia'}
+<https://en.wikipedia.org/wiki/Bias_of_an_estimator>
+```
+
+Suppose we want to estimate the standard deviation $\sigma$ of a
+population from $n=5$ observations from a standard Gaussian $N(0,1)$,
+and we use R idiom ```sd()``` to do so:
+
+```{r}
+sd(rnorm(5))
+```
+
+Observe that in the above, we actually know that $\sigma=1$ but the
+estimate is not exactly correct, due to sampling error.  We might ask
+what happens if we repeatedly estimate $\sigma$:
+
+```{r}
+replicate(30,var(rnorm(5)))
+```
+
+In the above, observe that some figures are overestimates and some are
+underestimates.  Of course, in practice we only have a single number
+to work with, and in general we will not know whether it is an
+overestimate or an underestimate.  Statisticians use a "hat" over a
+symbol to denote an estimate; thus "$\hat{\sigma}$" means an
+estimated value of $\sigma$.  Using R, we can draw a histogram of
+estimates $\hat{\sigma}$:
+
+```{r}
+hist(replicate(10000,sd(rnorm(5))),col='gray')
+abline(v=1,lwd=6)
+```
+
+in the above we have drawn the correct value of the standard deviation
+$\sigma=1$ for convenience.  See how the distribution of estimates
+includes severe overestimates and severe underestimates, both caused
+by the finite sample size (5 in this case).  We might ask what the
+*expected* value is of $\hat{\sigma}$:
+
+```{r}
+mean(replicate(10000,sd(rnorm(5))),col='gray')
+```
+
+So the mean of the estimates $\overline{\hat{\sigma}}=0.93$ is quite
+far from the true value of $\sigma=1$.  The *bias* of an estimator is
+defined as the difference between the expected value of the estimator
+and the true value of the parameter.  The bias of ```sd()``` is
+difficult to calculate exactly but in this case its numerical value is
+about $0.93-1.00=-0.07$.
+
+### Bias for variance
+
+(this is harder than the preceding material and should be viewed as
+optional reading).  We might estimate the variance of a distribution
+by calculating the mean value of the squared deviance:
+
+```{r}
+myvar <- function(x){
+  deviance <- x-mean(x)
+  return(mean(deviance^2))
+}
+```
+
+This would correspond to
+
+\[
+\frac{1}{n}\sum_{i=1}^n\left(x_i-\overline{x}\right)^2
+\]
+
+and we can see the bias of this estimator:
+
+```{r}
+mean(replicate(10000,myvar(rnorm(5))))
+```
+
+If we denote the value of ```myvar(d)``` by $M$, it can be shown that
+$\mathbb{E}\left(M\right)=\frac{n-1}{n}\sigma^2$.  We can correct for
+this by defining $\tilde{M}=\frac{n}{n-1}M$ which is why you see $n-1$
+(instead of $n$) as a denominator in the literature.  Your lecturer
+has spent his entire life thinking about bias of estimates.  He does
+not think that bias is a useful or informative thing to calculate and
+believes that pursuit of unbiased (that is, a bias of zero) estimators
+is pointless, counter-productive and indeed actively misleading.
