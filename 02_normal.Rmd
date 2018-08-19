@@ -121,15 +121,13 @@ abline(v=3.1)
 ```
 
 In the above figure, we have drawn a line at $y=3.1$ and this
-intersects the CDF at about 0.79.
-
-If we want to find the probability that $X$ lies between two values
-$a$ and $b$, then this would be represented as the compound statement
-$(X>a)\quad\&\quad(X<b)$ as there are two conditions present^[for
-simplicity I am ignoring the difference between "$<$" and "$\leq$"].
-This is more usually written $a<X<b$.  We can visualise this easily.
-Suppose we have a standard Gaussian $N(0,1)$ and want the probability
-that $-0.4<X<1.1$:
+intersects the CDF at about 0.79.  If we want to find the probability
+that $X$ lies between two values $a$ and $b$, then this would be
+represented as the compound statement $(X>a)\quad\&\quad(X<b)$ as
+there are two conditions present^[for simplicity I am ignoring the
+difference between "$<$" and "$\leq$"].  This is more usually written
+$a<X<b$.  We can visualise this easily.  Suppose we have a standard
+Gaussian $N(0,1)$ and want the probability that $-0.4<X<1.1$:
 
 
 ```{r}
@@ -144,6 +142,10 @@ The R idiom to calculate the area is
 ```{r}
 pnorm(1.1) - pnorm(-0.4)
 ```
+
+which corresponds to a probability of about 52\%, which looks about
+right.
+
 
 ### Quantile function
 
@@ -207,10 +209,8 @@ table(rnorm(1e6) > 1.3)
 reproducibility in the manual].  In the above, we had ```1e6``` (that
 is, $10^6$ or one million) samples, of which 96497 were over 1.3.
 This corresponds to a probability of 96497/1000000, or a little over
-0.096
-
-
-We can make a different visualization of the same situation as follows:
+0.096.  We can make a different visualization of the same situation as
+follows:
 
 
 ```{r}
@@ -221,6 +221,48 @@ abline(h=1.3)
 and in the above plot we can see that about 10\% of the points are
 above the line as we would expect.
 
+## Relationship between ```pnorm()``` and ```qnorm()```.
+
+Functions ```pnorm()``` and ```qnorm()``` are in an inverse
+relationship with one another.  Thus
+
+```{r}
+pnorm(qnorm(0.1))  # should return 0.1
+qnorm(pnorm(1.1))  # should return 1.1
+```
+
+In the above, note carefully the difference between the two examples.
+In the first line, observe that ```qnorm()``` requires its argument to
+be in the range 0 to 1 as it takes a probability; while in the second
+line, ```pnorm()``` takes any value on the real line.  We can conduct
+a more exacting test as follows:
+
+```{r}
+z1 <- function(p){pnorm(qnorm(p))-p}   # should return zero
+x <- seq(from=0.001,to=0.99,len=100)
+plot(x,z1(x))
+```
+
+In the above, note the vertical scale.  For completeness we should
+also plot the other test:
+
+```{r}
+z2 <- function(v){qnorm(pnorm(v))-v}   # should return zero
+x <- seq(from=-10,to=10,len=100)
+plot(x,z2(x))
+```
+
+In the above, note how the most serious errors are for large values of
+$x$, and there are no points at all above about $x=8$.  Is this what
+you would expect?  Does this graph verify that ```pnorm()``` and
+```qnorm()``` are operating correctly?  Or does it reveal a problem
+either with our expectations or the behaviour of an R function?  Is
+the test a good one?  If not (or indeed if it is a good test), could
+you make a better one?
+
+## Examples
+
+Here are some simple examples of the ```pnorm()``` function in use.
 
 ### Example 1
 
@@ -239,7 +281,8 @@ pnorm(1.1)
 table(rnorm(1e6) < 1.1)/1e6
 ```
 
-In the above I have divided the table results by the number of obsevations so the numbers represent probabilities.
+In the above I have divided the table results by the number of
+observations so the numbers represent probabilities.
 
 ### Example 2
 
