@@ -185,7 +185,7 @@ toss it 4 times.  We can then ask each student to write down the
 number of heads they get.   First, our observations:
 
 ```{r}
-o <-c("0"=5, "1"=27, "2" = 47, "3"=15, "4"=6)
+o <-c("0"=5, "1"=27, "2" = 47, "3"=15, "4"=6)  # this is a named vector
 o
 ```
 
