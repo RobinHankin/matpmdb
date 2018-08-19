@@ -64,4 +64,9 @@ issues page
 
 ```https://github.com/RobinHankin/stat601/issues```
 
-\includegraphics{ornamental20} # produced with the knotR package
+
+\newpage
+\includegraphics{ornamental20}
+
+```https://github.com/RobinHankin/knotR```
+
