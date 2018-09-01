@@ -68,16 +68,18 @@ replicate(7,f(n=10))
 
 Study the R idiom above carefully.  We are repeatedly carrying out a
 t-test on random data for which the null is *known* to be true.  In
-this case, noe of the tests rejected the null.  However, if we carry
-out the test a large number of times we see:
+this case, none of the tests rejected the null.  However, we may carry
+out the test a large number of times:
+
 
 ```{r}
 set.seed(0)
 table(replicate(1000,f(n=10)) < 0.05)
 ```
 
-So in the above, we incorrectly reject the null hypothesis 48 times
-(the ```set.seed(0)``` command ensures that results are repeatable).
+In the above, the null is known to be true (the population mean is
+zero), but we incorrectly reject the null hypothesis 48 times (the
+```set.seed(0)``` command ensures that results are repeatable).
 Rejecting the null hypothesis when it is true is known as a *type I
 error*.  We want this to be rare.  Studying the diagram below:
 
@@ -86,15 +88,15 @@ set.seed(0)
 hist(replicate(1000,f(n=10)),col='pink')
 ```
 
-shows that the p-value is uniformly distributed from 0 to 1^[We will
-see many examples of statistical tests and they all should have a
-uniform distribution of p-values].  We can deduce that the probability
-of rejecting the null hypothesis---that is, the probability of
-committing a type I error---is 0.05.  We say that the *size* of the
-test is the probability of committing a type I error and in this case
-the test is of size 0.05 (because that is the p-value that we
-selected).  In statistics, one usually denotes the size of a test as
-$\alpha$.
+The above demonstration shows that the p-value is uniformly
+distributed from 0 to 1^[We will see many examples of statistical
+tests and they all should have a uniform distribution of p-values].
+We can deduce that the probability of rejecting the null
+hypothesis---that is, the probability of committing a type I
+error---is 0.05.  We say that the *size* of the test is the
+probability of committing a type I error and in this case the test is
+of size 0.05 (because that is the p-value that we selected).  In
+statistics, one usually denotes the size of a test as $\alpha$.
 
 Observe that we can make the size of the test $\alpha$ any probability
 we like (by choosing the critical p-value) but it is usually required
