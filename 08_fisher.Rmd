@@ -33,7 +33,7 @@ dimnames(a) <- list(gender=c("M","F"),lefthanded=c(T,F))  # display only
 a
 ```
 
-Such a dataset is known as a contingency table and is surprisingly
+Such a dataset is known as a *contingency table* and is surprisingly
 common in statistics.  I would say that over half of the statistical
 analyses I perform for clients is on contingency tables like the one
 above.
