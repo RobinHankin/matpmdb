@@ -299,8 +299,7 @@ deviation of $\frac{1}{\sqrt{n}}$, as this is the standard error of
 the mean; but observe that the null distribution has ```mean=0```
 while the alternative has ```mean=x```, as this may be altered.
 
-### Type II errors: $\beta$ as a function of $n$, the number of
-    observations.
+### Type II errors: $\beta$ as a function of $n$, the number of observations.
 
 We can plot the power as a function of $n$, the number of
 observations.  In the R idiom below, we use the standard value of
