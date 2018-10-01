@@ -6,9 +6,9 @@
 
 IMPORTANT:
 
-* Bayes theorem: incorrect; no possession marker
-* Bayes' theorem: incorrect (American usage)
-* Bayes's theorem: correct British English
+* "Bayes theorem": incorrect; no possession marker
+* "Bayes' theorem": incorrect (American usage)
+* "Bayes's theorem": correct British English
 
 Do not get this wrong.
 
