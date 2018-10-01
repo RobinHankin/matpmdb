@@ -14,7 +14,7 @@
    viewBox="0 0 165.22372 137.48195"
    version="1.1"
    id="svg8"
-   inkscape:version="0.92.2 5c3e80d, 2017-08-06"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
    sodipodi:docname="intersection_union.svg">
   <defs
      id="defs2" />
@@ -25,16 +25,16 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="2.1700154"
-     inkscape:cx="169.70775"
-     inkscape:cy="228.45905"
+     inkscape:zoom="0.7672163"
+     inkscape:cx="281.61198"
+     inkscape:cy="270.67549"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="2560"
-     inkscape:window-height="1315"
-     inkscape:window-x="105"
-     inkscape:window-y="1"
+     inkscape:window-width="1299"
+     inkscape:window-height="711"
+     inkscape:window-x="144"
+     inkscape:window-y="64"
      inkscape:window-maximized="0"
      fit-margin-top="10"
      fit-margin-left="10"
@@ -50,7 +50,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -280,5 +280,140 @@
        id="path1074"
        inkscape:connector-curvature="0"
        transform="matrix(0.26458333,0,0,0.26458333,25.129824,78.218851)" />
+    <g
+       id="g2316"
+       transform="translate(77.076536,-9.8285519)">
+      <text
+         x="-19.182425"
+         id="text885"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMMI12;-inkscape-font-specification:CMMI12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         y="100.2213">
+        <tspan
+           id="tspan883"
+           y="100.2213"
+           x="-19.182425"
+           style="stroke-width:0.35277775">A</tspan>
+      </text>
+      <text
+         id="text889"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMSY10;-inkscape-font-specification:CMSY10;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         x="-15.149465"
+         y="100.2213">
+        <tspan
+           id="tspan887"
+           y="100.2213"
+           x="-15.149465"
+           style="stroke-width:0.35277775">∪</tspan>
+      </text>
+      <text
+         id="text893"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMMI12;-inkscape-font-specification:CMMI12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         x="-11.400502"
+         y="100.2213">
+        <tspan
+           id="tspan891"
+           y="100.2213"
+           x="-11.400502"
+           style="stroke-width:0.35277775">B</tspan>
+      </text>
+    </g>
+    <g
+       id="g2324"
+       transform="translate(153.80821,-20.001968)">
+      <text
+         x="-19.182425"
+         id="text901"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMMI12;-inkscape-font-specification:CMMI12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         y="110.41341">
+        <tspan
+           id="tspan899"
+           y="110.41341"
+           x="-19.182425"
+           style="stroke-width:0.35277775">A</tspan>
+      </text>
+      <text
+         id="text905"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMSY10;-inkscape-font-specification:CMSY10;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         x="-15.149465"
+         y="110.41341">
+        <tspan
+           id="tspan903"
+           y="110.41341"
+           x="-15.149465"
+           style="stroke-width:0.35277775">∩</tspan>
+      </text>
+      <text
+         id="text909"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMMI12;-inkscape-font-specification:CMMI12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         x="-11.400502"
+         y="110.41341">
+        <tspan
+           id="tspan907"
+           y="110.41341"
+           x="-11.400502"
+           style="stroke-width:0.35277775">B</tspan>
+      </text>
+    </g>
+    <g
+       id="g2330"
+       transform="translate(81.214873,36.133137)">
+      <g
+         transform="matrix(0.35277777,0,0,-0.35277777,-19.18242,117.23189)"
+         id="g915">
+        <path
+           inkscape:connector-curvature="0"
+           id="path917"
+           style="fill:none;stroke:#000000;stroke-width:0.398;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+           d="M 0,0 H 8.775" />
+      </g>
+      <text
+         x="-19.182425"
+         id="text921"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMMI12;-inkscape-font-specification:CMMI12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         y="120.60585">
+        <tspan
+           id="tspan919"
+           y="120.60585"
+           x="-19.182425"
+           style="stroke-width:0.35277775">A</tspan>
+      </text>
+    </g>
+    <g
+       id="g2338"
+       transform="translate(156.22224,25.940678)">
+      <text
+         x="-19.182425"
+         id="text929"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMMI12;-inkscape-font-specification:CMMI12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         y="130.79831">
+        <tspan
+           id="tspan927"
+           y="130.79831"
+           x="-19.182425"
+           style="stroke-width:0.35277775">A</tspan>
+      </text>
+      <text
+         id="text933-3"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMR12;-inkscape-font-specification:CMR12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         x="-16.086447"
+         y="130.79831">
+        <tspan
+           id="tspan931-6"
+           y="130.79831"
+           x="-16.086447"
+           style="stroke-width:0.35277775">∆</tspan>
+      </text>
+      <text
+         id="text937-7"
+         style="font-variant:normal;font-weight:normal;font-size:4.21752882px;font-family:CMMI12;-inkscape-font-specification:CMMI12;writing-mode:lr-tb;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.35277775"
+         x="-12.645101"
+         y="130.79831">
+        <tspan
+           id="tspan935-5"
+           y="130.79831"
+           x="-12.645101"
+           style="stroke-width:0.35277775">B</tspan>
+      </text>
+    </g>
   </g>
 </svg>
