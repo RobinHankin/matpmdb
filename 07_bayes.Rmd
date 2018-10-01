@@ -40,7 +40,7 @@ expected to declare themselves as "bayesians" or "frequentists",
 depending on whether or not they buy into the Bayesian philosophy.  My
 estimate would be that 30\% of statisticians are Bayesians.
 
-```{r venn, fig.cap='Two sets, $A$ and $B$ on a Venn diagram', echo=FALSE, message=FALSE, warning=FALSE}
+```{r venn, fig.cap='Two sets, $A$ and $B$ on a Venn diagram together with red areas marking set union ($A\\cup B$), set intersection ($A\\cap B$), complement of A ($\\overline{A}$) and symmetric difference ($A\\Delta B$)', echo=FALSE, message=FALSE, warning=FALSE}
 knitr::include_graphics("intersection_union.pdf")
 ```
 
