@@ -47,7 +47,7 @@ probability of failure.  Thus an event which has probability $p$ has
 odds $\frac{p}{1-p}$.
 
 Regression then operates on the *log odds*,
-$LO=\log\left(\frac{p}{1-p}\right)$.  This means that
+$LO=\log\left(\frac{p}{1-p}\right)$.  Inverting this formula gives
 $p=\frac{e^{LO}}{1+e^{LO}}$; observe that this correctly ensures that
 $p$ is always between 0 and 1, while log-odds can be any real value,
 positive or negative.  The regression is then
@@ -117,3 +117,56 @@ match (which one is more accurate?).  Observe that the given p-value
 is a two sided test.  We might argue that a one-sided test is more
 appropriate (why?) and, if so, we would simply halve it to give a
 one-sided value.
+
+## Interpretation of the coefficients
+
+We have that
+
+\[
+LO=a + bx
+\]
+
+where $LO$ is the log-odds and we have
+$LO=\log\left(\frac{p}{1-p}\right)$ and $p=\frac{e^{LO}}{1+e^{LO}}$;
+here we are using $a,b$ rather than $\alpha,\beta$ for convenience.
+We are going to plot this relation for different values of $\alpha$
+and $\beta$.
+
+```{r}
+x <- seq(from=-3,to=3,len=100)
+dolines <- function(a,b,...){points(x,pr(a+b*x),type='l',lwd=3, ...)}
+plot(x,x*0,ylim=c(0,1),type="n")
+dolines(0,1,col="black")
+dolines(0,2,col="red")
+dolines(0,3,col="blue")
+dolines(0,4,col="green")
+legend("topleft",col=c("black","red","blue","green"),lty=1,lwd=3,
+       legend=c("a=0,b=1","a=0,b=2","a=0,b=3","a=0,b=4"))
+```
+
+In the diagram above, see how the value of $b$ governs how abrupt the
+change from zero to one is: larger values of $b$ correspond to sharper
+changes.  Indeed, if $b<0$ the curve slopes the other way.  We are now
+going to change the value of $a$, keeping $b$ fixed at 2:
+
+```{r}
+x <- seq(from=-3,to=3,len=100)
+dolines <- function(a,b,...){points(x,pr(a+b*x),type='l',lwd=3, ...)}
+plot(x,x*0,ylim=c(0,1),type="n")
+dolines(-1,2,col="black")
+dolines(0,2,col="red")
+dolines(1,2,col="blue")
+dolines(2,2,col="green")
+legend("topleft",col=c("black","red","blue","green"),lty=1,lwd=3,
+       legend=c("a=-1,b=2","a=0,b=2","a=1,b=2","a=2,b=2"))
+```
+
+In the diagram above, see how the value of $a$ governs where the
+steepest part of the curve occurs: changing $a$ moves the curve left
+and right.
+
+If we ask instead what value of $x$ corresponds to $p=0.5$, then we
+see that the log-odds will be
+$LO=\log\left(\frac{0.5}{1-0.5}\right)=\log 1=0$.  Thus, we can find
+the value of x at which $p=0.5$ by solving $a+bx=LO$ and setting
+$LO=0$; that is, $a+bx=0$, or $x=-a/b$.
