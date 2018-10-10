@@ -13,8 +13,11 @@ https://www.youtube.com/watch?v=QVFz4idnd6o&index=30&list=PL018X5Hlr4RkgE65Pg93T
 ```
 
 In this chapter we investigate linear dependencies between two
-datasets.  We will consider a second hand cars, with price of a car
-being a function of age.  The dataset is:
+datasets.  The technique used will be *linear regression* which is a
+very widely used technique in many fields of quantitative analysis.
+We will consider a number of examples drawn from different
+disciplines.  First we will consider a second hand cars, with price of
+a car being a function of age.  The dataset is:
 
 ```{r}
 carprices <- data.frame(
