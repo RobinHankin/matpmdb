@@ -18,18 +18,20 @@ rbinom(20, 100, 0.35)
 ```
 
 Recall from the previous chapter that the observations have a mean of
-0.35 and a variance of $100\times 0.35\times (1-0.35)=22.75$.
+$np=100\times 0.35=35$, and a variance of $100\times 0.35\times
+(1-0.35)=22.75$.
 
-Conversely, if $p=0.36$ then we might well observe $r=35$ successes.
-Thus the observation that $r=35$ does not allow us to distinguish
-between the two possibilities that $p=0.35$ and $p=0.36$.
+However, observe that if the true value of $p$ was $0.36$ then we
+might well observe 35 successes.  Thus the observation of 35 successes
+does not allow us to distinguish between the two possibilities that
+$p=0.35$ and $p=0.36$.
 
-However, we would be surprised if $p$ turned out to be, say, 0.99.  It
-is not at all obvious why $p=0.99$ is "unacceptable" in some sense
-while $p=0.35$ is OK.
-
-What we want to do is find a *range* of values for $p$ which are
-consistent with our observations.
+However, the observation of 35 successes means that we would be very
+confident in rejecting the suggestion that $p=0.99$.  It is not at all
+obvious why $p=0.99$ is "unacceptable" in this sense while $p=0.35$ is
+OK.  What we want to do is to find a "best estimate" for the value of
+$p$ on the basis of our observation; but also to indicate a range of
+uncertainty for our estimate.
 
 
 ## Likelihood ##
