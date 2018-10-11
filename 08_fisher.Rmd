@@ -128,7 +128,7 @@ p-value is
 sum(dhyper(5:7,7,20,11))
 ```
 
-Showing that the p-value of about 7\% is not significant (the
+This shows that the p-value of about 7\% is not significant (the
 professional uses ```phyper(4,7,20,11,lower.tail=FALSE)```).  We can
 get a visual impression easily, using R; study the idiom carefully:
 
