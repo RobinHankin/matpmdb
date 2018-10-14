@@ -151,21 +151,17 @@ success, 43 with 2, and so on up to 2 observations with 10 successes.
 We can even plot the output:
 
 
-```{r binomialtable, fig.cap='Table of random binomial observations', out.width='80%', fig.asp=.75, fig.align='center'}
+```{r}
 plot(table(rbinom(1000,10,0.5)))
 ```
 
-(here we simply wrap the ```table()``` function inside a ```plot()```
-function).  Figure \@ref(fig:binomialtable) is a powerful
-visualisation method.
-
-We can use the binomial probability distribution, equation
-\@ref(eq:binomialPMF), in an R session using the ```dbinom()```
-function.  Suppose we have a binomial distribution with size 12 and
-probability 1/3, and we want to calculate the probability of observing
-4 successes.
-
-We can either the mathematical formula:
+Above, we simply wrap the ```table()``` function inside a ```plot()```
+function).  This is a powerful visualization method.  We can use the
+binomial probability distribution, equation \@ref(eq:binomialPMF), in
+an R session using the ```dbinom()``` function.  Suppose we have a
+binomial distribution with size 12 and probability 1/3, and we want to
+calculate the probability of observing 4 successes.  We can use the
+mathematical formula explicitly:
 
 
 ```{r}
@@ -185,9 +181,8 @@ dbinom(4,12,1/3)
 See how the two answers above agree with one another.  Note that it is
 always better to use the builtin functionality in R, rather than to
 use a written function (the builtin version is faster and more
-accurate).
-
-One further advantage of using the builtin is that it is vectorized:
+accurate).  One further advantage of using the builtin is that it is
+vectorized:
 
 ```{r}
 dbinom(0:12,12,1/3)
