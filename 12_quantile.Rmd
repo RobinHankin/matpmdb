@@ -133,12 +133,14 @@ line:
 
 
 ```{r}
-qqplot(rnorm(20),rchisq(40,df=3))
+qqplot(rnorm(90),rchisq(99,df=3))
 ```
 
-
-We can use these techniques in a more practical setting.  Suppose we
-have two lakes and we sample fish in the lakes, measuring their lengths:
+In the above, we plot quantiles of normal random data against
+chi-squared random data, and because these are different distributions
+we see a curved line.  We can use these techniques in a more practical
+setting.  Suppose we have two lakes and we sample fish in the lakes,
+measuring their lengths:
 
 ```{r}
 fish_a <-

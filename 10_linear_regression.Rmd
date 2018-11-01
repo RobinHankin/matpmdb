@@ -42,17 +42,17 @@ ANALYSIS WITHOUT A SCATTERGRAPH YOU WILL GET ZERO COURSE CREDIT.
 plot(price~age, data=carprices)
 ```
 
-In the above, the "```~```" symbol is read "is a function of".  See
-how the two variables age and price appear to be related, with older
-cars having a smaller price.  The scattergraph shows directly that a
-linear fit might be a good idea: the relationship is linear, there are
-no serious outliers, and the variability is roughly constant along the
-x-axis.  Having established that a linear model is a good starting
-point, we will use R to quantify the relationship between the two
-variables.
+In the above R idiom, the "```~```" symbol is read "is a function of".
+See how the two variables age and price appear to be related, with
+older cars having a smaller price.  The scattergraph shows directly
+that a linear fit might be a good idea: the relationship is linear,
+there are no serious outliers, and the variability is roughly constant
+along the x-axis.  Having established that a linear model is a good
+starting point, we will use R to quantify the relationship between the
+two variables.
 
 Observe that the vertical axis (price) depends on the horizontal axis
-(age).  Older cars are worth less.  In this example, it is obvioious
+(age).  Older cars are worth less.  In this example, it is obvious
 which variable appears as the horizontal and which on the vertical
 axis.  However, sometimes it is less clear.
 
@@ -78,16 +78,16 @@ Here,
 * $\alpha,\beta$ are the intercept and slope of the straight line which expresses the relationship  between $x_i$ and $y_i$
 * $\epsilon_i\sim N(0,\lambda^2)$ is an error term.  Observe that the $\epsilon_i$ are independent and identically distributed.
 
-Observe that we cannot observe $\alpha,\beta$ directly so have to
-estimate them.  The standard approach is to find the maximum
-likelihood estimate for $\hat{\alpha},\hat{\beta}$ and the R idiom to
-do so to use the ```lm()``` function:
+We do not know the values of $\alpha,\beta$, so have to estimate them.
+The standard approach is to find the maximum likelihood estimate,
+$\hat{\alpha},\hat{\beta}$.  The R idiom to do this is to use the
+```lm()``` function:
 
 ```{r}
 lm(price~age,data=carprices)
 ```
 
-This shows that the line of best fit is $y=3852-421*x$.  It is
+This shows that the line of best fit is $y=1939.3-365.3*x$.  It is
 straightforward to plot this on the graph:
 
 ```{r}
@@ -113,9 +113,8 @@ simply divide by 2.
 
 The above analysis is not perfect.  For example, the structure of the
 model has two defects: firstly, the price of the car becomes negative
-after a certain amount of time, which is unrealistic.
-
-We can mitigate this by considering a logarithmic transform:
+after a certain amount of time, which is unrealistic.  We can mitigate
+this by considering a logarithmic transform:
 
 ```{r}
 plot(log10(price)~age,data=carprices)
@@ -224,7 +223,7 @@ at ```?formula```.
 
 ### Correlation coefficient
 
-The p-value measures the strength of evidence againts the null, but
+The p-value measures the strength of evidence against the null, but
 this is not informative about the "closeness of fit" of the linear
 regression.  To measure this, we use the correlation coefficient $r$
 where $r=0$ corresponds to no relation $r$ close to $+1$ corresponds
