@@ -8,7 +8,7 @@ documentclass: book
 biblio-style: apalike
 link-citations: yes
 github-repo: RobinHankin/STAT601
-description: "This is the course manual for STAT61 (statistical methods)"
+description: "This is the course manual for STAT601 (statistical methods)"
 ---
 
 
