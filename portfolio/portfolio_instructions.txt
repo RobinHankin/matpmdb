@@ -1,0 +1,108 @@
+This is a reminder about the portfolio, which is to be submitted via
+Turnitin.  I have uploaded a couple of portfolios from last year to
+show what I'm looking for; these are available under the 'resources'
+tab. These portfolios are pretty good but not perfect.
+
+Recall that the idea of a portfolio is: "procure a small dataset from
+your everyday life and apply the methods of STAT601 to it".  A good
+size of dataset is say 20 lines and 4-7 columns: note that you must
+have data arranged so that each row is an observation.  People in the
+past have used data from their hobbies, their favourite sports teams,
+their work, home life, and so on.  Small and personal is good; I am
+not looking for anything deep or profound.  One student had a
+spreadsheet of a particular video game that he played with his partner
+(each row was a single game); another used a dataset of time in
+minutes of phone calls to her mother and friends (each row was a phone
+call).  Another student dug up carrots from his garden and weighed
+them (each row was a carrot; he measured their weight and length and
+colour and number of leaves); lots of people used travel time (on the
+bus or train) to college, in which case each row was one day's travel,
+including morning travel time and afternoon travel time.  One recent
+portfolio analysed marks out of 10 for different aspects of the coffee
+shops in Auckland's CBD: each row was a coffee shop and the columns
+were things like scores for flavour of coffee, decor, music, and
+attractiveness of the barista.
+
+A good portfolio will use a range of techniques to analyse the data.
+I'd expect some scattergraphs and linear regression, some discrete
+tests such as Pearson's chi-squared.  It would be very very good if
+people tested for counts being Poisson.  Remember to state your nulls!
+
+A good portfolio will have a good dataset which is amenable to
+analysis using STAT601 methods!  I am looking for your ability to
+choose and explain a suitable dataset.  Remember that I will not
+necessarily be familiar with your dataset.  If it is about a
+particular cricket team, for example, then I will not know who they
+are and you have to tell me about them and why you are interested in
+them.  If you are studying the temperature of your fishtanks, I want
+to see a photo of them so I can understand your dataset in context.
+
+I want to see people calculate p-values for their different tests and
+*interpret* them!  What does the null mean in the context of your
+dataset?  How do you interpret a rejection of the null?  What have you
+learned about your data?
+
+In the introduction, include a picture and explain what the dataset is
+about, what your connection to it is, and why Robin might be
+interested in it.  Here are some example good and bad introductions:
+
+BAD: I will analyse a Fnatic dataset for statistical patterns.
+
+GOOD: "Counterstrike" is a popular first-person perspective video game
+which has a world-wide following <reference>.  Competitive
+counterstrike matches <picture here> may have prizes exceeding
+US$10million.  Here I analyse play-by-play dataset of Fnatic, one of
+the most successful syndicates of all time.  Being Swedish, I have
+been following Fnatic since they formed in 2004.
+
+The BAD sentence gives me no information to go on.  See how the GOOD
+one introduces your datast to a person who has never heard of either
+the team or the sport and provides motivation for me to be interested
+in it too.  The BAD one leaves me clueless.
+
+BAD:  My data refer to coffeeshops in Auckland
+
+GOOD: Coffeeshops form part of the urban environment of modern
+Auckland and here I analyse a sample of 10 coffeeshops for quality of
+coffee, atmosphere, price, and attractiveness of the barista. <insert
+picture of favourite coffeshop here>.  I worked for Starbucks in the
+1990s, and am interested in how coffee-shops have changed since then.
+
+The BAD sentence above does not put the study in context as it does
+not tell me why I should be interested in coffee shops.  The GOOD
+sentence shows me something of your thinking about coffeeshops in
+general, and tells me explicitly why you have a personal connection to
+this topic.
+
+BAD: table 1 shows fishtank data.
+
+GOOD: Tropical fishkeeping is a popular and inexpensive hobby for
+thousands of people.  However, many fish species are very sensitive to
+temperature variations and it is important to control tank
+temperatures for fish well-being <figure>.  Last year I lost three
+fish due to the cold and subsequently bought an aquarium heater; I am
+keen to understand whether it works.  Table 1 shows my dataset, of
+which each row corresponds to one day and the columsn show temperature
+in the morning and evening....
+
+A good portfolio will have a summary section which picks out
+interesting or otherwise meaningful findings.  Do not feel that
+signficance is needed for a good summary.
+
+GOOD: I have analysed 35 DeathChainsawKiller (tm) games between me and
+my partner for statistical patterns.  Although I was expecting to win
+more games when using GiantBashingClub weapons than NukularChem
+weapons, there is no strong statistical evidence for this being the
+case.  However, I did find that morning games were statistically more
+likely to end in a draw than evening games (Fisher's exact test,
+p=0.043), probably because my partner works night-shifts and is tired
+in the morning.
+
+GOOD: I analysed a dataset of 14 of my cosplay friends for the number
+of wigs they own as a function of age and gender.  No strong
+statistical trends were found.  However, I did discover that the wigs
+were not distributed evenly among my friends (chi-square, p=0.023),
+probably due to a single outlier: Michael has a very large number of
+wigs, being a wardrobe manager.
+
+
