@@ -1,8 +1,8 @@
 ---
 title: "portfolio"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -12,22 +12,19 @@ knitr::opts_chunk$set(echo = TRUE)
 ## Example portfolio
 
 This project presents a statistical analysis of a photograph album, which I took on August 2008.
-The data will be a list of how many (out of 3) children were in each photograph.  The figure below shows one of the photographs from the album, this one with all three children in it.  I enjoyed our vacation but found it difficult to take photos of the children, who did not want to be photographed.
+The dataset shows which of my three children were in each photograph.  The figure below shows one of the photographs from the album, this one with all three children in it.  I enjoyed our vacation but found it difficult to take photos of the children, who sometimes did not want to be photographed.
 
 ![My three children](three.jpg){width=250px}
 
 
 The dataset used has 32 rows and three columns.  Each row corresponds to a photograph in the album and each column to a child:
 
-
 ```{r}
 a <- as.matrix(read.table("chi.txt",header=TRUE))
 head(a)
 ```
 
-thus in the first photograph, all three children were in the photo, in the second Alice and Zac were but Annabel was not, and so on.
-
-First I will analyse to see whether the number of children present was a binomial distribution with size 
+thus in the first and second photographs, all three children were in the photo, (three ```TRUE``` entries), but in the third, Alice was not present but Zac were but Annabel were, and so on.  First I will analyse whether the number of children present in the photgraphs was a binomial distribution with size 3.
 
 ```{r}
 table(rowSums(a))
@@ -113,4 +110,11 @@ summary(glm(c(a)~c(p,p,p),family="binomial"))
 ```
 
 The p-value of 0.0825 would show that there is no evidence for a change in probability with time.  However, it might be argued that we have a one-sided test (the kids got more badly-behaved as the holiday progressed) in which case the p-value would be borderline significant.
+
+## Summary and conclusions
+
+This portfolio has analysed a dataset of 32 family photographs of an album for statistical patterns.  Although each of the three children appear with equal probability (p=0.78), the number of children is not binomially 
+distributed (chi square, p=0.024).  It seems that the children are not independent and we can see that only a small number of photos have exactly two children in them: most photos had either one or three children in them.  Perhaps the photos with all three were the result of bribery.
+
+The photographs show a slight, but statistically significant, trend in time: later photographs have a smaller number of children in them (one-sided logistic regression, p=0.043).  It seems as though bribery becomes less effective with time.
 
