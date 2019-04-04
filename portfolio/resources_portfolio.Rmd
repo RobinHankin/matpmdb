@@ -1,0 +1,163 @@
+---
+title: "Mathematical resources: Robin Hankin 1266402"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## STAT601 Portfolio: mathematical resources
+
+I collect and use mathematical puzzles for their intrinsic interest, and sometimes show these at open days and exhibitions.  These resources can inspire students with the power and beauty of mathematics.  Here I will analyse a small dataset which tabulates the resources I have and some information about each one of them.
+
+```{r}
+a <- read.table("resources_data.txt",header=TRUE)
+a
+```
+
+The first line shows that the quincunx (a mechanical illustration of the Binomial distribution) was acquired in 2012 at zero cost (zero cost is represented as one cent), and it has been used 9 times.  There are 20 resources in total; the figure below shows some of them.  
+
+![Some mathematical resources: from left to right: brainstrings puzzle, polydron, zometool, polydron solid](resources.jpg){width=280px}
+
+
+## Use of resources
+
+It looks as though some resources are more heavily used than others: the quincunx, for example, is used 9 times but the armadillo cube is not used at all.  Is this really the case or can random variability explain the differences?
+
+```{r}
+o <- a$used  # 'o' for 'observation'
+o
+```
+
+Now the null is that each item is used with the same probability:
+```{r}
+e <- rep(mean(o),length(o))  # 'e' for 'expectation'
+e
+```
+
+And we may compare observation with expectation using Pearson's chi-square test:
+
+```{r}
+B <- sum((o-e)^2/e)
+B
+pchisq(B,df=length(o)-1,lower.tail=FALSE)
+```
+
+showing that some resources are indeed more heavily used than others: the variability is higher than would be expected  by chance.
+
+### Is use proportional to age?
+
+However, it might be argued that the older resources have more chance to be used than the newer ones as they have had more opportunity.  We can plot the age of a resource against the number of times it has been used:
+
+```{r}
+age <- 2019 - a$year
+plot(a$use~age,data=a,xlab="age (years)",ylab="number of times used")
+abline(lm(a$used~age))
+```
+
+Is the regression line significant?
+
+```{r}
+summary(lm(a$use ~age))
+```
+
+so there is strong evidence that the older items are indeed more heavily used. 
+
+## Use of items proportional to age.
+
+It might be argued that the older resources have had longer to be used in conferences than the newer resourres.
+Can we try a null of number of uses being proportional to age? We will need to define a new expectation:
+
+```{r}
+e <- age*sum(a$use)/sum(age)
+e
+sum(e)
+```
+
+Then the observations are just ```a$use```:
+
+```{r}
+o <- a$use
+B <- sum((o-e)^2/e)
+B
+pchisq(B,df=length(e)-1,lower.tail=FALSE)
+```
+
+So there is evidence that age alone cannot account for the differences in use numbers.
+
+## Does acquisition rate differ by year?
+Now we can test the (null) hypothesis that each year has the same probability of acquiring a given resource:
+
+```{r}
+o <- table(a$year)  # observed number of resources by year
+o
+e <- rep(mean(o),length(o))
+e   # expected resources per year
+```
+
+Then Pearson's chi-squared test:
+
+```{r}
+B <- sum((o-e)^2/e)
+pchisq(B,df=length(e)-1,lower.tail=FALSE)
+```
+
+So there is no evidence that the years have different probabilities of acquiring a resource.
+
+
+## Cost
+
+We can plot the cost of an item against the number of uses.  Perhaps the higher-cost items are used more often?
+
+```{r}
+plot(used~cost,data=a)
+abline(lm(used~cost,data=a))
+```
+
+Is the slope significant?
+
+```{r}
+summary(lm(used~cost,data=a))
+```
+
+No evidence as the p-value exceeds 0.05 (this is arguably a one-sided test).
+
+Does the cost vary with year of purchase?
+
+```{r}
+plot(cost~year,data=a)
+abline(lm(cost~year,data=a))
+```
+
+significant?
+
+```{r}
+summary(lm(cost~year,data=a))
+```
+
+the (two-sided) pvalue is not significant although the one-sided value is.  We might wonder whether the expensive items are more heavily used.  For this, we use Fisher's exact test with "expensive" meaning costing more than one cent, and "heavily used" meaning "used more than 7 times":
+
+```{r}
+P <- table(expensive=a$cost>0.01,heavily_used=a$use>7)
+P
+```
+
+In the above, we see that out of the 20 resources, three have zero cost and 17 have nonzero cost; but all three zero-cost resources are heavily used, compared with only one nonzero cost resource. Our null would be that heavy use is independent of cost being zero.  We can test our null with Fisher's exact test:
+
+```{r}
+fisher.test(P)
+```
+
+Thus the result is highly significant and we may reject the null.  It seems as though the zero cost resources are indeed more heavily used than the nonzero cost resources.
+
+## Conclusions
+
+The dataset of mathematical resources was analysed using statistical methods and a number of results obtained. 
+The resources are not equally used (chi-squared, p < 0.001) and some appear to be more heavily used than others.
+Although older resources are more heavily used than newer ones, this cannot explain the variability in use that we observe.  It seems that the use of a resource is uncorrelated with its cost (ols, p=0.33), but zero cost resources are more heavily used than nonzero cost resources (Fisher's exact test, p=0.003).
+
+There is no  evidence for the rate of acquisition of resources to vary with year (chi square, p=0.88).
+
+
+
