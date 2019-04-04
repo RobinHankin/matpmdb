@@ -16,7 +16,7 @@ a <- read.table("resources_data.txt",header=TRUE)
 a
 ```
 
-The first line shows that the quincunx (a mechanical illustration of the Binomial distribution) was acquired in 2012 at zero cost (zero cost is represented as one cent), and it has been used 9 times.  There are 20 resources in total; the figure below shows some of them.  
+The first line shows that the quincunx (a mechanical illustration of the Binomial distribution) was acquired in 2012 at zero cost (zero cost is represented as one cent), and it has been used 9 times in different AUT events through the years.  There are 20 resources in total; the figure below shows some of them.  
 
 ![Some mathematical resources: from left to right: brainstrings puzzle, polydron, zometool, polydron solid](resources.jpg){width=280px}
 
@@ -92,8 +92,13 @@ Now we can test the (null) hypothesis that each year has the same probability of
 ```{r}
 o <- table(a$year)  # observed number of resources by year
 o
+```
+
+Thus I purchased 3 resources in 2012, 4 in 2013, and so on.  Are these differences due to chance?
+
+```{r}
 e <- rep(mean(o),length(o))
-e   # expected resources per year
+e   # expected resources per year under the null
 ```
 
 Then Pearson's chi-squared test:
@@ -136,7 +141,9 @@ significant?
 summary(lm(cost~year,data=a))
 ```
 
-the (two-sided) pvalue is not significant although the one-sided value is.  We might wonder whether the expensive items are more heavily used.  For this, we use Fisher's exact test with "expensive" meaning costing more than one cent, and "heavily used" meaning "used more than 7 times":
+the (two-sided) pvalue is not significant although the one-sided value is.  The two-sided test is appropriate here because the cost could plausibly increase or decrease with time.
+
+We might wonder whether the expensive items are more heavily used.  For this, we use Fisher's exact test with "expensive" meaning costing more than one cent, and "heavily used" meaning "used more than 7 times":
 
 ```{r}
 P <- table(expensive=a$cost>0.01,heavily_used=a$use>7)
