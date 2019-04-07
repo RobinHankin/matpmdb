@@ -46,14 +46,15 @@ In the introduction, include a picture and explain what the dataset is
 about, what your connection to it is, and why Robin might be
 interested in it.  Here are some example good and bad introductions:
 
-BAD: I will analyse a Fnatic dataset for statistical patterns.
+BAD: I will analyse a Cloud9 dataset for statistical patterns.
 
 GOOD: "Counterstrike" is a popular first-person perspective video game
-which has a world-wide following <reference>.  Competitive
-counterstrike matches <picture here> may have prizes exceeding
-US$10million.  Here I analyse play-by-play dataset of Fnatic, one of
-the most successful syndicates of all time.  Being Swedish, I have
-been following Fnatic since they formed in 2004.
+which has a world-wide following.  Competitive counterstrike matches
+<insert picture here> may have prizes exceeding US$10million.  Cloud9
+is one of the most successful counterstrike syndicates of all time; I
+have followed them since they formed in 2012.  Here I analyse a
+dataset taken from one of Cloud9's most successful and influential
+games in which they played FaZe Clan at Boston 2018.
 
 The BAD sentence gives me no information to go on.  See how the GOOD
 one introduces your datast to a person who has never heard of either
