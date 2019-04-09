@@ -69,7 +69,7 @@ B\equiv B\cap A$, and rearranging, we arrive at *Bayes's theorem*:
 
 \begin{equation}
 \frac{\mbox{$\prob{A|B}$}}{\prob{A}} = 
-\frac{\prob{A|B}}{\prob{B}}
+\frac{\prob{B|A}}{\prob{B}}
 \end{equation}
 
 In practice, we re-write $\prob{B}$ and rearrange:
@@ -102,7 +102,7 @@ re-stated with different letters:
 Here, $H$ stands for "hypothesis" which explains data $D$.  Here the
 hypothesis $H$ would be "it is raining" and of course $\overline{H}$
 would mean "it is not raining".  Note that the two hypotheses $H$ and
-$\overline{H}$ are exlusive and exhaustive: exactly one of these two
+$\overline{H}$ are exclusive and exhaustive: exactly one of these two
 alternatives is true.  The data $D$ would be "Robin cycled to work
 today".  In Bayes's theorem we would have the following
 interpretations for the various terms:
