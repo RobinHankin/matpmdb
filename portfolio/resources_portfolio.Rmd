@@ -84,7 +84,7 @@ B
 pchisq(B,df=length(e)-1,lower.tail=FALSE)
 ```
 
-So there is evidence that age alone cannot account for the differences in use numbers.
+So there is evidence that age alone cannot account for the differences in use numbers (tutors: the next step would be to use ```glm(a$used~log(age),family="poisson",offset=log(age))``` and  observe that the age term is not significant, showing no evidence for nonlinear age dependence).
 
 ## Does acquisition rate differ by year?
 Now we can test the (null) hypothesis that each year has the same probability of acquiring a given resource:
