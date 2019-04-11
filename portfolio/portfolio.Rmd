@@ -1,5 +1,5 @@
 ---
-title: "portfolio"
+title: "Statistical analysis of a photograph album.  Robin Hankin 1266402"
 output:
   pdf_document: default
   html_document: default
