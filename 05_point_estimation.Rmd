@@ -128,7 +128,7 @@ constant.  We really should say "*a* likelihood function", by which we
 mean any function that is proportional to $\prob{D|H}$.].  In R it is just 
 
 ```
-function(p){p^35*(1-p)^65
+function(p){p^35*(1-p)^65}
 ```
 
 and later when we consider Bayesian analysis we will see how this line
