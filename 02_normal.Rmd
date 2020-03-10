@@ -441,8 +441,8 @@ well-defined mean $\mu$ and variance $\sigma^2$ given by
 Thus, for example, if $n=6$ and $p=\frac{1}{3}$ we would have a mean
 of $np=6\times\frac{1}{3}=2$ and a variance of
 $np(1-p)=6\times\frac{1}{3}\times\frac{2}{3}=\frac{4}{3}$.  Thus the
-standard deviation will be $\sqrt{\frac{4}{}}$, or about
-1.154. Verifying this numerically is straightforward:
+standard deviation will be $\sqrt{\frac{4}{3}}$, or about
+1.154.  Verifying this numerically is straightforward:
 
 ```{r}
 mean(rbinom(1e6,6,1/3))
