@@ -612,5 +612,58 @@ sum(replicate(n,365-length(unique(sort(sample(1:365,1740,replace=TRUE)))))>=8)/n
 significant.
   \end{solution}
 \end{enumerate}
+
+\item {\bf question} A scientist is studying human memory.  Subjects
+  are shown a five-digit number for different lengths of time and then
+  have to write the number down.  The subject either correctly recalls
+  the number or fails to recall it.
+ 
+ The results are as follows:
+ 
+<<>>=
+ times <-
+ c(10.73, 9.9, 9.61, 8.7, 8.56, 8.31, 8.18, 7.86, 7.63, 6.99, 
+ 6.66, 6.1, 5.92, 5.84, 5.67, 5.64, 5.56, 5.29, 5.1, 5.09, 4.92, 
+ 4.81, 2.86, 2.13, 2.05, 1.95, 1.67, 1.67, 1.38, 1.02)
+ 
+ correct <- 
+ c(1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 
+ 1, 1, 0, 0, 0, 0, 0, 1, 0, 0)
+@
+ 
+ Here, {\tt times} shows the amount of time given to the student, and
+ {\tt correct} is a Bernoulli variable, with {\tt 1} meaning the number
+ was correctly recalled {\tt 0} meaning it was not.
+ 
+\begin{enumerate}
+\item
+% Perform a logistic regression of {\tt correct} against {\tt times}.
+ Report your p-value, state your null hypothesis, state whether your
+ p-value is significant, and interpret. 
+ 
+ \begin{solution}
+<<>>=
+fit <- glm(correct~times, family='binomial')
+summary(fit)
+@ 
+
+Now we can plot it
+<<fig=TRUE>>=
+plot(correct~times)
+logistic <- function(x){1/(1+exp(-x))}
+x <- seq(from=0,to=10,len=100)
+points(x,logistic(-3.42 + 0.68*x),type="l")
+abline(h=0.9)
+@ 
+\end{solution}
+ 
+\item give a rough estimate for the time required for the number to be
+correctly recalled with~90\% probability.
+
+\begin{solution}
+ From the graph, about 8m.
+   \end{solution}
+
+\end{enumerate}
 \end{enumerate}
 \end{document}
