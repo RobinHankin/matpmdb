@@ -1,7 +1,8 @@
-This is a reminder about the portfolio, which is to be submitted via
-Turnitin.  I have uploaded a couple of portfolios from last year to
-show what I'm looking for; these are available under the 'resources'
-tab. These portfolios are pretty good but not perfect.
+This document gives general instructions for producing a portfolio,
+for STAT601.  The portfolio is to be submitted via Turnitin.  I have
+uploaded a couple of portfolios from last year to show what I'm
+looking for; these are available under the 'resources' tab. These
+portfolios are pretty good but not perfect.
 
 Recall that the idea of a portfolio is: "procure a small dataset from
 your everyday life and apply the methods of STAT601 to it".  A good
