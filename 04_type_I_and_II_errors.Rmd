@@ -161,8 +161,8 @@ polygon(x=jj,y=c(dnorm(xx),xx*0),border=NA,col='gray')
 points(x,dnorm(x),type='l',lwd=2)
 
 
-text(qnorm(0.95),0.05,'reject H0',pos=2)
-text(qnorm(0.95),0.05,'do not reject H0',pos=4)
+text(qnorm(0.95),0.05,'do not reject H0',pos=2)
+text(qnorm(0.95),0.05,'reject H0',pos=4)
 abline(v=qnorm(0.95),lwd=3)
 
 legend("topleft",
