@@ -132,7 +132,7 @@ Note: references to books are for my reference. No need to share these with the 
 
 \begin{enumerate}
   \item 
-  {\bf Question 1}
+  {\bf QUESTION }
 In this question we will evaluate type I and type II error
 probabilities for one-sided tests.  We will consider normally
 distributed data, with unit variance and independent obervations.  We
@@ -205,8 +205,7 @@ pow(216476)
 \end{enumerate}
 
 \item 
- {\bf Question }
-  
+ {\bf QUESTION }
 Consider the following dataset: 
 
 <<>>=
@@ -465,7 +464,7 @@ Significant, just.
   justify this.  Interpret your findings in non-statistical language.
 \end{enumerate}
 
-\item {\bf question} A fire station logs the number of callouts
+\item {\bf QUESTION} A fire station logs the number of callouts
   occuring each day for a year and tabulates the results:
 
 
@@ -613,7 +612,7 @@ significant.
   \end{solution}
 \end{enumerate}
 
-\item {\bf question} A scientist is studying human memory.  Subjects
+\item {\bf QUESTION} A scientist is studying human memory.  Subjects
   are shown a five-digit number for different lengths of time and then
   have to write the number down.  The subject either correctly recalls
   the number or fails to recall it.
