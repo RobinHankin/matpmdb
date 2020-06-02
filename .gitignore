@@ -10,3 +10,18 @@ _main.Rmd
 packages.bib
 stat601.Rproj
 
+labs/*.pdf
+labs/*.tex
+labs/*.log
+labs/*.out
+labs/*.aux
+labs/*.Rnw~
+labs/*.tex
+
+assignments/*.pdf
+assignments/*.tex
+assignments/*.log
+assignments/*.out
+assignments/*.aux
+assignments/*.Rnw~
+assignments/*.tex
