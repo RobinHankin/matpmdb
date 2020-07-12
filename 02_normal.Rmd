@@ -1,5 +1,8 @@
 # The normal or Gaussian distribution {#normal}
- 
+
+\newcommand{\prob}[1]{\operatorname{\mathrm{Prob}}\left({#1}\right)}
+\newcommand{\like}[1]{\operatorname{\mathcal{L}}\left(#1\right)}
+\newcommand{\supp}[1]{\operatorname{\mathcal{S}}\left(#1\right)} 
 
 ```{block2, type='youtube'}
 <https://www.youtube.com/watch?v=2I30Ju4we10&list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84&index=6>
