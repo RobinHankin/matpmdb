@@ -1,0 +1,139 @@
+---
+output: pdf_document
+title: logistic regression
+fontsize: 12pt
+---
+
+# Logistic regression
+
+
+Consider the following dataset, taken from the discipline of human
+psychology, in which a person is asked to identify whether or not
+there is a particular feature in an image that is presented to the
+subject.
+
+```{r}
+x <- seq(from=0,to=6,len=30)
+y <- c(0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
+          0,0,1,1,1,1,1,1,1,1)
+```
+
+Dataset y is the time in seconds that the subject is allowed to
+view the image, and ``y'' is the result, with 0 meaning ``incorrect''
+and 1 meaning ``correct''.
+
+We can plot this easily:
+
+
+```{r}
+plot(y~x,pch=16)
+```
+
+
+
+# Doing logistic regression by hand
+
+We can attempt to find the logistic fit by hand.  First we need to
+define a logistic transformation:
+
+```{r}
+logistic <- function(x){exp(x)/(1+exp(x))}
+LO <- function(p){log(p/(1-p))}
+```
+
+
+```{r}
+p <- runif(100)
+max(abs(p-logistic(LO(p))))
+```
+
+and
+
+```{r}
+z <- rnorm(100)
+max(abs(z-LO(logistic(z))))
+```
+
+Make sure you understand what these lines do, and why we need both of them.
+We can now use these functions to plot the regression line.
+
+
+First of all we need a likelihood function.
+
+```{r}
+like <- function(beta){
+  p <- logistic(beta[1] + beta[2]*x)
+  success <- y==1
+  fail    <- y==0
+  prod(p[success]) * prod(1-p[fail])
+}
+```
+
+so we can evaluate this at a couple of points:
+
+```{r}
+like(c(1,1))
+like(c(1,2))
+```
+
+and we can use optim() to find the MLE:
+
+
+```{r}
+f <- function(beta){-log(like(beta))}
+optim(c(1,1),f)
+```
+
+(a more mathematical approach would show that we do not need to worry
+about local maxima).
+
+# Logistic regression using glm() 
+
+The regression is carried out usig the glm() function:
+
+
+
+```{r}
+fit <- glm(y~x,family='binomial')
+fit
+```
+
+And we can see more detail using summary():
+
+
+```{r}
+summary(fit)
+```
+
+So, from the pvalue of 0.00425 we can see that the relationship is significant.
+We can plot the regression using the logistic transform function.
+Taking the coefficients from the fit, we have:
+    
+```{r}
+plot(y~x,pch=16)
+points(x,logistic(-3.07 + 0.95*x),type='l')
+```
+
+And this would show that the estimate for the value of x that gives
+$p=0.5$, that is $\hat{x} = -B/A = 3.07/0.95=3.23$, is about right.
+
+
+# Task
+
+A subject is asked to repeatedly perform a task which is a
+fail/succeed trial.  The probability of success is assumed to increase
+as the trials progress, as he has chance to improve is hand-eye
+coordination.  Consider the following dataset:
+
+```{r}
+trial <- 
+c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 
+18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30)
+d <- 
+c(0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 
+0, 0, 0, 0, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1)
+```
+
+(in object `d`, 0 means fail and 1 means succeed).  Perform a logistic
+regression on this dataset and interpret your findings.
+

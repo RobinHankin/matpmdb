@@ -1,0 +1,252 @@
+%% -*- mode: noweb; noweb-default-code-mode: R-mode; -*-
+\documentclass[nojss]{jss}
+
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amssymb}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% declarations for jss.cls %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% just as usual
+\author{Robin K. S. Hankin\\Auckland University of Technology}
+\title{Fisher's exact test}
+%\VignetteIndexEntry{The multivator package}
+
+%% for pretty printing and a nice hypersummary also set:
+\Plainauthor{Robin K. S. Hankin}
+\Plaintitle{Fisher's exact test}
+\Shorttitle{Fisher's exact test}
+
+
+\newcommand{\question}{{\bf Question: }}
+\newcommand{\answer}{{\bf Answer: }}
+\newcommand{\Rq}{{\bf ``Is R doing what I think it is doing?''}}
+\newcommand{\prob}[1]{\operatorname{Prob}\left(#1\right)}
+
+%% an abstract and keywords
+
+\Abstract{This short handout takes you through some theory and
+practical work for Fisher's exact test.
+
+  Remember that you can type \code{?rbeta} at the R prompt to get help
+  on the beta distribution.  You are also encouraged to search for
+  ``Fisher's exact test'' on Google; the wikipedia page is an excellent
+  source of information.
+       }
+
+\Keywords{Fisher's exact test}
+
+
+\Address{
+  Robin K. S. Hankin\\
+  WT118\\
+  Auckland University of Technology\\
+  Auckland\\
+  New Zealand\\
+}
+
+
+%% need no \usepackage{Sweave.sty}
+
+
+\begin{document}
+
+
+Consider an experiment in which a number of students are classified
+into male or female, and left- or right- handed.  We are interested in
+whether there is a gender difference in handedness.
+
+The data might look like this
+
+
+\begin{verbatim}
+ID	gender	handedness
+1266485  M      L
+1266136  F      R
+1265827  F      R
+1266361  F      R
+1266364  F      R
+...
+\end{verbatim}
+
+There is an example file called {\tt handedness.txt} on AUTonline.
+
+We can tabulate it as follows:
+
+<<>>=
+a <- read.table("handedness.txt",header=TRUE)
+head(a)
+tab <- table(a$gender,a$handedness)
+tab
+@
+
+
+{\bf your task} is to write out all possible contingency tables with
+the same marginal totals.  That is, all two-by-two tables with
+non-negative integer entries that have the same rowsums and columnsums
+as table {\tt tab} in the R code above.
+
+Then note that the {\em observed} table is at the very extreme of the
+list of possible tables.
+
+To calculate a p-value we need to work out the consequences of the
+null.  The probability, if the null is true, of observing any table is
+proportional to the reciprocal of the product of the factorial of the
+entries.  For example:
+
+
+$$
+\mathrm{Prob}\left(\begin{array}{cc}3 & 1\\2 & 4\end{array}\right) =
+  \frac{K}{3!12!5!0!}=\frac{K}{344881152000}
+  $$
+
+where~$K$ is a constant that makes the total probability (of all
+tables with the correct marginal totals) equal to one.  Thus
+
+$$
+\frac{K}{3!12!5!0!}+
+\frac{K}{4!11!4!1!}+
+\frac{K}{5!10!3!2!}+
+\frac{K}{6! 9!2!3!}+
+\frac{K}{7! 8!1!4!}+
+\frac{K}{8! 7!0!5!}
+=1
+$$
+
+From which we could work out K if we had to (exercise).
+
+From the definition of p-value, we can calculate it as follows:
+    
+    
+    $$
+p=\frac{
+    \frac{K}{3!12!5!0!}}{
+           \frac{K}{3!12!5!0!}+
+               \frac{K}{4!11!4!1!}+
+                   \frac{K}{5!10!3!2!}+
+                       \frac{K}{6! 9!2!3!}+
+                           \frac{K}{7! 8!1!4!}+
+                               \frac{K}{8! 7!0!5!}
+}$$
+
+But $K$ cancels out from the top and bottom, giving: $$ \frac{
+       \frac{1}{3!12!5!0!}}{
+            \frac{1}{3!12!5!0!}+
+                \frac{1}{4!11!4!1!}+
+                    \frac{1}{5!10!3!2!}+
+                        \frac{1}{6! 9!2!3!}+
+                            \frac{1}{7! 8!1!4!}+
+                                \frac{1}{8! 7!0!5!}
+        }
+$$
+
+[the exceptionally well-prepared student will notice that we have seen
+  this type of cancellation before, in Bayes's theorem.  However, note
+  carefully that Fisher's exact test is not likelihood-based, but
+  instead based on sample space considerations].  Fortunately, R will
+do all the calculations  for us, with \code{fisher.test()}.
+
+<<>>=
+fisher.test(tab)
+@ 
+
+
+See the very small p-value generated.  This shows that we may reject
+the null of equal probability (of being left-handed) between male and
+female students.
+
+Note that ``more extreme'' may include the other tail.  You can
+control whether the other tail is included or not using the {\tt
+alternative} argument in {\tt fisher.test()}.  Remember to use {\tt
+?fisher.test} to see the documentation.
+
+
+The test is very general and I use it all the time when doing
+statistical consultancy.
+
+For example, suppose we look at a young, bright handsome statistician
+working at a modern research-led university in the Southern
+hemisphere.  He travels to work by either bike or bus; and the weather
+is either bright or sunny. 
+
+
+
+We might have a table that starts like
+this:
+
+
+\begin{verbatim}
+day	travel	weather
+June 1  Bike    Sun
+June 2  Bike    Sun
+June 3  Bus     Rain
+June 4  Bike    Sun
+June 5  Bike    Sun
+June 6  Bike    Sun
+June 7  Bus     Rain
+\end{verbatim}
+
+And suspect that he gets the bus if it is raining.
+
+The tabular form would look like this:
+<<>>=
+a <- matrix(c(2,0,0,5),2,2,dimnames=list(weather=c("Rain","Sun"),travel=c("Bus","Bike")))
+a
+@ 
+
+And we could analyze it as follows:
+    
+<<>>=
+fisher.test(a,alternative="greater")
+@ 
+
+(note the alternative is {\tt greater} because we think he is {\em
+more} likely to cycle when it is sunny.  We are looking for an {\em
+increase} in the probability that he gets the bus when it is raining,
+not a {\em difference}).
+
+
+\section*{An exam question from 2019}
+
+A certain department in AUT has 11 staff including 5 professors.  Each
+staff member is left-handed or right-handed; there are 7 left-handed
+staff members.  All 5 professors are left-handed.  The following R
+idiom describes this dataset:
+
+\begin{verbatim}
+a <- matrix(c(5,0,2,4),2,2)
+dimnames(a) <- 
+list(office=c("left-handed", "not LH"), professor=c("yes","no"))
+> a
+             professor
+office        yes no
+  left-handed   5  2
+  not LH        0  4
+> 
+\end{verbatim}
+
+\begin{enumerate}
+\item In the context of assessing whether professors are more likely
+  to be left-handed, state
+  sensible null hypothesis
+\item  Bearing in mind that professors are no more or less likely to be left handed than the general population,
+ is a one-sided test or a two-sided test  more appropriate?  Justify.
+\item  Using R idiom such as
+  \verb+fisher.test(x)+, test your null
+  hypothesis.  Interpret your result in a way in which a busy
+  professor, who has a window in her office but is not a professor of
+  statistics, could understand.
+\item (harder) Three of the staff drink coffee and the other~8
+  prefer tea.  Two of the coffee drinkers are professors.
+  
+  Define ``odds ratio'', then estimate the odds ratio of the
+  probabilities of preferring tea for professors and non-professors.
+  For extra credit, define the term ``confidence interval'', and give
+  a~95\% confidence interval for the odds ratio. 
+\end{enumerate}
+
+
+
+\bibliography{multivator} \end{document}

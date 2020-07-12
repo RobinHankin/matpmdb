@@ -1,0 +1,265 @@
+---
+output: html_document
+title: Pearson's chi square test
+fontsize: 12pt
+---
+
+# Introduction
+
+This short handout takes you through the basics of likelihood as
+applied to the Gaussian distribution and the binomial distribution.
+Go through the material, typing the R commands at the R prompt, making
+sure you understand the content.
+       
+This short handout takes you through some theory and practical work
+with the Poisson distribution; and shows how the Pearson Chi-square
+test works.
+  
+Remember that you can type ?rbeta at the R prompt to get help on the
+beta distribution.  You are also encouraged to search for "Poisson
+distributuion" and "Pearson chi square test" on Google; wikipedia is
+an excellent source of information.
+
+
+# Pearsons chi-square test
+             
+             
+Pearsons chi-square test applies to a fixed, large, number $n$ of
+trials, each one classified into one of $r$ categories.  I always
+think of throwing $n$ balls into one of $r$ boxes and counting how
+many balls end up in each of the boxes.
+
+Suppose we have $n=100$ balls and $r=4$ boxes.  We can
+simulate this situation as follows:
+    
+```{r}
+boxes <- paste("box",1:4,sep="")
+sample(boxes,100,replace=TRUE)
+```
+
+but of course it is much better to use `table()` to summarise:
+
+```{r}
+table(sample(boxes,100,replace=TRUE))
+table(sample(boxes,100,replace=TRUE))
+table(sample(boxes,100,replace=TRUE))
+```
+             
+Try this yourself and get a feel for the variability.  Remember to
+type `?sample` to get help on the the `sample()` command.
+
+Suppose we do the experiment and observe
+
+```{r}
+o <- c(41,17,20,22)   # 'o' for 'observation'
+```
+
+Is this dataset consistent with a null hypothesis $H_0\colon
+p_1=p_2=p_3=p_4=\frac{1}{4}$?  [what would such a null mean in
+English?]  See how the observations are different from the expectation
+of equal numbers in each box.  If the null is true, can chance
+variability account for this observation?  In this case the expected
+number of balls is 25 as the probabilities for the four boxes are
+equal.
+
+```{r}
+e <- c(25,25,25,25)
+```
+
+
+We will assess our null using Pearsons chi square test.  You will
+recall from lectures that it is possible to quantify the
+goodness-of-fit for a distribution by calculating $B$:
+
+$$
+B=\sum_{i=1}^n\frac{\left(o_i-e_i\right)^2}{e_i}
+$$
+
+There is ready R idiom for calculating this:
+
+```{r}
+B <- sum((o-e)^2/e)  
+B
+```
+Note the placement of the brackets (what does `sum(o-e)^2/e` give?).
+We recall that, if the null is true, badness B is distributed with a
+chi-square distribution with 3 degrees of freedom.  We can plot a
+diagram, shown below.
+    
+    
+```{r}
+x <- seq(from=0,to=20,len=400)
+plot(x,dchisq(x,df=3),type="l")
+abline(h=0)
+abline(v=B,lwd=6)
+text(B,0.1,"observed B",pos=4)
+```
+
+Our observation is the value of B, which was 14.16 and this is shown
+on the graph.  The p-value [being the probability, if the null is
+true, of obtaining the observation or an observatin more extreme]
+would be the area to the right of the line.  To calculate the exact
+pvalue we use `pchisq()`:
+    
+```{r}
+pchisq(14.16,df=3,lower.tail=FALSE)
+```
+
+which indicates that we may reject the null.  It is possible to test
+other hypotheses.  Suppose that two of the boxes were twice as large
+as the others and our hypothesis would be
+$p_1=\frac{1}{3},p_2=\frac{1}{3}, p_3=\frac{1}{6}, p_4=\frac{1}{6}$.
+Sampling from this null requires a new argument to sample():
+
+```{r}
+args(sample)
+sample(boxes,100,replace=TRUE,prob=c(1/3,1/3,1/6,1/6))
+table(sample(boxes,100,replace=TRUE,prob=c(1/3,1/3,1/6,1/6)))
+table(sample(boxes,100,replace=TRUE,prob=c(1/3,1/3,1/6,1/6)))
+table(sample(boxes,100,replace=TRUE,prob=c(1/3,1/3,1/6,1/6)))
+```
+
+[try your own probabilities here to get a feel for the variability;
+again see how I build up the command from the inside out]
+
+
+```{r}
+probs <- c(1/3,1/3,1/6,1/6)
+e <- probs*100
+o <- c(29,31,20,20)  
+B <- sum((o-e)^2/e)
+pchisq(B,df=3,lower.tail=FALSE)
+```
+
+not significant because the pvalue exceeds 0.05.  Is this a type I
+error, or a type II error, or something else?
+
+# Random simulation
+
+It is possible to verify that B is in fact approximately a chi-square
+random variable by random sampling.  The overall process we have been
+using is:
+
+```{r}
+n <- 100
+p <- c(1/2,1/3,1/12,1/12)
+e <- p*n
+o <- tabulate(sample(1:4,n,replace=TRUE,prob=p))
+B <- sum((o-e)^2/e)
+B
+```
+
+We can create a histogram in one step.  See if you can unpick the
+following R idiom:
+    
+ 
+```{r}
+badness <- replicate(20000,sum((tabulate(sample(1:4,n,replace=TRUE,prob=p),nbins=4)-e)^2/e))
+hist(badness)
+```
+
+Compare this with results from the \verb+rchisq()+ function in R.
+
+# Pearsons chi-square test: horse kicks
+
+We will assess a null hypothesis that the number of horse kick deaths
+was distributed as a Poisson.  You will recall from lectures that it
+is possible to quantify the goodness-of-fit for a distribution by
+calculating $B$.  The Horse kick data was as follows:
+
+```{r}
+o <- c(109,65,22,3,1,0,0)
+```
+
+indicating that 109 regiments had zero deaths, 65 had 1, 22 had 2 and
+so on.   We need to calculate deaths per regiment:
+    
+    
+```{r}
+regiments <- sum(o)
+deaths    <- sum(o*(0:6))
+deaths/regiments
+```
+
+
+We will combine the 3,1,0,0 together to form 4, giving data:
+        
+```{r}
+o <- c(109,65,22,4)
+```
+
+So the ``4'' means 4 regiments had $\geqslant 3$ deaths.  We need to
+calculate the probabilities of having $0,1,2,\geqslant 3$ deaths:
+    
+    
+```{r}
+dpois(0:2,lambda=0.61)
+1-sum(dpois(0:2,lambda=0.61))
+```
+    
+So the probabilities are:
+
+```{r}
+p <- c(dpois(0:2,lambda=0.61),1-sum(dpois(0:2,lambda=0.61)))
+p
+sum(p)
+```
+
+And the expected number of regiments are then:
+    
+```{r}
+e <- 200*p
+e
+```
+
+
+And we can calculate the badness:
+    
+```{r}
+B <- sum((o-e)^2/e)
+B
+```
+
+Now, if the null is true, B is distributed as a chi-square
+distribution.  Look at the wikipedia page.  The difficult part of
+Pearson's test is figuring out $d$, the number of degrees of freedom.
+I'll cover this in lectures more fully, but for now we will just use
+$d=2$.  So, if the null is true, we have $B\sim\chi^2_2$; see the
+figure.  Recall the definition of p-value: the probability, if the
+null is true, of obtaining the observation or one more extreme.  Here
+the observation is B, the badness-of-fit, of 0.324.
+
+```{r}
+pchisq(0.324,df=2)
+1-pchisq(0.324,df=2)
+```
+
+The second figure is the pvalue because \texttt{pchisq()} gives the area
+to the left and we want the area to the right.  This exceeds 5\% so is
+not significant.
+
+
+```{r}
+hist(rchisq(1e6,df=2),nclass=100,col='gray')
+abline(v=6,lwd=3)
+```
+
+The figure shows a histogram of the $\chi^2_2$ distribution.  A value
+of B of 6 is shown; for this the p-value would be the area to the
+right of the line.
+
+We can perform the same process but using data from which we know the
+null hypothesis is true:
+
+
+```{r}
+set.seed(1266402)   # my student ID; use yours
+table(rpois(200,lambda=0.61))
+```
+
+Your task is to go through the process above but with your randomly
+generated dataset.  Observe that the null hypothesis is true for this
+dataset.  Calculate B for your dataset and give a p-value as above.
+
+
+

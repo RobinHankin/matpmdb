@@ -264,14 +264,13 @@ number of children in a photo is not binomially distributed.
 In the photo example above, note that the number of degrees of freedom
 is 2, not 3 as might be expected.  This is because we have to subtract
 an additional degree of freedom to compensate for the fact that
-```phat``` was calculated from the data.  Because ```phat``` is a
+`phat` was calculated from the data.  Because `phat` is a
 single parameter, this corresponds to a single degree of freedom which
-has to be subtracted from the ```pchisq()``` calculation.  Some more
+has to be subtracted from the `pchisq()` calculation.  Some more
 sophisticated tests involve distributions with multiple parameters;
 one has to subtract one degree of freedom per parameter estimated from
 the data.
 
-rr.ff
 ## Chi-square test and the Poisson distribution
 
 The chi-square test works well with the Poisson, but we have to be

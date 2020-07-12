@@ -1,0 +1,668 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{ifthen}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{marginnote}
+\reversemarginpar
+
+\setlength{\hoffset}{-0.5cm}
+\setlength{\voffset}{-10mm}
+\setlength{\textheight}{25cm}
+\setlength{\textwidth}{17cm}
+
+\hyphenpenalty  = 10000
+\exhyphenpenalty = 10000
+\parindent=0mm	
+
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{verbatim,dsfont}
+\usepackage{fancyvrb}
+\newcommand{\textubf}[1]{\underline{\textbf{#1}}}
+
+\usepackage{template/labhandout}
+
+
+<<echo=FALSE>>=
+foo <- function(x) {x}
+srcref <- attr(body(foo), "srcref")[[1]]
+#attr(srcref, "srcfile")$filename
+@
+
+<<echo=FALSE>>=
+fname <- sub("\\.Rnw", "", attr(srcref, "srcfile")$filename)
+prefix.string <- paste("figs/", fname, "-graphic", sep = "")
+@
+
+\SweaveOpts{prefix.string=\Sexpr{prefix.string}}
+
+
+
+%Control spacing at start of verbatim environments
+\newlength{\fancyvrbtopsep}
+\newlength{\fancyvrbpartopsep}
+\makeatletter
+\FV@AddToHook{\FV@ListParameterHook}{\topsep=\fancyvrbtopsep\partopsep=\fancyvrbpartopsep}
+\makeatother
+
+%Verbatim environments
+\newenvironment{codeChunk}{}{} %Use to wrap codeIn and codeOut to keep them together. A feature of Sweave - may not be necessary.
+\DefineVerbatimEnvironment{codeOut}{Verbatim} {formatcom=\color{codecol}, baselinestretch=1}
+\DefineVerbatimEnvironment{codeIn}{Verbatim} {formatcom=\color{codecol}, %fontshape=sl,
+baselinestretch=1}
+\DefineVerbatimEnvironment{code}{Verbatim} {baselinestretch=1}  %Uses colour current environment, so can be used with solution.
+\newcommand{\codett}[1]{\textcolor{codecol}{\texttt{#1}}}  %use for in-line code
+
+\setlength{\fancyvrbtopsep}{0pt}
+\setlength{\fancyvrbpartopsep}{0pt}
+
+%Set colours
+\definecolor{solcol}{RGB}{0, 0, 250} %blue
+\definecolor{codecol}{RGB}{0,0,0} %black
+\definecolor{tutorcol}{RGB}{159, 0, 197} %purple
+
+\SolutionEmphasis{\color{solcol}}
+\TutorEmphasis{\color{tutorcol}}
+
+
+\newcommand{\youtry}{\marginnote{\includegraphics[width=2cm]{keyboard_with_hands}}}
+\newcommand{\stoptyping}{\marginnote{\includegraphics[width=2cm]{keyboard}}}
+\newcommand{\Rq}{{\textsf{\textbf{``Is R doing what I think it is doing?''}}}}
+\newcommand{\bin}[2]{\ensuremath{\operatorname{Bin}\left(#1,#2\right)}}
+
+%To print questions with a space for the answer
+%\printanswersfalse
+%\printlinefalse
+%\printspacetrue
+%\printtutornotesfalse %printanswers must be true for this to work
+
+%To print questions and solutions
+%\printanswerstrue
+%\printlinefalse
+%\printspacetrue
+%\printtutornotesfalse%printanswers must be true for this to work
+
+
+%%To print questions and solutions and tutor notes
+\printanswerstrue
+\printlinefalse
+\printspacetrue 
+\printtutornotestrue %printanswers must be true for this to work
+
+%Use this is typos occur...
+\definecolor{typocol}{gray}{1}  %white
+%\definecolor{typocol}{gray}{0}  %white
+
+\newcommand{\courseName}[0]{Statistics}
+\newcommand{\courseCode}[0]{STAT601}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\hrule 
+\begin{center}
+Auckland University of Technology\\
+School of Engineering, Computer and Mathematical Sciences\\
+\courseCode \; \courseName \\
+\textbf{Assignment}\\
+\ifthenelse{\boolean{printanswers}}{\textcolor{solcol}{Outline Solutions}}{}
+\ifthenelse{\boolean{printtutornotes}}{\textcolor{tutorcol}{ \& Tutor Notes}}{}
+\end{center}
+\hrule
+\vbox{\vspace{3mm}}
+
+<<echo=FALSE>>=
+options(prompt=' ')
+options(continue='   ')
+@ 
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+%\textcolor{typocol}{Modifications/Typos}
+
+\tutorNotes{\textbf{Reminders:}
+
+
+Note: references to books are for my reference. No need to share these with the students.}
+
+\begin{enumerate}
+  \item 
+  {\bf QUESTION }
+In this question we will evaluate type I and type II error
+probabilities for one-sided tests.  We will consider normally
+distributed data, with unit variance and independent obervations.  We
+will use $H_0\colon\mu=0$ for the null and $H_1\colon\mu=1$ for the
+alternative, unless otherwise stated.
+
+\begin{enumerate}
+\item Suppose we have $n=6$ observations~$x_1,\ldots,x_{6}$.  What is
+  the sampling distribution of the sample mean (that is,
+  of~$\overline{x}=\frac{1}{6}\left(x_1+\cdots+x_{6}\right)$?)
+
+\begin{solution}
+$\overline{x}\sim N\left(0,\frac{1}{\sqrt{6}}\right)$
+\end{solution}
+
+\item 
+We want a test with size $\alpha=0.05$.  This test is to be of the
+form ``reject $H_0$ if the sample mean $\overline{x}$ exceeds $T$''
+(where $T$ is a value to be determined).
+
+You will recall that $\alpha$ is the probability of rejecting $H_0$
+when true.  Find an appropriate value of $T$.
+
+\begin{solution}
+<<>>=
+TT <- qnorm(0.95,mean=0,sd=1/sqrt(6))
+TT
+@
+\end{solution}
+\item Calculate $\beta$, the probability of failing to reject the null hypothesis when the alternative is true, and state the power of the test.
+\begin{solution}
+<<>>=
+pnorm(TT,mean=1,sd=1/sqrt(6))
+@
+Power is $1-\beta$, about 79\%.
+\end{solution}
+\item Consider a test of size $\alpha=0.01$.  Calculate the power of this test.
+\begin{solution}
+<<>>=
+1-pnorm(qnorm(0.99,mean=0,sd=1/sqrt(6)),mean=1,sd=1/sqrt(6))
+@
+The power is about 55\%, so is considerably less than the $\alpha=0.05$ test.
+\end{solution}
+\item
+How many observations would it take to have  a size of at most 0.01 and a power of at least 0.99?
+\begin{solution}
+<<>>=
+TT <- function(n){qnorm(0.99,sd=1/sqrt(n))}
+pow <- function(n){pnorm(TT(n),mean=1,sd=1/sqrt(n),lower.tail=FALSE)}
+pow(21)
+pow(22)
+@
+21 not enough, 22 suffices.
+\end{solution}
+\item
+Now we will consider the case where the null and alternative
+hypotheses are very close.  We will have $H_0\colon\mu=0$ but now
+$H_1\colon\mu=0.02$. Now how many observations are needed to ensure
+$\alpha$ is at most 0.01 and the power is at least 0.99?
+\begin{solution}
+<<>>=
+TT <- function(n){qnorm(0.99,sd=1/sqrt(n))}
+pow <- function(n){pnorm(TT(n),mean=0.01,sd=1/sqrt(n),lower.tail=FALSE)}
+
+pow(216475)
+pow(216476)
+@
+
+\end{solution}
+\end{enumerate}
+
+\item 
+ {\bf QUESTION }
+Consider the following dataset: 
+
+<<>>=
+fuel <- c(0.95, 0.52, 0.82, 0.89, 0.81) 
+@ 
+
+The numbers correspond to the amount of fuel burnt by a new type
+of high-efficiency engine under a randomised test load.  A value of 1
+corresponds to the same fuel efficiency as the old engine, values
+greater than one correspond to more fuel burned (hence lower
+efficiency) and values less than one correspond to greater efficiency.
+
+\begin{enumerate}
+  \item One-sided or two-sided test? Justify
+    \begin{solution}
+      One-sided, looking for an increase in efficiency
+      \end{solution}
+    \item    State a
+sensible null hypothesis and state the precise definition of p-value
+\begin{solution}
+  null: mean efficiency =1; more extreme = sample mean greater than observed value
+  \end{solution}
+\item 
+Test your hypothesis
+using a Student t test and interpret (10 marks)
+\begin{solution}
+<<>>=
+  t.test(fuel,mu=1,alternative="greater")
+@ 
+\end{solution}
+\item 
+Interpret the {\tt -Inf}
+in the confidence interval reported by R in such a way that a
+nonstatistician  could understand it
+\begin{solution}
+  cannot rule out arbitrarily negative fuel efficiencies with this test
+  \end{solution}
+\end{enumerate}
+  \item
+    {\bf QUESTION} 
+    Here we consider the amount of data needed to perform hypothesis testing.
+    \begin{enumerate}
+      \item Suppose we are testing a coin using observations of
+        tosses.  We wish to test $H_0\colon p=\frac{1}{2}$ against an
+        alternative of $H_A\colon p = 0.6$ (in this question use
+        one-sided tests only). How many tosses are needed to guarantee
+        a size $\alpha\leq 0.05$ and $\beta\leq 0.2$?
+\begin{solution}
+<<>>=
+pow <- function(n){pbinom(qbinom(0.95,n,0.5),n,0.6)}
+pow(157)  # beta too low
+pow(158)  # beta acceptable
+@
+158 trials needed.
+\end{solution}
+\item Now generalize andconsider $H_A\colon p = 0.5+\delta$. Choose
+  sensible values for $\delta$ and quantify the number of observations
+  needed to maintain $\alpha,\beta$.
+\begin{solution}
+<<>>=
+  pow <- function(n,delta){  # power function for H_A:p=0.5+delta
+  pbinom(qbinom(0.95,n,0.5),n,0.5 + delta)
+}
+howmany <- function(delta){ # how many neeeded for a power of 0.2 exactly
+  uniroot(
+    f=function(n){pow(round(n),delta) - 0.2},
+    interval=c(10,100000))$root
+}
+deltas <- (1:10)/100   # possible delta values
+nval <- deltas*0       # number needed
+for(i in seq_along(deltas)){ # loop
+  nval[i] <- howmany(deltas[i])
+}
+@  
+
+Graphically:
+
+<<fig=TRUE>>=
+plot(deltas,nval)
+@ 
+
+See: more observations needed for small delta.
+\end{solution}
+\end{enumerate}
+\item {\bf QUESTION}
+
+Consider a variable $X$ known to have a Poisson distribution.  We will
+consider a null hypothesis that $\lambda=3.1$ (this question will
+consider one-sided tests only).
+
+Suppose we observe~$X=7$.
+
+\begin{enumerate}
+\item 
+  State the precise definition of p-value for our observation of 7 events
+  \begin{solution}
+    p-value is the probability, if the null is true, of seeing the
+    data (7 events) or an observation more extreme (8 or more events)
+\end{solution}
+
+\item   Calculate the p-value for this observation and interpret
+  \begin{solution}
+<<>>=
+sum(dpois(7:1000,lambda=3.1))
+sum(ppois(6,lambda=3.1,lower.tail=F))
+@
+
+    So p is less than 5\% and we reject the null.
+    \end{solution}
+
+\item For the observation of 7 events, plot a likelihood function for $\lambda$, choosing a sensible range.
+  \begin{solution}
+<<fig=TRUE>>=
+lambda <- seq(from=3,to=12,len=100)
+plot(lambda,dpois(7,lambda))
+@
+\end{solution}
+
+\item  Again for the observation of 7 events, plot a log-likelihood function for $\lambda$, and estimate a credible interval for $\lambda$.  A rough estimate is fine.
+\begin{solution}
+<<fig=TRUE>>= 
+lambda <- seq(from=2,to=17,len=100)
+LL <- dpois(7,lambda,log=TRUE)
+plot(lambda,LL-max(LL))
+abline(h=0)
+abline(h=-2)
+@
+
+From the figure, the interval is about 3 to about 14.
+The professional uses \verb+uniroot()+:
+<<>>=
+
+ f <- function(lambda){log(dpois(7,lambda)/dpois(7,7))+2}
+ uniroot(f,c(1,5))$root
+@
+\end{solution}
+
+\item (harder)
+
+A Bayesian comes along and announces that his prior for $\lambda$ is
+an exponential distribution with rate 0.6 (that is, $P(\lambda)\propto
+e^{-0.6\lambda}$).  Plot his posterior likelihood function for
+$\lambda$, given the observation of 7.
+
+hint: you can calculate the density of the exponential distribution
+using {\tt dexp(x,rate=0.6)}.
+
+\begin{solution}
+<<fig=TRUE>>=
+lambda <- seq(from=2,to=17,len=100)
+like <- dpois(7,lambda,log=FALSE)
+plot(lambda,like*dexp(lambda,rate=0.6))
+@ 
+\end{solution}
+\end{enumerate}
+
+\item {\bf QUESTION}
+  
+Consider an experiment which may either succeed or fail with
+probability $p$, where $p$ is unknown.  Trials are independent of one
+another.  An expert has a prior PDF for p which is a beta distribution
+with $\alpha=1.3, \beta=1.5$; the experiment is performed 5 times with
+3 successes and 2 failures.
+
+
+
+\begin{enumerate}
+
+  \item  Plot the prior and posterior PDFs.
+  \begin{solution}
+<<fig=TRUE>>=
+p <- seq(from=0,to=1,len=100)
+plot(p,dbeta(p,1.3+3,1/5+2),col="red",type="l")
+points(p,dbeta(p,1.3,1.5),col="black",type="l")
+legend("topleft",lwd=1,lty=1,col=c("black","red"),legend=c("posterior","prior"))
+@ 
+\end{solution}
+
+\item 
+  Calculate the maximum likelihood estimate for $p$, and give the prior mode
+  \begin{solution}
+<<>>=
+optimize(dbeta,interval=c(0,1),maximum=TRUE,shape1=1.5,shape2=1.3) # prior
+optimize(dbeta,interval=c(0,1),maximum=TRUE,shape1=1.5+3,shape2=1.3+2) # posterior
+@ 
+\end{solution}
+\item Calculate the posterior mean
+\item (harder) give a Bayesian credible interval, that is, two values
+  $p_L,p_U$ (for lower and upper, respectively), such that
+  $\operatorname{Prob}_{\rm posterior}(p>p_L, p<p_U) = 0.95$. Hint:
+  use {\tt qbeta()}.
+  
+  \begin{solution}
+<<>>=
+qbeta(c(0.025,0.975),shape1=1.5+3,shape2=1.3+2)
+@ 
+note that this is not unique and we might have
+
+<<>>=
+qbeta(c(0.01,0.96),shape1=1.5+3,shape2=1.3+2)
+qbeta(c(0.02,0.93),shape1=1.5+3,shape2=1.3+2)
+@ 
+
+or even
+
+<<>>=
+qbeta(c(0,0.95),shape1=1.5+3,shape2=1.3+2)
+@ 
+
+\end{solution}
+\end{enumerate}
+
+\item {\bf QUESTION} A certain department in AUT has 11 staff
+including 5 professors.  Each staff member has their own office.
+There are 7 offices with windows; all 5 professors have a window in
+their office.
+
+\begin{enumerate}
+\item
+In the context of assessing whether professors are more likely
+  to secure an office with a window than non-professors, state a
+  sensible null hypothesis
+  \begin{solution}
+    Null: having a window is independent of professorial status
+    \end{solution}
+\item Bearing in mind that professors generally like to spend their
+  day looking out of the window, and also bearing in mind that
+  professors are more likely than non-professors to be able to choose
+  an office with a window (and to displace non-professors who have
+  nice offices), is a one-sided test or a two-sided test more
+  appropriate?  Justify.
+  \begin{solution}
+    One-sided; the situation is not symmetrical as professors can insist
+    on having a window.
+    \end{solution}
+\item Using R idiom such as
+  {\tt fisher.test(x)}, test your null
+  hypothesis.  Interpret your result in a way in which a busy
+  professor, who has a window in her office but is not a professor of
+  statistics, could understand.
+\begin{solution}
+<<>>=
+a <- matrix(c(5,0,2,4),2,2)
+dimnames(a) <- list(office=c("window", "no window"), professor=c("yes","no"))
+a
+fisher.test(a,alternative="greater")
+@   
+
+Significant, just.
+\end{solution}
+\item 
+  Give an example of a two-by-two contingency table that you encounter
+  in your personal day-to-day life.  State what your observation is,
+  what your null is and what it means, and carry out a Fisher's exact
+  test.  State whether a one-sided or two-sided test is used, and
+  justify this.  Interpret your findings in non-statistical language.
+\end{enumerate}
+
+\item {\bf QUESTION} A fire station logs the number of callouts
+  occuring each day for a year and tabulates the results:
+
+
+<<>>=
+o <- c(c0=8, c1=12, c2=36, c3=54, c4=67,c5=66, c6=41, c7=37, c8=23, c9=10,c10=11)
+@ 
+
+This means that on 8 days there were zero callouts, on 12 days there
+was one callout, on 36 days there were two callouts, and so on up to
+11 days when there were 10 callouts.  We wish to test the hypothesis
+that the number of callouts is distributed as a Poisson distribution.
+
+\begin{enumerate}
+\item 
+Give a plausible reason why the Poisson distribution might be appropriate
+\begin{solution}
+There are a large number $n$ of houses that might have a fire on a
+given day, each with a small probability $p$ of calling the fire
+service; but the product $np$ is moderate.
+\end{solution}
+
+\item
+Verify that the dataset contains 365 observations.  Calculate the
+number of callouts in the year and then calculate the average number
+of callouts per day.
+
+\begin{solution}
+<<>>=
+ sum(o)
+sum(o*(0:10))
+1740/365
+@
+  \end{solution}
+
+\item 
+Use your estimated value of the mean number of callouts per day as
+$\lambda$ in the Poisson distribution to calculate the probability of
+having $0,1,2,\ldots,\geqslant 10$ callouts on any day.
+
+Remember that the final probability is ``10 callouts {\em or more}''
+so ensure that your probabilities sum to one.
+
+\begin{solution}
+<<>>=
+ 1740/365 -> lam
+ jj <- dpois(0:9,lam)
+ probs <- c(jj,1-sum(jj))
+ probs
+ sum(probs)
+@
+  \end{solution}
+\item 
+Use R to calculate the expected number of callouts with
+$0,1,2,3,4,5,6,7,8,9,\geqslant 10$ in the year.
+
+\begin{solution}
+<<>>=
+e <- probs*365
+e
+sum(e)
+@
+\end{solution}
+\item 
+Use R to calculate the Badness-of-fit $B=\sum\frac{(o-e)^2}{e}$
+\begin{solution}
+<<>>=
+ B <- sum((o-e)^2/e)
+ B
+@
+  \end{solution}
+\item
+
+Calculate a pvalue for your B and interpret (note that the degrees of
+freedom is now $11-1-1=9$: there are 11 categories, minus one because
+the total is known, minus another one because the expectation uses an
+estimated value for $\lambda$.
+
+
+\begin{solution}
+<<>>=
+ pchisq(B,df=11-1-1,lower.tail=FALSE)
+@
+
+  Value exceeds 5\% so not significant.  There is no reason to reject
+  the null and the data appear to be Poisson.
+    \end{solution}
+\item 
+Someone observes that the number of zero-callout days is quite high.
+Formulate a sensible null hypothesis and test it.  Interpret and give
+a plausible reason for your finding.
+
+\begin{solution}
+a sensible null would be that the number of days with zero callouts is
+binomial with size 365 and probability
+<<>>=
+dpois(0,1740/365)
+@ 
+
+We can provide a p-value as follows
+
+<<>>=
+1-sum(dbinom(0:7,365,dpois(0,1740/365)))
+pbinom(7,365,dpois(0,1740/365),lower.tail=FALSE)
+@
+
+The pvalue is less than 5\%, so the result is significant! This might
+be because phone lines were down or perhaps the data collection system
+was flawed.
+
+Note that the null cannot be exactly true if we condition on the total
+number of callouts (the probability of having zero zero-callout days
+(sic) is zero)
+
+Tutors:
+it would be (equally?) plausible to say that the number of
+zero-callout days is {\em Poisson} with parameter $365e^{-1740/365}$,
+but to see this requires Stein-Chen method (which is only asymptotic,
+BTW).
+
+<<>>=
+ppois(7,365*exp(-1740/365),lower.tail=F)
+@
+
+
+The professional would condition on the total number of callouts and
+simulate a year using {\tt sample()}
+
+<<>>=
+table(replicate(1e4,365-length(unique(sort(sample(1:365,1740,replace=TRUE))))))
+@
+
+So according to this simulation of a million years, 42419 years had
+zero zero-callout days, 137249 years had 1 zero-callout days, and so
+on, up to 2 years with 14 zero-callout days.
+
+The p-value is thus
+
+<<>>=
+n <- 1e4
+sum(replicate(n,365-length(unique(sort(sample(1:365,1740,replace=TRUE)))))>=8)/n
+sum(replicate(n,365-length(unique(sort(sample(1:365,1740,replace=TRUE)))))>=8)/n
+@
+
+significant.
+  \end{solution}
+\end{enumerate}
+
+\item {\bf QUESTION} A scientist is studying human memory.  Subjects
+  are shown a five-digit number for different lengths of time and then
+  have to write the number down.  The subject either correctly recalls
+  the number or fails to recall it.
+ 
+ The results are as follows:
+ 
+<<>>=
+ times <-
+ c(10.73, 9.9, 9.61, 8.7, 8.56, 8.31, 8.18, 7.86, 7.63, 6.99, 
+ 6.66, 6.1, 5.92, 5.84, 5.67, 5.64, 5.56, 5.29, 5.1, 5.09, 4.92, 
+ 4.81, 2.86, 2.13, 2.05, 1.95, 1.67, 1.67, 1.38, 1.02)
+ 
+ correct <- 
+ c(1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 
+ 1, 1, 0, 0, 0, 0, 0, 1, 0, 0)
+@
+ 
+ Here, {\tt times} shows the amount of time given to the student, and
+ {\tt correct} is a Bernoulli variable, with {\tt 1} meaning the number
+ was correctly recalled {\tt 0} meaning it was not.
+ 
+\begin{enumerate}
+\item
+% Perform a logistic regression of {\tt correct} against {\tt times}.
+ Report your p-value, state your null hypothesis, state whether your
+ p-value is significant, and interpret. 
+ 
+ \begin{solution}
+<<>>=
+fit <- glm(correct~times, family='binomial')
+summary(fit)
+@ 
+
+Now we can plot it
+<<fig=TRUE>>=
+plot(correct~times)
+logistic <- function(x){1/(1+exp(-x))}
+x <- seq(from=0,to=10,len=100)
+points(x,logistic(-3.42 + 0.68*x),type="l")
+abline(h=0.9)
+@ 
+\end{solution}
+ 
+\item give a rough estimate for the time required for the number to be
+correctly recalled with~90\% probability.
+
+\begin{solution}
+ From the graph, about 8m.
+   \end{solution}
+
+\end{enumerate}
+\end{enumerate}
+\end{document}
