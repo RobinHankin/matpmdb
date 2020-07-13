@@ -23,11 +23,11 @@ including assessment and timetables, may be found on AUTonline.  The
 whole course is based around R and RStudio which may be downloaded
 from
 
-```https://cran.r-project.org/```
+[https://cran.r-project.org/]
 
 and
 
-```https://www.rstudio.com/```
+[https://www.rstudio.com/]
 
 respectively.
 
@@ -56,16 +56,16 @@ which are at ```STAT601```.
 
 This manual is distributed under the GNU GPL and is available at
 
-```https://github.com/RobinHankin/stat601```
+[https://github.com/RobinHankin/stat601]
 
 Please feel free to send corrections, bug reports, fanmail, etc to the
 issues page
 
-```https://github.com/RobinHankin/stat601/issues```
+[https://github.com/RobinHankin/stat601/issues]
 
 
 \newpage
 \includegraphics{ornamental20}
 
-```https://github.com/RobinHankin/knotR```
+[https://github.com/RobinHankin/knotR]
 
