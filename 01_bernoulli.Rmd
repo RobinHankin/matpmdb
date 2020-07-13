@@ -57,10 +57,10 @@ P(X=r) = \frac{n!}{r!(n-r)!}p^r(1-p)^{n-r}
 \end{equation}
 
 
-where $n!$ denotes the factorial function (```?factorial```)^[A
+where $n!$ denotes the factorial function (`?factorial`)^[A
 question mark is R idiom for accessing the online help system, which
 can provide further information.  For example, to get help on the
-factorial function, you type ```?factorial``` at the R prompt.]
+factorial function, you type `?factorial` at the R prompt.]
 
 This is more easily expressed using the "choose notation":
 
@@ -76,8 +76,8 @@ $$P(X=r) = {n\choose r}p^r(1-p)^{n-r}$$
 The R programming language has many builtin functions to deal with the
 binomial distribution.
 
-We will start with the ```rbinom()``` function^[Remember to type
-```?rbinom``` at the R prompt to get help on this function] which
+We will start with the `rbinom()` function^[Remember to type
+`?rbinom` at the R prompt to get help on this function] which
 samples from the binomial distribution.  From the help page, this
 function takes three arguments: n, size, prob.
 
@@ -138,7 +138,7 @@ rbinom(50,20,0.01)
 
 Consider again random sampling from the binomial distribution but this
 time we would like to summarise a large number of observations, say
-1000.  We can use the ```table()``` function:
+1000.  We can use the `table()` function:
 
 
 ```{r}
@@ -155,10 +155,10 @@ We can even plot the output:
 plot(table(rbinom(1000,10,0.5)))
 ```
 
-Above, we simply wrap the ```table()``` function inside a ```plot()```
+Above, we simply wrap the `table()` function inside a `plot()`
 function).  This is a powerful visualization method.  We can use the
 binomial probability distribution, equation \@ref(eq:binomialPMF), in
-an R session using the ```dbinom()``` function.  Suppose we have a
+an R session using the `dbinom()` function.  Suppose we have a
 binomial distribution with size 12 and probability 1/3, and we want to
 calculate the probability of observing 4 successes.  We can use the
 mathematical formula explicitly:
@@ -172,7 +172,7 @@ factorial(n)/(factorial(r)*factorial(n-r))*p^r*(1-p)^(n-r)
 ```
 
 but in this case it is much better to use the built-in functionality
-```dbinom()```:
+`dbinom()`:
 
 ```{r}
 dbinom(4,12,1/3)
@@ -219,10 +219,10 @@ set.seed(0)
 table(rbinom(1e6,9,0.4) == 3)
 ```
 
-(here we take a sample of size one million (```1e6```); the ```==```
+(here we take a sample of size one million (`1e6`); the `==`
 is R idiom for asking the question "is the left hand side equal to the
-right hand side?", the answer to which is either ```TRUE``` or
-```FALSE```).  In this case, The ```TRUE``` count of 250218 shows how
+right hand side?", the answer to which is either `TRUE` or
+`FALSE`).  In this case, The `TRUE` count of 250218 shows how
 many observations from our random sample were indeed equal to 3.
 
 The probability of a random observation drawn from this binomial
