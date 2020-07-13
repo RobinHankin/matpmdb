@@ -303,7 +303,7 @@ function.
 
 Suppose we want to estimate the standard deviation $\sigma$ of a
 population from $n=5$ observations from a standard Gaussian $N(0,1)$,
-and we use R idiom ```sd()``` to do so:
+and we use R idiom `sd()` to do so:
 
 ```{r}
 sd(rnorm(5))
@@ -343,7 +343,7 @@ mean(replicate(10000,sd(rnorm(5))),col='gray')
 So the mean of the estimates $\overline{\hat{\sigma}}=0.93$ is quite
 far from the true value of $\sigma=1$.  The *bias* of an estimator is
 defined as the difference between the expected value of the estimator
-and the true value of the parameter.  The bias of ```sd()``` is
+and the true value of the parameter.  The bias of `sd()` is
 difficult to calculate exactly but in this case its numerical value is
 about $0.93-1.00=-0.07$.
 
@@ -372,7 +372,7 @@ and we can see the bias of this estimator:
 mean(replicate(10000,myvar(rnorm(5))))
 ```
 
-If we denote the value of ```myvar(d)``` by $M$, it can be shown that
+If we denote the value of `myvar(d)` by $M$, it can be shown that
 $\mathbb{E}\left(M\right)=\frac{n-1}{n}\sigma^2$.  We can correct for
 this by defining $\tilde{M}=\frac{n}{n-1}M$ which is why you see $n-1$
 (instead of $n$) as a denominator in the literature.  Your lecturer

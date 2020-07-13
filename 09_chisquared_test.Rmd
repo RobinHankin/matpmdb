@@ -143,7 +143,7 @@ just short of the 5\% critical value, so we fail to reject the null.
 
 Above, I stated that $B$ has a chi-square distribution with 3 degrees
 of freedom.  Here I demonstrate that this is true.  We can generate
-synthetic observations using the ```sample()``` function:
+synthetic observations using the `sample()` function:
 
 
 ```{r}

@@ -204,7 +204,7 @@ longer.
 ```
 
 In the above, we have used the estimated value of the standard
-deviation given by R idiom ```sd()```.  However, the estimated value
+deviation given by R idiom `sd()`.  However, the estimated value
 is uncertain, as we can see by numerical sampling, here with sample
 size 100:
 
@@ -409,7 +409,7 @@ legend("topleft",lty=1,lwd=2,col=c("pink","black"),
 In the above, the red shows the probability, if the null is true, of
 obtaining the observation (58 in this case), or an observation more
 extreme ($>58$).  This is precisely the definition of p-value.
-Incidentally, the professional would use ```pbinom()```:
+Incidentally, the professional would use `pbinom()`:
 
 ```{r}
 pbinom(57,100,1/2,lower.tail=FALSE)
@@ -479,14 +479,14 @@ mean(kiwi)
 
 Thus the mean value of the kiwi weights is about 0.85kg.  We might
 hypothesise that the population mean $\mu$ is 0.9kg, and test this
-hypothesis using ```t.test()```:
+hypothesis using `t.test()`:
 
 ```{r}
 t.test(kiwi,mu=0.9)$p.value
 ```
 
 where the p-value has been extracted (from the full output calculated
-by ```t.test()```) using a dollar construction.  We can see that we
+by `t.test()`) using a dollar construction.  We can see that we
 fail to reject the null that $\mu=0.9$, on the grounds that the
 p-value exceeds 0.05.  This says that the population mean being 0.9 is
 somehow consistent with our data.  We can now test the hypothesis that
@@ -507,7 +507,7 @@ null that $\mu=0.9$] and 1.2 is *outside* the confidence interval
 [because we rejected the null that $\mu=1.2$].
 
 
-All of this complicated reasoning is carried out by ```t.test()```:
+All of this complicated reasoning is carried out by `t.test()`:
 
 ```{r}
 t.test(kiwi)

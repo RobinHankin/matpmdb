@@ -88,7 +88,7 @@ Normal distribution* and is denoted $N(0,1)$.
 ## Cumulative distribution function
 
 If we want the probability that a Gaussian random variable is less
-than a particular value we can use the ```pnorm()``` function.
+than a particular value we can use the `pnorm()` function.
 Suppose we have X drawn from a Gaussian distribution with a mean of
 1.3 and a standard deviation of 2.2.  What is the probability that
 $X\leq 3.1$?
@@ -108,9 +108,9 @@ polygon(c(x1,rev(x1)),c(x1*0,rev(dnorm(x1,1.3,2.2))),col='gray')
 ```
 
 (see how we pass the mean and standard deviation directly to
-```dnorm()```).  The 79\% figure is the grey area in the above figure.
+`dnorm()`).  The 79\% figure is the grey area in the above figure.
 The other way to do this would be to plot the *cumulative*
-distribution function ```pnorm()``` which gives the probability that
+distribution function `pnorm()` which gives the probability that
 $X$ is *less than or equal to* a particular value.  Thus:
 
 
@@ -155,7 +155,7 @@ right.
 ```
 
 The remaining R function for the Gaussian distribution is the quantile
-function ```qnorm()```.  In R, ```qnorm(p)``` gives the value of x for
+function `qnorm()`.  In R, `qnorm(p)` gives the value of x for
 which
 
 \begin{equation}
@@ -173,8 +173,8 @@ qnorm(0.95)
 
 ## Numerical verification
 
-All of the above results using ```pnorm()``` etc should be verified by
-numerical sampling.  We can use the function ```rnorm()``` to generate
+All of the above results using `pnorm()` etc should be verified by
+numerical sampling.  We can use the function `rnorm()` to generate
 random numbers from the Gaussian.  
 
 ```{r}
@@ -221,9 +221,9 @@ abline(h=1.3)
 and in the above plot we can see that about 10\% of the points are
 above the line as we would expect.
 
-## Relationship between ```pnorm()``` and ```qnorm()```.
+## Relationship between `pnorm()` and `qnorm()`.
 
-Functions ```pnorm()``` and ```qnorm()``` are in an inverse
+Functions `pnorm()` and `qnorm()` are in an inverse
 relationship with one another.  Thus
 
 ```{r}
@@ -232,9 +232,9 @@ qnorm(pnorm(1.1))  # should return 1.1
 ```
 
 In the above, note carefully the difference between the two examples.
-In the first line, observe that ```qnorm()``` requires its argument to
+In the first line, observe that `qnorm()` requires its argument to
 be in the range 0 to 1 as it takes a probability; while in the second
-line, ```pnorm()``` takes any value on the real line.  We can conduct
+line, `pnorm()` takes any value on the real line.  We can conduct
 a more exacting test as follows:
 
 ```{r}
@@ -254,7 +254,7 @@ plot(x,z2(x))
 
 In the above, note how the most serious errors are for large values of
 $x$, and there are no points at all above about $x=8$.  Is this what
-you would expect?  Does this graph verify that ```pnorm()``` and
+you would expect?  Does this graph verify that `pnorm()` and
 ```qnorm()``` are operating correctly?  Or does it reveal a problem
 either with our expectations or the behaviour of an R function?  Is
 the test a good one?  If not (or indeed if it is a good test), could
@@ -262,7 +262,7 @@ you make a better one?
 
 ## Examples
 
-Here are some simple examples of the ```pnorm()``` function in use.
+Here are some simple examples of the `pnorm()` function in use.
 
 ### Example 1
 
@@ -394,7 +394,7 @@ as the difference between a random variable and its expectation,
 $\mathbb{D}=X-\operatorname{\mathbb{E}}(X)$.  The variance is the
 expectation of $\mathbb{D}^2$.  Standard deviation is just the square
 root of variance.  In R, we can estimate the standard deviation of a
-sample using the ```sd()``` command:
+sample using the `sd()` command:
 
 ```{r}
 sd(rnorm(100,10,2))

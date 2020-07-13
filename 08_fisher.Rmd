@@ -75,13 +75,13 @@ replacement?  Well, it can be shown that
 
 where $X$ is the random variable corresponding to the number of white
 balls drawn and $x$ is an integer.  The R idiom for this is
-```dhyper()``` which calculates the density function.  We have the
-standard quartet of functions: ```rhyper()```, ```dhyper()```,
-```qhyper()``` and ```phyper()``` which are documented together.  The
-```dhyper()``` function takes a number of arguments.
+`dhyper()` which calculates the density function.  We have the
+standard quartet of functions: `rhyper()`, `dhyper()`,
+`qhyper()` and `phyper()` which are documented together.  The
+`dhyper()` function takes a number of arguments.
 
 Consult the R help page for details, but the basic command is
-```dhyper(x,m,n,k)``` where $x$ is the number of white balls drawn,
+`dhyper(x,m,n,k)` where $x$ is the number of white balls drawn,
 $m$ number of white balls in the urn, $n$ number of black balls in the
 urn, and $k$ is the number of balls drawn.
 
@@ -129,7 +129,7 @@ sum(dhyper(5:7,7,20,11))
 ```
 
 This shows that the p-value of about 7\% is not significant (the
-professional uses ```phyper(4,7,20,11,lower.tail=FALSE)```).  We can
+professional uses `phyper(4,7,20,11,lower.tail=FALSE)`).  We can
 get a visual impression easily, using R; study the idiom carefully:
 
 ```{r}
@@ -138,11 +138,11 @@ plot(x,dhyper(x,7,20,11),type='h',lwd=4,col=c(rep("black",5),rep("red",3)))
 legend("topright",lwd=4, col=c("black","red"),legend=c("regular points","more extreme"))
 ```
 
-Fortunately, R can deal with all this with the ```fisher.test()``` function:
+Fortunately, R can deal with all this with the `fisher.test()` function:
 
 ```{r}
 fisher.test(a, alternative="greater")
 ```
 
-(recall that R variable ```a``` was defined at the beginning of the
+(recall that R variable `a` was defined at the beginning of the
 chapter).

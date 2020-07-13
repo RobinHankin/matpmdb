@@ -72,8 +72,8 @@ where $\lambda>0$ is the parameter of the distribution.
 ## The Poisson distribution in R
 
 In the following, we will investigate the Poisson distribution with
-$\lambda=4.5$ in R.  The relevant functions are ```dpois()```,
-```rpois()```, etc; remember to consult the R help pages for
+$\lambda=4.5$ in R.  The relevant functions are `dpois()`,
+`rpois()`, etc; remember to consult the R help pages for
 reference.  First of all, we will sample from the distribution:
 
 
@@ -136,7 +136,7 @@ an easy technique to use.
 Recall that likelihood is defined as the probability of seeing the
 data, given the hypothesis (multiplied by an arbitrary constant).
 Suppose we observe $n=3$ counts.  Then a likelihood function for
-$\lambda$ is just ```dpois(3,lambda)```.
+$\lambda$ is just `dpois(3,lambda)`.
 
 Think about that for a moment.  It is anodyne, boringly self-evident,
 and almost trivial; yet it it is simultaneously the most profound
@@ -158,7 +158,7 @@ supp <- dpois(3,lambda,log=TRUE)
 plot(lambda,supp-max(supp),main='support function for lambda')
 ```
 
-(in the above, I subtract ```max(supp)``` so the curve maxes out at
+(in the above, I subtract `max(supp)` so the curve maxes out at
 zero).  See how the maximum likelihood estimate for $\lambda$ is just
 $3$, the observation (in general, the MLE is equal to the
 observation).

@@ -97,8 +97,8 @@ suite of optimization routines:
 optim(c(-0.5, 0.01),f,control=list(fnscale= -1))  # fnscale<0 means maximize
 ```
 
-In the above, the ```$par``` line gives the maximized values of
-```alpha, beta``` as about $(-1.65, 0.038)$.  This may be plotted:
+In the above, the `$par` line gives the maximized values of
+`alpha, beta` as about $(-1.65, 0.038)$.  This may be plotted:
 
 ```{r}
 plot(y~x)

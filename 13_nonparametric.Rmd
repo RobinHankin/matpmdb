@@ -46,7 +46,7 @@ c(44.7, 42.5, 38.9, 38.9, 28.8, 27.6, 44.8, 56.6, 51.3, 40.2, 35.4,
   47.4, 23.4, 30.6, 23.8, 46.1, 29.9)
 ```
 
-We observed that the ```qqplot()``` technique suggested a difference.
+We observed that the `qqplot()` technique suggested a difference.
 One way to refine this is to plot their empirical cumulative
 distribution functions on the same axes:
 
@@ -126,7 +126,7 @@ If the null is true, then $U$ has approximately a Gaussian
 distribution with mean $n_1n_2/2$ and variance
 $\frac{n_1n_2\left(n_1+n_2+1\right)}{12}$.
 
-All of this is calculated in R using ```wilcoxon.test()```:
+All of this is calculated in R using `wilcoxon.test()`:
 
 
 ```{r}
@@ -134,5 +134,5 @@ wilcox.test(which(d==0),which(d==1))
 ```
 
 showing no signficant difference.  The Wilcoxon test has many
-variants, documented under ```?wilcox.test```, and the R function has
+variants, documented under `?wilcox.test`, and the R function has
 many arguments; only the simplest case is presented here.

@@ -40,7 +40,7 @@ abline(v=15.5)
 
 In the figure above, the median has been shown as a vertical line.
 However, it is more convenient to transpose the axes, and the R idiom
-for this is ```ecdf()``` [the letters stand for empirical cumulative
+for this is `ecdf()` [the letters stand for empirical cumulative
 distribution function]:
 
 
@@ -67,15 +67,15 @@ points(x,pnorm(x),col="red",type="l")
 legend("topleft",col=c("black","red"),legend=c("empirical","theoretical"))
 ```
 
-In the figure above, see how the distribution function ```pnorm()```
+In the figure above, see how the distribution function `pnorm()`
 of the Gaussian is approximated.  However, the theoretical (red) line
 is not straight, and this makes visual assessment harder.  It would be
 a nice if we could distort the horizontal axis so that the theoretical
 line is straight, and this would make visual comparison easier.  The
 appropriate way to do this is to transform the horizontal axis with
-the ```pnorm()``` function.  The technique works nicely even if the
+the `pnorm()` function.  The technique works nicely even if the
 mean and standard deviation are modified; the appropriate R idiom for
-this is ```qqnorm()```:
+this is `qqnorm()`:
 
 ```{r}
 qqnorm(rnorm(40,mean=4,sd=2))
@@ -85,7 +85,7 @@ abline(4,2)
 In the figure above, see how the data fall approximately on a straight
 line; it turns out that the mean is approximated by the intercept and
 the standard deviation by the slope.  The exact values are drawn on
-the diagram as the diagonal line.  The ```qqnorm()``` function may be
+the diagram as the diagonal line.  The `qqnorm()` function may be
 used to detect non-normality.  Suppose we sample from a chi-squared
 distribution:
 
@@ -115,7 +115,7 @@ up to the largest observation.  If the two datasets are drawn from the
 same distribution then the points will be close to the $45^\circ$
 line, as they are in this case.
 
-If we have different numbers of observations then the R idiom gets trickier and we can use the builtin function ```qqplot()```:
+If we have different numbers of observations then the R idiom gets trickier and we can use the builtin function `qqplot()`:
 
 ```{r}
 qqplot(rnorm(20),rnorm(40,mean=1,sd=2))

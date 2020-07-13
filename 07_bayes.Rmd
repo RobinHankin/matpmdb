@@ -233,7 +233,7 @@ exceed 1; we have $0\leq p\leq 1$, and this fact means that we cannot
 use distributions such as the Gaussian which is infinitely wide.
 
 The only reasonable distribution for probabilities is the beta
-distribution; see ```?rbeta``` for details on R's functionality.
+distribution; see `?rbeta` for details on R's functionality.
 The probability density function for the beta is
 
 \begin{equation}
@@ -244,7 +244,7 @@ In the above equation, $\alpha$ and $\beta$ are parameters [cf the
 Gaussian, which has parameters $\mu,\sigma$] and $p$ is a probability,
 and we understand $0\leq p\leq 1$.  We also introduce the gamma
 function $\Gamma(\cdot)$ which is defined as $\Gamma(x)=(x-1)!$; get
-help on this by typing ```?gamma``` at the R prompt.  We can choose
+help on this by typing `?gamma` at the R prompt.  We can choose
 different values for $\alpha$ and $\beta$ to change the shape of the
 distribution in much the same way as we choose the mean and variance
 in the Gaussian.

@@ -206,7 +206,7 @@ set.seed(0)
 table(replicate(1000,f(n=6)) < 0.05)
 ```
 
-In the above, the ```TRUE``` count shows the type I errors: in this
+In the above, the `TRUE` count shows the type I errors: in this
 case 67 out of 1000, or a little above 5\%.  Now, we can force the
 null to be incorrect and assess $\beta$:
 
@@ -215,8 +215,8 @@ set.seed(0)
 table(replicate(1000,f(n=6,mean=1)) < 0.05)
 ```
 
-In the above, the ```TRUE``` count *correctly* rejects the null, and
-the ```FALSE``` count commits a type II error.  So $\beta$ is about
+In the above, the `TRUE` count *correctly* rejects the null, and
+the `FALSE` count commits a type II error.  So $\beta$ is about
 33\% and the power is about 67\%.  It is possible to improve upon the
 power by taking more observations.  Above, we had $n=6$ observations
 but now we try $n=10$:
@@ -288,15 +288,15 @@ pnorm(qnorm(1-alpha,mean=0,sd=1/sqrt(n)),mean=x,sd=1/sqrt(n))}
 ```
 
 Study the R idiom above carefully.  See how $\beta$ is given by
-```pnorm()```, which is the area to the left of its first argument:
+`pnorm()`, which is the area to the left of its first argument:
 the probablity of correctly rejecting the null.  The first argument to
-```pnorm()``` is just the critical point of the test.  The critical
+`pnorm()` is just the critical point of the test.  The critical
 point is the value at which we reject the test with probabilty
 $\alpha$ [and therefore fail to reject with probability $1-\alpha$],
-which is given by ```qnorm()```.  Both functions use a standard
+which is given by `qnorm()`.  Both functions use a standard
 deviation of $\frac{1}{\sqrt{n}}$, as this is the standard error of
-the mean; but observe that the null distribution has ```mean=0```
-while the alternative has ```mean=x```, as this may be altered.
+the mean; but observe that the null distribution has `mean=0`
+while the alternative has `mean=x`, as this may be altered.
 
 ### Type II errors: $\beta$ as a function of $n$, the number of observations.
 
