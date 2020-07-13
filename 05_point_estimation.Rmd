@@ -1,9 +1,5 @@
 # Point estimation #  {#estimation}
 
-\newcommand{\likeval}{\mathcal{L}}
-\newcommand{\suppval}{\mathcal{S}}
-
-
 So far we have been considering distributions with *known* parameters.
 In the case of the Gaussian distribution we have the mean $\mu$ and
 standard deviation $\sigma$.  However, in practice we very frequently
