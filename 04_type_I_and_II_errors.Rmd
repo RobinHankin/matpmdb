@@ -53,10 +53,10 @@ set.seed(0)
 t.test(rnorm(10),alternative="greater")$p.value
 ```
 
-In the above, the null was true (see the help page for ```rnorm```).
+In the above, the null was true (see the help page for `rnorm`).
 The p-value exceeds the critical value of 0.05, so we fail to reject
 the null as we should.  However, we can repeatedly try the same test
-with the ```replicate()``` command:
+with the `replicate()` command:
 
 ```{r}
 f <- function(n,mean=0){
@@ -79,7 +79,7 @@ table(replicate(1000,f(n=10)) < 0.05)
 
 In the above, the null is known to be true (the population mean is
 zero), but we incorrectly reject the null hypothesis 48 times (the
-```set.seed(0)``` command ensures that results are repeatable).
+`set.seed(0)` command ensures that results are repeatable).
 Rejecting the null hypothesis when it is true is known as a *type I
 error*.  We want this to be rare.  Studying the diagram below:
 
@@ -198,7 +198,7 @@ f <- function(n,mean=0){
 
 In the above, argument $n$ is the number of observations to take.
 Then, if the null is true (that is, $\mu=0$, or in R idiom,
-```mean=0```), we check that the probability of committing a type I
+`mean=0`), we check that the probability of committing a type I
 error is indeed 0.05:
 
 ```{r}

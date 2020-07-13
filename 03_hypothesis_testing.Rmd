@@ -19,7 +19,7 @@ discussed in this chapter are
 - critical region
 - confidence interval
 
-We will use a standard dataset drawn from the ```iris``` to illustrate
+We will use a standard dataset drawn from the `iris` to illustrate
 the general theory.  First we will take our data, drawn from a classic
 dataset describing sepal lengths of iris flowers:
 
@@ -83,7 +83,7 @@ the above shows some of the variability of the sample mean.  Because
 each of the observations is $N(0,1)$, equation \@ref(eq:SEM) shows
 that the sample mean is distributed as
 $N\left(0,\frac{1}{\sqrt{40}}\right)$.  We can verify this using
-```replicate()```:
+`replicate()`:
 
 ```{r}
 width <- 0.05

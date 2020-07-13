@@ -36,14 +36,14 @@ known as the *Normal*, or the *Gaussian* distribution.
 
 The Gaussian distribution is the most commonly encountered
 distribution in the whole of statistics, and has a characteristic
-shape which we can plot using the ```dnorm()``` function.
+shape which we can plot using the `dnorm()` function.
 
 ```{r}
 x <- seq(from= -3,to=3,len=100)
 plot(x,dnorm(x),type='l')
 ```
 
-(the ```seq()``` function gives a sequence; see ```?seq``` for
+(the `seq()` function gives a sequence; see `?seq` for
 details).  In the above, we see the Gaussian from -3 to 3 but the
 distribution is infinitely wide.  The probability density function for
 the Gaussian is:
@@ -52,15 +52,15 @@ the Gaussian is:
 \frac{1}{\sqrt{2\pi}}\exp\left(\frac{-x^2}{2}\right)
 \end{equation}
 
-But R provides a builtin function, ```dnorm()```, which is easier to
-use, faster, and more accurate.  Remember you can type "```?dnorm```"
+But R provides a builtin function, `dnorm()`, which is easier to
+use, faster, and more accurate.  Remember you can type "?dnorm"
 at the R prompt to get more help.  
 
 The Gaussian distribution has two adjustable parameters, the *mean*
 (written "$\mu$" in mathematics) and the *standard deviation* (written
 "$\sigma$").  These govern the position and width of the distribution.
 We can change the mean and standard deviation by supplying the
-appropriate arguments to ```dnorm()```:
+appropriate arguments to `dnorm()`:
 
 
 ```{r}
@@ -198,15 +198,15 @@ observation is greater than, say, 1.3, then the idiom would be:
 rnorm(10) > 1.3
 ```
 
-and if we wanted to, we could use the ```table()``` function to summarize:
+and if we wanted to, we could use the `table()` function to summarize:
 
 ```{r}
 set.seed(0)
 table(rnorm(1e6) > 1.3)
 ```
 
-[do not type the ```set.seed(0)``` command; this is here to ensure
-reproducibility in the manual].  In the above, we had ```1e6``` (that
+[do not type the `set.seed(0)` command; this is here to ensure
+reproducibility in the manual].  In the above, we had `1e6` (that
 is, $10^6$ or one million) samples, of which 96497 were over 1.3.
 This corresponds to a probability of 96497/1000000, or a little over
 0.096.  We can make a different visualization of the same situation as
@@ -255,7 +255,7 @@ plot(x,z2(x))
 In the above, note how the most serious errors are for large values of
 $x$, and there are no points at all above about $x=8$.  Is this what
 you would expect?  Does this graph verify that `pnorm()` and
-```qnorm()``` are operating correctly?  Or does it reveal a problem
+`qnorm()` are operating correctly?  Or does it reveal a problem
 either with our expectations or the behaviour of an R function?  Is
 the test a good one?  If not (or indeed if it is a good test), could
 you make a better one?

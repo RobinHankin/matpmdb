@@ -42,7 +42,7 @@ ANALYSIS WITHOUT A SCATTERGRAPH YOU WILL GET ZERO COURSE CREDIT.
 plot(price~age, data=carprices)
 ```
 
-In the above R idiom, the "```~```" symbol is read "is a function of".
+In the above R idiom, the "`~`" symbol is read "is a function of".
 See how the two variables age and price appear to be related, with
 older cars having a smaller price.  The scattergraph shows directly
 that a linear fit might be a good idea: the relationship is linear,
@@ -81,7 +81,7 @@ Here,
 We do not know the values of $\alpha,\beta$, so have to estimate them.
 The standard approach is to find the maximum likelihood estimate,
 $\hat{\alpha},\hat{\beta}$.  The R idiom to do this is to use the
-```lm()``` function:
+`lm()` function:
 
 ```{r}
 lm(price~age,data=carprices)
@@ -194,7 +194,7 @@ appropriate linear model from similar alternatives.
 
 ## Categorical regression
 
-Consider the ```InsectSpray``` dataset, in which different pesticides
+Consider the `InsectSpray` dataset, in which different pesticides
 were applied to agricultural units and the number of insects counted.
 First step is to make a plot:
 
@@ -203,7 +203,7 @@ boxplot(count~spray,data=InsectSprays)
 ```
 
 It certainly looks as though the different sprays have different
-effects.  To quantify this we can use the ```lm()``` idiom:
+effects.  To quantify this we can use the `lm()` idiom:
 
 ```{r}
 summary(lm(count~spray,data=InsectSprays))
@@ -211,13 +211,13 @@ summary(lm(count~spray,data=InsectSprays))
 
 In the above, we can see the various estimates for the difference
 between spray A and the other sprays (by default, R takes the "base
-case" to be the first label alphabetically).  Note that ```spray``` is
+case" to be the first label alphabetically).  Note that `spray` is
 a *categorical* variable.  The bottom line gives an overall p-value
 for the null that the sprays are identical.
 
 The tilde notation is a powerful tool and we do not have time to go in
 to all its functionality.  For further details, consult the help page
-at ```?formula```.
+at `?formula`.
 
 
 
@@ -246,5 +246,5 @@ f(100,-0.99)
 ```
 
 It is common to consider $r^2$ which is non-negative and treats
-positive and negative slopes equally.  in R, use ```summary()``` whih
+positive and negative slopes equally.  in R, use `summary()` whih
 reports an estimate for $r^2$.

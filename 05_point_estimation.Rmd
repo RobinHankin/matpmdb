@@ -190,8 +190,8 @@ abline(v=mean(d))             # sample man is the maximum likelihood estimator
 
 Study the above carefully: it might look simple, but there is a lot
 going on.  Make sure you understand exactly what is happening before
-moving on.  Note the use of the ```sapply()``` construction here,
-needed to vectorize the ```like()``` function.  See how the likelihood
+moving on.  Note the use of the `sapply()` construction here,
+needed to vectorize the `like()` function.  See how the likelihood
 is maximized at the *sample* mean; this is *why* the sample mean is
 calculated.
 

@@ -87,10 +87,10 @@ f <- function(params){
 }
 ```
 
-Thus ```f(alpha,beta)``` takes a sum of log-probabilities for the
+Thus `f(alpha,beta)` takes a sum of log-probabilities for the
 successes and a sum of logs of probabilities of failures.  See how the
 data remains fixed while alpha and beta change.  We can maximize the
-support numerically, using ```optim()```, which is a general-purpose
+support numerically, using `optim()`, which is a general-purpose
 suite of optimization routines:
 
 ```{r}
