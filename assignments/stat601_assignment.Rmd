@@ -155,7 +155,7 @@ pow(158)  # beta acceptable
 158 trials needed.
 ```
 
-* Now generalize andconsider $H_A\colon p = 0.5+\delta$.  Choose
+* Now generalize and consider $H_A\colon p = 0.5+\delta$.  Choose
   sensible values for $\delta$ and quantify the number of observations
   needed to maintain $\alpha,\beta$.
 
@@ -185,22 +185,24 @@ plot(deltas,nval)
 
 Consider a variable $X$ known to have a Poisson distribution.  We will
 consider a null hypothesis that $\lambda=3.1$ (this question will
-consider one-sided tests only).  Suppose we observe~$X=7$.
+consider one-sided tests only).  Suppose we observe $X=7$.
 
 *    State the precise definition of p-value for our observation of 7 events
+
 ```{asis}
     p-value is the probability, if the null is true, of seeing the
     data (7 events) or an observation more extreme (8 or more events)
 ```
 
 * Calculate the p-value for this observation and interpret
+
 ```{r}
 sum(dpois(7:1000,lambda=3.1))
 sum(ppois(6,lambda=3.1,lower.tail=F))
 ```
 
 ```{asis}
-    So p is less than 5\% and we reject the null.
+So p is less than 5\% and we reject the null.
 ```
 
 * For the observation of 7 events, plot a likelihood function for
@@ -353,11 +355,10 @@ fisher.test(a,alternative="greater")
 ```
 
 ```{asis}
-
 Significant, just.
 ```
 
-*    Give an example of a two-by-two contingency table that you encounter
+* Give an example of a two-by-two contingency table that you encounter
   in your personal day-to-day life.  State what your observation is,
   what your null is and what it means, and carry out a Fisher's exact
   test.  State whether a one-sided or two-sided test is used, and
@@ -399,7 +400,7 @@ sum(o*(0:10))/sum(o)  # callouts per day
 * Use your estimated value of the mean number of callouts per day as
 $\lambda$ in the Poisson distribution to calculate the probability of
 having $0,1,2,\ldots,\geqslant 10$ callouts on any day.  Remember that
-the final probability is "10 callouts {\em or more}" so ensure that
+the final probability is "10 callouts _or more_" so ensure that
 your probabilities sum to one.
 
 ```{r}
@@ -473,15 +474,14 @@ number of callouts (the probability of having zero zero-callout days
 (sic) is zero)
 
 It would be (equally?) plausible to say that the number of
-zero-callout days is {\em Poisson} with parameter $365e^{-1740/365}$,
+zero-callout days is Poisson with parameter $365e^{-1740/365}$,
 but to see this requires Stein-Chen method (which is only asymptotic,
 BTW).
 ```
 
 ```{r}
-ppois(7,365*exp(-1740/365),lower.tail=F)
+ppois(7,365*exp(-1740/365),lower.tail=FALSE)
 ```
-
 
 ```{asis}
 The professional would condition on the total number of callouts and
@@ -497,7 +497,6 @@ zero zero-callout days,  1 zero-callout days, and so
 on.  The p-value is then calculated by counting the years with the observed number, 8, or more:
 ```
 
-
 ```{r}
 n <- 1e4
 sum(replicate(n,365-length(unique(sort(sample(1:365,1740,replace=TRUE)))))>=8)/n
@@ -511,9 +510,9 @@ which is significant.
 # Question 8
 
 A scientist is studying human memory.  Subjects are shown a five-digit
-  number for different lengths of time and then have to write the
-  number down.  The subject either correctly recalls the number or
-  fails to recall it.
+number for different lengths of time and then have to write the
+number down.  The subject either correctly recalls the number or
+fails to recall it.
  
  The results are as follows:
  
