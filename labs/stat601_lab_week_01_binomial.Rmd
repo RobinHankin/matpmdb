@@ -1,0 +1,239 @@
+---
+title: "stat601 lab, week 1, binomial distribution"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE) # change to TRUE when rendering solutions; this changes
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=TRUE in chunk options)
+```
+
+
+\newcommand{\bling}{XXXxxxXXxX}
+
+This tutorial focusses on the binomial distribution.  This tutorial
+builds on chapter 1 of the course manual for stat601.  You will need
+to have R installed on your computer and be able to enter commands and
+interpret its output.
+
+
+### Question
+
+Let $X\sim\operatorname{bin}(13,0.8)$.  This means that we have 13 independent
+  Bernoulli trials, each with a probability of 0.8 of success.
+
+Compute the following probabilities using the R function
+`dbinom(k,n,p)` and the formula: $P(X=k) =
+\binom{n}{k}p^k(1-p)^{n-k}$.  Note that $\binom{n}{k} =
+\frac{n!}{k!(n-k)!}$.  Check that you get the same answer using both
+methods.
+
+* $P(X = 10)$
+```{r}
+factorial(13)/(factorial(10)*factorial(13-10))*0.8^10*(1-0.8)^(13-10)
+
+#alternatively
+choose(13,10)*0.8^10*0.2^3
+
+# better:
+
+dbinom(10,13,0.8)
+```
+
+
+```{asis}
+It is often useful to define variables and use these variables in the
+functions.
+```
+
+```{r}
+n <- 16
+p <- 0.8
+x <- 13
+dbinom(x, n, p)
+```
+
+* $P(X \leq 9)$
+
+```{asis}
+there are a number of techniques we can use here
+```
+
+```{r}
+
+dbinom(0,13,0.8) + dbinom(1,13,0.8) + dbinom(2,13,0.8) +
+dbinom(3,13,0.8) + dbinom(4,13,0.8) + dbinom(5,13,0.8) +
+dbinom(6,13,0.8) + dbinom(7,13,0.8) + dbinom(8,13,0.8) +
+dbinom(9,13,0.8)
+
+
+sum(dbinom(0:9,13,0.8))
+
+pbinom(9,13,0.8)
+```
+```{asis}
+(see how all the different methods give the same result).
+```
+
+### Question
+
+According to one study, The proportion of adults (18 years or older)
+who admit to texting while driving is 47\%. Suppose you randomly
+select ten adult drivers and ask if they text while driving (do you
+think this percentage is realistic?); you may assume the drivers are
+independent.  Say $X$ is the number of drivers in the sample who admit
+to texting while driving.  If $X$ is modelled by a binomial random
+variable, state $n$ and $p$.
+
+```{asis}
+$X \sim\operatorname{bin}(10,0.47)$.
+```
+
+* Compute the probability mass function for all values of $X$ using R.
+
+```{r}
+n <- 10
+x <- 0:10
+p <- 0.47
+y <- dbinom(x, n, p)
+names(y) <-  x
+y
+
+# check that probabilities sum to 1:
+sum(y)
+```
+
+* Construct a probability histogram of $X$.
+
+```{r}
+
+plot(x,dbinom(x,n,p),type='h')
+```
+
+* Compute the expected value and standard deviation for $X$ and verify numerically
+
+```{r}
+n*p  # mean
+sqrt(n*p*(1-p))  # standard deviation
+mean(rbinom(1e6, n, p))  # numerical simulation of mean
+sd(rbinom(1e6, n, p))    # numerical simulation of sd
+```
+
+### Question
+
+We take a fair coin (that is, one with probability $p$ of landing
+heads = 0.5) and toss it $n=1000$ times.  
+
+* Plot the probability of observing a total of $r=400,401,\ldots, 600$
+heads.
+
+```{r}
+x <- 400:600
+plot(x,dbinom(x,1000,1/2))
+```
+
+* Repeat the simulation experiment in the previous question using
+different values of $p$.  
+
+```{r}
+f <- function(p){dbinom(0:1000,1000,p)}
+x <- 0:1000
+plot(x,f(0.5),type="l")
+points(x,f(0.6),type="l",col="red")
+points(x,f(0.7),type="l",col="orange")
+points(x,f(0.8),type="l",col="yellow")
+points(x,f(0.14),type="l",col="green")
+```
+
+### Question
+
+A test contains 10 questions. Each question is multi-choice with four
+options.  Let $X$ be the number of questions that a student answers
+correctly.  Suppose that the student has not studied, so their
+strategy is to randomly guess the answers.  This means that the
+probability of guessing the correct answer is $p=1/4$.
+
+* What distribution can be used to model the number of correct answers?
+
+```{asis}
+Binomial distribution, with $n=10$ and  $p=0.25$.
+```
+
+* What is the probability that the student answers exactly 5 questions correctly?
+
+```{r}
+dbinom(5, 10, 0.25)
+```
+
+* The pass mark for this test is to score 6 or more correct answers.
+  What is the probability that our student passess the exam?
+
+```{r}
+sum(dbinom(6:10,10,1/4))
+pbinom(5,10,1/4,lower.tail=FALSE)
+```
+
+```{asis}
+A little under 2\%
+```
+
+### Question
+
+(harder) Given an integer $n>0$, and a random variable
+$X\sim\operatorname{bin}\left(n,\frac{1}{2}\right)$, we are interested
+in the probability $p_n$ that the number of failures is equal to the
+number of successes, that is, $\operatorname{Prob}(X=n)$.
+
+* Use `dbinom()` to calculate $\operatorname{Prob}(X=n)$ for different
+  values of $n$.  Does the probability increase or decrease with
+  increasing $n$?
+
+```{r}
+n <- 1:50
+p <- sapply(n,function(n){dbinom(n,2*n,1/2)})
+plot(n,p)
+plot(n,p,log="xy")
+```
+
+* Google for "Stirling's formula".  Stirling's formula states that,
+for large values of $n$, \[ n!\approx\sqrt{(2\pi n)}e^{-n}n^n.\]
+Stirling's formula is only approximate, but is very much easier to
+deal with than exact factorials.  The approximation gets better as $n$
+gets larger.
+
+* Calculate the percentage error in using Stirling's approximation for
+  factorial $n$, for a range of values of $n$
+
+```{r}
+stirling <- function(n){sqrt(2*pi*n)*n^n/exp(n)}
+stirling(10)
+factorial(10)
+error <- function(n){abs(stirling(n)-factorial(n))/factorial(n)}
+plot(n,error(n))
+plot(n,error(n),log="y")
+```
+
+* Obtain an algebraic expression for $\operatorname{Prob}(X=n)$ as
+  above (hint: lots of terms cancel out very nicely).
+
+```{asis}
+we would have 
+\[
+\binom{2n}{n\,\, n}\left(\frac{1}{2}\right)^n\left(\frac{1}{2}\right)^n=\frac{(2n)!}{(n!)^24^{2n}}\]
+
+and after some calculation we would have
+$\operatorname{Prob}(X=n)=\frac{1}{\sqrt{\pi n}}$.
+```
+
+* Assess the accuracy of Stirling's approximation in this context
+
+```{r}
+error <- function(n){
+   exact <- dbinom(n,2*n,1/2)
+   approx <- 1/sqrt(pi*n)
+   abs(exact-approx)/exact
+}
+plot(n,sapply(n,error),log='xy')
+```
+
