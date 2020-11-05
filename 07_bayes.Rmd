@@ -314,7 +314,7 @@ is the value which ensures that the area under the curve is 1.
 
 Note carefully that in this case both the prior and the posterior are
 beta distributions, but with different parameters
-($\alpha\longrightarrow\alpha+\beta$, $\beta\longrightarrow\beta+b$).
+($\alpha\longrightarrow\alpha+a$, $\beta\longrightarrow\beta+b$).
 This is a very desirable feature of the beta distribution, as the
 algebra is straightforward.  In general, the phenomenon of a prior
 distribution having the same form as the posterior is known as
