@@ -1,0 +1,301 @@
+---
+output: pdf_document
+title: The Gaussian distribution with known mean and variance
+fontsize: 12pt
+---
+
+# the Gaussian distribution
+
+This short handout takes you through the basics of the Gaussian
+distribution as discussed in lectures, although you should be aware
+that we asssume both the mean and variance are known precisely.
+
+       
+Remember that you can type `?rnorm` at the R prompt to get help
+on that command.
+
+
+
+## Random sampling from the Gaussian
+
+
+We can take random samples from the Gaussian distribution using the `rnorm()` function:
+
+
+
+```{r}
+rnorm(10)
+rnorm(10)
+```
+
+(see how I do it twice to remind myself that the output changes each
+time it is called).
+
+We can change the mean and/or the standard deviation:
+
+
+```{r}
+rnorm(10,mean=100)
+rnorm(10,mean=100)
+```
+
+See how the values are clustered around 100.
+
+It is difficult to get a feel for these numbers so we can use R to
+plot various types of visualization:
+
+```{r}
+hist(rnorm(10))
+hist(rnorm(10))
+```
+
+(these are bad visualizations because of the small number of
+observations).  But this is easy to rectify; we can use a higher
+number of observations:
+
+
+```{r}
+hist(rnorm(1e6),col='pink')
+```
+
+
+We can change the mean and standard deviation using the appropriate argument:
+```{r}
+hist(rnorm(1e6,mean=1,sd=3),col='pink')
+```
+
+But histograms are not the only type of visualization:
+
+
+```{r}
+plot(rnorm(1000))
+abline(h=c(-2:2))
+```
+
+This shows the actual values of the observations.  If the R idiom uses
+unfamiliar commands, remember that you can type `?abline` (or
+whatever) to get online help.
+
+Verify that the two visualizations are consistent with each other.
+
+
+## The density function of the Gaussian
+
+The probability density function of the standard Gaussian is given by
+
+\[
+f(x) = \frac{1}{\sqrt{2\pi}}\exp\left[-\frac{x^2}{2}\right]
+\]
+
+This has mean 0 and standard deviation 1.  In R we can visualise this as follows:
+
+```{r}
+x <- seq(from=-4,to=4,len=100)
+plot(x,exp(-x^2/2)/sqrt(2*pi))
+```
+
+Make sure you understand this before moving on.
+R provides more convenient ways of evaluating this function, specifically the `dnorm()` function:
+
+
+```{r}
+plot(x,dnorm(x))
+```
+
+which _looks_the same.   But, it is important to test the similarity as rigorously as is possible:
+
+
+```{r}
+plot(x,dnorm(x) - exp(-x^2/2)/sqrt(2*pi))
+```
+
+(see how we are plotting the _difference_ between the two methods on
+the vertical axis).  If the two methods give different answers, which
+one is more likely to be accurate?  Which one is faster?
+
+### Generalized value of the mean and standard deviation
+
+We can generalize the Gaussian mean $\mu$ and standard deviation
+$\sigma$ easily:
+
+\[
+f(x;\mu,\sigma)=
+\frac{1}{\sqrt{2\pi\sigma^2}}\exp\left[-\frac{(x-\mu)^2}{2\sigma^2}\right]
+\]
+
+
+But it is easier to use `dnorm()` and specify the mean and standard deviation directly:
+    
+```{r}
+x <- seq(from=-4,to=4,len=100)
+plot(x,dnorm(x),pch=16,ylim=c(0,0.6),type='l',main='some Gaussian distributions')
+points(x,dnorm(x,mean=1),col="red",type='l')
+points(x,dnorm(x,mean=2),col="green",type='l')
+points(x,dnorm(x,sd=2),col="blue",type='l')
+points(x,dnorm(x,sd=0.7),col="yellow",type='l')
+points(x,dnorm(x,mean=1,sd=1.1),col="orange",type='l')
+```
+
+Make some other plots and get a feel for how the system works.
+
+
+
+## Areas under the curve
+
+Quite often we are interested in areas under a Gaussian curve.  To
+plot this we need a helper function:
+
+```{r}
+areaplotter <- function(x1,x2){
+  x <- seq(from=-4,to=4,len=100)
+  plot(x,dnorm(x),type='l')
+  jj <- seq(from=x1,to=x2,len=100)
+  polygon(x=c(jj,x2,x1),y=c(dnorm(jj),0,0),col='red')
+}
+```
+
+Now we can use this:
+
+```{r}
+areaplotter(1,2)
+```
+
+The red area shows the probability that a standard Gaussian random
+variable lies between 1 and 2.
+
+In R, the way to calculate areas is `pnorm()`.  Function `pnorm(x)`
+gives the area to the left of point x.  Suppose we want the
+probability that $X<1.2$ [it is usual to refer to a random variable
+itself using upper-case letters]:
+
+
+```{r}
+areaplotter(-4,1.2)
+pnorm(1.2)
+```
+
+Cultivate the habit of guessing before evaluating.
+
+We can verify by numerical sampling:
+
+```{r}
+table(rnorm(1e6) < 1.2)/1e6
+table(rnorm(1e6) < 1.2)/1e6
+```
+
+Showing that the 88\% given by `pnorm()` is quite accurate.
+
+To get values in a range, subtract one value of `pnorm()` from
+another.  Thus to find the probability that  $X$ lies in the range 0.3-1.4:
+
+
+```{r}
+areaplotter(0.3,1.4)
+pnorm(1.4) - pnorm(0.3)
+```
+
+Numerical verification is slightly harder:
+
+```{r}
+x <- rnorm(1e6)
+table((x>0.3) & (x<1.4))/1e6
+table((x>0.3) & (x<1.4))/1e6
+```
+
+(why do the two evaluations agree exactly?  How can we get a handle on
+the random variability?)
+
+## The quantile function
+
+Suppose we wanted to find the poisition on the x axis for which
+$P(X<x) = 0.8$.  That is, the probability that our observation is less
+than $x$ is 80\%.
+
+We can use `pnorm()` in a trial-and-error fashion:
+
+
+```{r}
+pnorm(1.1)   # initial guess
+pnorm(0.9)   # too high
+pnorm(0.8)   # etc
+pnorm(0.85)
+```
+
+But it is much better to use special function `qnorm()` which  does everything much faster:
+
+```{r}
+qnorm(0.8)
+```
+
+It is important to verify this numerically:
+
+
+```{r}
+table(rnorm(1e6) < qnorm(0.8)) / 1e6
+table(rnorm(1e6) < qnorm(0.8)) / 1e6
+```
+
+
+## Further questions on the Gaussian distribution
+
+(below, $X$ refers to a standard Gaussian random variable)
+
+*  What is the probability that $X < 0.3$?  Verify numerically and visually
+*  What is the probability that $X < 4.5$? 
+*  (harder) What is the probability that $X < 14.5$?  Hint: look at the help page and use the `lower.tail` argument
+*  What value $x$ has $Prob(X<x)  = 0.7?$
+
+
+## Gaussian approximation to the binomial
+
+We know from lectures that if $X\sim\operatorname{Bin}(n,p)$, then a good approximation for large $n$ and moderate $p$ would be
+
+$$X\sim\operatorname{Norm}\left(\mu=np,\sigma=\sqrt{np(1-p)}\right)$$
+
+We will  verify this using R, with $n=100$ and $p=0.3$.  Then the mean would be $np=30$ and $\sigma=\sqrt{100*0.3*0.7}\simeq 4.58$.
+
+First we will plot a graph of the two probability distributions:
+
+
+```{r}
+r <- 0:100
+plot(r,dbinom(r,100,0.3),type='b')
+points(r,dnorm(r,mean=30,sd=sqrt(21)),type='b',col='red')
+legend("topright",col=c('black','red'),legend=c("binomial","Gaussian"),lty=1,pch=1)
+```
+
+(in the above, see how I have written ```sqrt(21)``` for the standard deviation as shorthand for ```sqrt(100*0.3*0.7)```.  Of course, the next step is to figure out how good the approximation is.  Can you quantify the difference between the Gaussian and the binomial using R?
+
+We can also calculate probabilities of falling inside a particular region.  Suppose we want to calculate $\operatorname{Prob}(22\leq r\leq 35)$.  We can estimate this using exact calculations:
+
+```{r}
+sum(dbinom(22:35,100,0.3))
+diff(pbinom(c(21,35),100,0.3))
+```
+
+See how I give two different ways to answer it.  Which one is preferable and why?
+The Gaussian approximation would be
+
+```{r}
+pnorm(35,30,sqrt(21))-pnorm(22,30,sqrt(21))
+```
+
+the approximation is not bad, but not super accurate, because of the difference between ```<``` and ```<=```.  Google for "continuity correction" to see how to improve the approximation.
+
+Now try different values of $n$ and $p$ with a view to:
+
+* making the Gaussian approximation as good as possible
+* making the Gaussian approximation as bad as possible.
+
+
+## Points to ponder
+
+* In the above, the mean and standard deviation were known exactly.
+  What would happen if you did not know the exact values of the mean
+  and standard deviation?
+
+* How would you *verify* that the standard Gaussian is symmetric about zero?
+* Does the standard Gaussian have an upper limit?
+* What is the density of the standard Gaussian at $x=0$?
+* How would you *verify* that `dnorm()` has an area under the curve of exactly one?
+* The Gaussian density function is of the form $e^{-x^2/2}$.  What would densities like $e^{-|x|}$ look like?

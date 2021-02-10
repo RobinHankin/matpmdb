@@ -462,11 +462,12 @@ notations (but everyone does).
 The concept of *confidence interval* is a common one in statistics.
 The formal definition is quite hard, and the interpretation difficult.
 
-("Interval" is another word for "range"; .  The basic idea is that we
-estimate a *range* of values within which our parameter lies.  We
-arrange things so that the probability of this range including the
-true value of the parameter is 95\% (other values such as 99\% or
-99.5\% are sometimes used, but we will stick to 95\% here).
+("Interval" is another word for "range".  The basic idea is that we
+estimate a *range* of values, and we hope that the true value of our
+parameter is within this range.  We ensure that the probability of
+this range including the true value of the parameter is 95\% (other
+values such as 99\% or 99.5\% are sometimes used, but we will stick to
+95\% here).
 
 To fix ideas, consider the following dataset, representing weights of
 kiwi birds:

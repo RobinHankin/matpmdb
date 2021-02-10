@@ -1,0 +1,952 @@
+\documentclass[12pt, a4paper]{article}
+
+\usepackage{ifthen}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{enumerate}
+\usepackage{fullpage}
+\usepackage{marginnote}
+\reversemarginpar
+
+\setlength{\hoffset}{-0.5cm}
+\setlength{\voffset}{-10mm}
+\setlength{\textheight}{25cm}
+\setlength{\textwidth}{17cm}
+
+\hyphenpenalty  = 10000
+\exhyphenpenalty = 10000
+\parindent=0mm	
+
+\usepackage[dvips]{graphicx}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage{verbatim,dsfont}
+\usepackage{fancyvrb}
+\newcommand{\textubf}[1]{\underline{\textbf{#1}}}
+
+\usepackage{template/labhandout}
+
+
+<<echo=FALSE>>=
+foo <- function(x) {x}
+srcref <- attr(body(foo), "srcref")[[1]]
+#attr(srcref, "srcfile")$filename
+@
+
+<<echo=FALSE>>=
+fname <- sub("\\.Rnw", "", attr(srcref, "srcfile")$filename)
+prefix.string <- paste("figs/", fname, "-graphic", sep = "")
+@
+
+\SweaveOpts{prefix.string=\Sexpr{prefix.string}}
+
+
+
+%Control spacing at start of verbatim environments
+\newlength{\fancyvrbtopsep}
+\newlength{\fancyvrbpartopsep}
+\makeatletter
+\FV@AddToHook{\FV@ListParameterHook}{\topsep=\fancyvrbtopsep\partopsep=\fancyvrbpartopsep}
+\makeatother
+
+%Verbatim environments
+\newenvironment{codeChunk}{}{} %Use to wrap codeIn and codeOut to keep them together. A feature of Sweave - may not be necessary.
+\DefineVerbatimEnvironment{codeOut}{Verbatim} {formatcom=\color{codecol}, baselinestretch=1}
+\DefineVerbatimEnvironment{codeIn}{Verbatim} {formatcom=\color{codecol}, %fontshape=sl,
+baselinestretch=1}
+\DefineVerbatimEnvironment{code}{Verbatim} {baselinestretch=1}  %Uses colour current environment, so can be used with solution.
+\newcommand{\codett}[1]{\textcolor{codecol}{\texttt{#1}}}  %use for in-line code
+
+\setlength{\fancyvrbtopsep}{0pt}
+\setlength{\fancyvrbpartopsep}{0pt}
+
+%Set colours
+\definecolor{solcol}{RGB}{0, 0, 250} %blue
+\definecolor{codecol}{RGB}{0,0,0} %black
+\definecolor{tutorcol}{RGB}{159, 0, 197} %purple
+
+\SolutionEmphasis{\color{solcol}}
+\TutorEmphasis{\color{tutorcol}}
+
+
+\newcommand{\youtry}{\marginnote{\includegraphics[width=2cm]{keyboard_with_hands}}}
+\newcommand{\stoptyping}{\marginnote{\includegraphics[width=2cm]{keyboard}}}
+\newcommand{\Rq}{{\textsf{\textbf{``Is R doing what I think it is doing?''}}}}
+\newcommand{\bin}[2]{\ensuremath{\operatorname{Bin}\left(#1,#2\right)}}
+
+%To print questions with a space for the answer
+\printanswersfalse
+\printlinefalse
+\printspacetrue
+\printtutornotesfalse %printanswers must be true for this to work
+
+%To print questions and solutions
+%\printanswerstrue
+%\printlinefalse
+%\printspacetrue
+%\printtutornotesfalse%printanswers must be true for this to work
+
+
+%%To print questions and solutions and tutor notes
+%\printanswerstrue
+%\printlinefalse
+%\printspacetrue
+%\printtutornotestrue %printanswers must be true for this to work
+
+%Use this is typos occur...
+\definecolor{typocol}{gray}{1}  %white
+%\definecolor{typocol}{gray}{0}  %white
+
+\newcommand{\courseName}[0]{Statistical inference}
+\newcommand{\courseCode}[0]{STAT601}
+
+\begin{document}
+\hrule 
+\begin{center}
+Auckland University of Technology\\
+School of Engineering, Computer and Mathematical Sciences\\
+\courseCode \; \courseName \\
+\textbf{Lab Week 3}\\
+\ifthenelse{\boolean{printanswers}}{\textcolor{solcol}{Outline Solutions}}{}
+\ifthenelse{\boolean{printtutornotes}}{\textcolor{tutorcol}{ \& Tutor Notes}}{}
+\end{center}
+\hrule
+\vbox{\vspace{3mm}}
+
+<<echo=FALSE>>=
+options(prompt=' ')
+options(continue='   ')
+@ 
+
+
+
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+% % % % % % % % % % % % % % % % % % % % % % % % % % % % %
+%\textcolor{typocol}{Modifications/Typos}
+
+\tutorNotes{\textbf{Reminders:}
+
+Consider starting with a brief recap on standard error and sampling distributions.
+
+}
+
+
+
+\tutorNotes{\textbf{Reminders:}
+
+Note: references to books are for my reference. No need to share these with the students.}
+
+\begin{enumerate}
+
+\item Use R's \texttt{qnorm} function to find $z_0$, such that $P(Z \leq z_0) = \alpha$, where $Z \sim N(0,1)$ and $\alpha$ is:
+\begin{enumerate}
+\item 0.005
+\item 0.995
+\item 0.01
+\item 0.99
+\item 0.025
+\item 0.975
+\item 0.05
+\item 0.95
+\end{enumerate}
+
+\begin{solution}
+<<>>=
+alpha <- c(0.005, 0.995, 0.01, 0.99, 0.025, 0.975, 0.05, 0.95)
+qnorm(alpha, mean = 0, sd = 1)
+@
+\end{solution}
+
+\item To test a null hypothesis $H_0\colon \mu=\mu_0$ for a population
+  that is $N(\mu, \sigma^2)$, it is usual to use the test statistic $Z
+  = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}$ where $\bar{X}$ is mean
+  of a random sample of size $n$ from the population.
+
+
+Find the interval of $Z$ values that is the critical region (or rejection region) for the following values of $\alpha$.
+
+\begin{enumerate}
+\item 
+Assume that the alternative hypothesis is $H_1\colon\mu < \mu_0$,
+which means a one-sided test.
+
+
+
+\begin{enumerate}
+\item 0.05
+\begin{solution}
+  \tutorNotes{Make sure the students draw a picture}
+  
+<<>>=
+qnorm(0.05, 0, 1)
+
+@
+Therefore the critical region is the interval $(-\infty, -1.645)$.
+
+\end{solution}
+
+\item 0.01
+\begin{solution}
+<<>>=
+qnorm(0.01, 0, 1)
+@
+Therefore the critical region is the interval 
+$(-\infty, -2.326)$ or $\{z\colon z < -2.326\}$
+
+\end{solution}
+
+\item 0.001
+\begin{solution}
+<<>>=
+qnorm(0.001, 0, 1)
+@
+Therefore the critical region is the interval 
+$(-\infty, -3.09)$ or $\{z\colon z < -3.09\}$
+\end{solution}
+
+
+\end{enumerate}
+
+
+\item Assume that the alternative hypothesis is $H_1\colon \mu \neq \mu_0$.  This is a two-sided test.
+
+\begin{enumerate}
+\item 0.05
+\begin{solution}
+<<>>=
+alpha = 0.05
+qnorm(alpha/2, 0, 1)
+qnorm(1-alpha/2, 0, 1)
+@
+Therefore the critical region is the interval $(-\infty, -1.96) \cup (1.96, \infty) $ or~$\{z\colon\left|z\right| > 1.96\}$
+
+\end{solution}
+
+\item 0.01
+\begin{solution}
+<<>>=
+qnorm(0.01/2, 0, 1)
+@
+Therefore the critical region is the interval $(-\infty, -2.576) \cup (2.576, \infty) $ or $\{z\colon\left|z\right| > 2.576\}$
+
+\end{solution}
+
+
+\item 0.001
+\begin{solution}
+<<>>=
+qnorm(0.001/2, 0, 1)
+@
+Therefore the critical region is the interval $(\infty, -3.29) \cup (3.29, \infty) $ or $\{z\colon |z| > 3.29\}$
+
+\end{solution}
+
+\end{enumerate}
+\end{enumerate}
+
+\item The critical region can also be constructed in terms of the sample mean $\bar{X}$, rather than the $z$ score.  To do this, we use the relationship $Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}$ to get $\bar{X} = \mu_0 + \frac{Z\sigma}{\sqrt{n}}$.
+
+Assume that $\mu_0=9$, $\sigma=0.5$ and $n=36$.
+\begin{enumerate}
+\item $\alpha=0.05$ and $H_1\colon \mu > \mu_0$
+
+\begin{solution}
+<<>>=
+mu0=9
+sigma=0.5
+alpha=0.05
+n=36
+z.critical = qnorm(1-alpha, 0, 1)
+z.critical
+mu0 + z.critical*sigma/sqrt(n)
+@
+Therefore, the critical region is value of the sample mean in the interval $(9.137, \infty)$, i.e. $\{\bar{x}\colon \bar{x} > 9.137 \}$.
+
+\end{solution}
+
+
+\item $\alpha=0.05$ and $H_1\colon\mu \neq \mu_0$
+
+\begin{solution}
+<<>>=
+mu0=9
+sigma=0.5
+alpha=0.05
+n=36
+z.critical = qnorm(1-alpha/2, 0, 1)
+z.critical
+mu0 + z.critical*sigma/sqrt(n)
+mu0 - z.critical*sigma/sqrt(n)
+@
+Therefore, the critical region is value of the sample mean in the interval $(-\infty, 8.8367) \cup (9.163, \infty)$, i.e. $\{\bar{x}\colon \bar{x} > 9.163 \text{ or } \bar{x} < 8.8367 \}$.
+
+
+
+\end{solution}
+\end{enumerate}
+
+
+
+\item
+A army office is interested in the horizontal distance from the target of a set of rifle shots, measured in centimetres.  It is known from previous studies that the standard deviation of the horizontal distance is 0.6\,cm. 
+<<>>=
+x <- c(-0.67, -0.03, 0.37, 1.87, 0.35, -0.47, 0.92, 0.95, 0.55, 0.16,
+0.47, -0.44, 0.2, 0.11, 1.91, 1.06, -0.49, -0.93, 1.78, -0.31,
+1.28, 0.26, 0.18, -0.26, 0.7, -0.37, -0.73, -1, 0.4, 1.03)
+
+length(x)
+@
+
+\begin{enumerate}
+\item Calculate the sample mean for this dataset.
+\begin{solution}[25mm] 
+<<>>=
+mean(x)
+@ 
+\end{solution}
+
+
+\item Calculate the standard error for this dataset, using the known population standard deviation $\sigma=0.6$
+\begin{solution}[25mm] 
+
+<<>>=
+sigma <- 0.6
+n <- length(x)
+n
+SEM <- sigma/sqrt(n)
+SEM
+@
+
+\end{solution}
+\item State a sensible null and alternative hypothesis to be used in this situation, in words and in mathematical symbols.
+\begin{solution}
+
+$H_0\colon \mu = 0$\\
+$H_1\colon \mu \neq 0$
+
+In words:\\
+
+$H_0\colon$ the rifle shots have a mean horizontal distance of zero\\
+$H_1\colon$ the rifle shots do not have a mean horizontal distance of zero
+
+
+\end{solution}
+
+
+\item Compute the test statistic, i.e. $Z = \frac{\bar{X}-\mu_0}{\sigma/\sqrt{n}}$
+
+\begin{solution}
+<<>>=
+mu0 <- 0
+z <- (mean(x)-mu0)/SEM
+z
+@
+
+\begin{align*}
+z & = \frac{\bar{x}-\mu_0}{\sigma/\sqrt{n}}\\
+&=\frac{0.295 - 0 }{0.1095...}\\
+&= 2.6929...\\
+&=2.693
+\end{align*}
+
+\end{solution}
+
+
+\item Using a significance level of 5\%, identify the critical region.
+
+\begin{solution}
+This is a two-tailed test, so the critical region is values of the test statistic which are greater than $c$ or less than $-c$.
+
+In this case, we have a significance level of 5\% so $P(Z > c) = 0.025$ and thus $P(|Z| > c) = P(Z>c)+P(Z<-c) = 0.05$.
+
+<<>>=
+c = qnorm(0.975, 0, 1)
+c
+@
+
+
+Critical region is values of $Z$ which are greater than 1.96 or less
+than -1.96, i.e $\{z\colon |z| > 1.96\}$
+
+<<criticalregion_twosided_rifle, fig=TRUE, echo=FALSE, print=FALSE>>=
+xseq <- seq(from=-4,to=4,by=0.1)
+plot(xseq, dnorm(xseq,mean=0,sd=1),type="l", ylab="Density", xlab="Z")
+c = 2
+critical <-  xseq[xseq>=c]
+polygon(x=c(c, critical),y=c(0, dnorm((critical),mean=0,sd=1)),col='gray')
+polygon(x=c(-critical, -c),y=c(dnorm(-(critical), mean=0,sd=1), 0),col='gray')
+text(c(-1.5*c, 0, 1.5*c), rep(0.1,3), c(expression(paste(plain(Reject ), H[0], sep=" ")), 
+                                         "Do not reject",
+                                         expression(paste(plain(Reject ), H[0]), sep=" ")))
+
+text(c(-3,0, 3), rep(0.05,3), c(expression(0.05/2), expression((1-0.05)), expression(0.05/2)))
+@
+
+
+\end{solution}
+
+\item Is the test statistic within the critical region? What conclusion can we draw?
+\begin{solution}
+Yes, it is in the upper tail.  Therefore, we should reject the null hypothesis and conclude that the mean horizontal distance of the rifle shots is not equal to 0.
+\end{solution}
+
+We can also assess the evidence provided by the data using p-values.
+
+\item State the precise definition of p-value and state what ``more extreme'' means in this context.
+\begin{solution}
+The p-value is the probability, if the null is true, of obtaining the observation or one more extreme. In this context, ``more extreme'' means ``the sample mean of the dataset is further away from zero than 0.295''.
+\end{solution}
+\item Using \verb+pnorm()+, or otherwise, calculate the p-value.
+\begin{solution}
+<<>>=
+pnorm(z, 0, sd=1, lower.tail=FALSE)
+pnorm(-1*z, 0, 1)
+#p value
+pnorm(abs(z), 0, 1, lower.tail=FALSE)*2
+
+#or directly from the sample mean
+2*pnorm(abs(mean(x)), mu0, SEM, lower.tail=FALSE)
+@
+
+\end{solution}
+\item Interpret your findings.
+\begin{solution}
+The p-value less than the significance level of 5\%, therefore the result of the hypothesis test is significant.  We may reject the null hypothesis and infer that the rifle is indeed biased.
+\end{solution}
+
+\item The critical region can also be computed in terms of the sample mean. For what values of the sample mean would the null hypothesis be rejected?
+\begin{solution}
+
+<<>>=
+ mu0 + qnorm(0.025, 0, 1)*SEM
+ mu0 + qnorm(0.975, 0, 1)*SEM
+@
+
+$(-\infty, -0.2147) \cup (0.2147, \infty)$ or 
+$\{\bar{x}\colon |\bar{x}| > 0.2147 \}$
+
+In our example our mean was 0.295 which is within the critical region (i.e. it is greater than 0.2147) so we rejected the null.
+
+\bigskip
+\textbf{Further explanation:}
+Suppose our sample mean was 0.201. This value is not within critical region (i.e. it is less than 0.2147), so we would not be able to reject the null. The corresponding test statistic would be $z=1.83487$, which corresponds to a p-value of 0.066, which we means we would fail to reject the null.
+<<>>=
+z = (0.201 - mu0)/SEM
+pnorm(z, lower.tail=FALSE)*2
+@
+
+\end{solution}
+
+
+
+
+\item Compute a 95\% confidence interval for the mean horizontal deviation of the rifle shots.
+
+\begin{solution}
+<<>>=
+qnorm(c(0.025, 0.975), mean(x), sd=SEM)
+mean(x) + c(-1,1)*qnorm(0.975, 0, 1)*sigma/sqrt(n)
+@
+
+We are 95\% confident that the true mean $\mu$ is within the interval (0.0803, 0.5097).  Notice that this interval does not contain $\mu_0=0$.
+
+\bigskip
+\bigskip
+\textbf{Further explanation:}
+To see how confidence intervals relate to the hypothesis test we will suppose that the sample mean was actually 0.201. 
+In this case (see the previous question) we would fail to reject the null.
+The corresponding 95\% confidence interval is (-0.0137, 0.4157). Notice that it does contain $\mu_0=0$.
+<<>>=
+qnorm(c(0.025, 0.975), 0.201, sd=SEM)
+0.201 + c(-1,1)*qnorm(0.975, 0, 1)*sigma/sqrt(n)
+@
+
+
+\end{solution}
+
+
+\end{enumerate}
+
+
+\item Regardless of age, about 20\% of American adults participate in
+  fitness activities at least twice a week.  A random sample of 100
+  adults over 40 years old found 15 who exercised at least twice a
+  week. Is this evidence of a decline in participation after age 40?
+  Use~$\alpha = 0.05$.
+
+\begin{enumerate}
+\item State the null and alternative hypotheses.
+\begin{solution}
+$H_0\colon \pi=0.2$\\
+$H_0\colon\pi <0.2$
+\end{solution}
+
+
+\item Using the normal approximation for the binomial, compute the test statistic $z$. Recall that $z = \frac{\hat{p} - \pi_0}{\sqrt{\frac{\pi_0(1-\pi_0)}{n}}}$
+\begin{solution}
+\begin{align*}
+Z & = \frac{\hat{p} - \pi_0}{\sqrt{\frac{\pi_0(1-\pi_0)}{n}}}\\
+ & = \frac{0.15 - 0.2}{\sqrt{\frac{0.2(1-0.2)}{100}}}\\
+&=-1.25
+\end{align*}
+
+<<>>=
+x = 15
+n = 100
+phat = x/n
+pi0 = 0.2
+(phat - pi0)/(sqrt(pi0*(1-pi0)/n))
+@
+
+\tutorNotes{Observe\rule{0mm}{10mm} that the mean and variance are
+  calculated using the {\em true} value of $p$, not the estimate
+  $\hat{p}=r/n$.  What would you do if your information about~$p$ came
+  purely from observing $r$ successes out of $n$ trials?}
+
+\end{solution}
+
+\item Compute the critical region for this test.
+\begin{solution}
+
+The critical region is values of $z$ which are less than $z=-1.645$,
+i.e. $(-\infty, -1.645)$ or $\{z\colon z < -1.645\}$
+
+<<>>=
+qnorm(0.05, 0, 1)
+@
+
+
+\tutorNotes{The \rule{0mm}{10mm} difference betwen the t test and the
+  Z test is the use of the estimated standard deviation $\hat{\sigma}$
+  rather than the true value $\sigma$ in the denominator.  By far the
+  hardest part of deriving the t distribution is proving that the
+  sample mean and the sample variance are independent.}
+
+
+\end{solution}
+
+
+\item Is the test statistic in the critical region? What conclusion can we draw?
+\begin{solution}
+No, the test statistic is not in the critical region. Therefore we fail to reject the null hypothesis.
+There is insufficient evidence to conclude that the percentage of adults over 40 who participate in fitness activities twice a week is less than 20\%.
+%There is no evidence that the percentage of adults over 40 who participate in fitness activities twice a week is less than 20\%.
+\end{solution}
+
+\item Use R to compute the p-value for the test statistic $z$.
+\begin{solution}
+<<>>=
+pnorm(-1.25, 0, 1)
+@
+
+The p-value is greater than the significance level of 5\%, therefore we fail to reject $H_0$.
+\end{solution}
+
+\item Use R to compute the exact p-value using $\texttt{dbinom}$.
+\begin{solution}
+
+<<>>=
+sum(dbinom(0:15,100, 0.2))
+
+@
+\end{solution}
+
+\item Compare the results obtained in parts c, e, f. Does the conclusion change?
+
+\begin{solution}
+The answers in parts c and e will always be the same, as computing a
+p-value and comparing with $\alpha$ is the same as computing $z$ and
+comparing with the critical region.
+
+The probability obtained using \texttt{dbinom} in part f is slightly different, however the conclusion does not change.
+\end{solution}
+
+\end{enumerate}
+
+%
+%\item
+%The following dataset shows the level of lake Huron over 98 years:
+%<<>>=
+%huron <- 
+%c(580.92, 581.86, 580.97, 580.8, 579.79, 580.39, 580.42, 580.82, 
+%581.4, 581.32, 581.44, 581.68, 581.17, 580.53, 580.01, 579.91, 
+%579.14, 579.16, 579.55, 579.67, 578.44, 578.24, 579.1, 579.09, 
+%579.35, 578.82, 579.32, 579.01, 579, 579.8, 579.83, 579.72, 579.89, 
+%580.01, 579.37, 578.69, 580.33, 578.67, 579.55, 578.92, 578.09, 
+%579.37, 580.13, 580.14, 579.51, 579.24, 578.66, 578.86, 578.05, 
+%577.79, 576.75, 576.75, 577.82, 578.64, 580.58, 579.48, 577.38, 
+%576.9, 576.94, 576.24, 576.84, 576.85, 576.9, 577.79, 578.18, 
+%577.51, 577.23, 578.42, 579.61, 579.05, 579.26, 579.22, 579.38, 
+%579.1, 577.95, 578.12, 579.75, 580.85, 580.41, 579.96, 579.61, 
+%578.76, 578.18, 577.21, 577.13, 579.1, 578.25, 577.91, 576.89, 
+%575.96, 578.4, 577.68, 578.38, 578.52, 579.74, 579.31, 579.89, 
+%579.96)
+%@
+%
+%Climate scientists are looking for evidence that global climate change has increased the level of the lake.
+%Historically, the level of the lake has been 579.3cm.
+%\begin{enumerate}
+%
+%\item State a sensible null and alternative hypothesis.
+%\begin{solution}
+%Let $\mu$ denote the mean level of the Lake Huron.
+%
+%$H_0: \mu = 579.3$\\
+%$H_1: \mu > 579.3$
+%
+%Note that the null hypothesis corresponds to the situation in which the lake level has not changed from the historical value of  579.3cm.
+%\end{solution}
+%
+%\item Calculate the sample mean of the dataset
+%\begin{solution}
+%<<>>=
+%mean(huron)
+%@
+%\begin{verbatim}
+%> mean(huron)
+%[1] 579.0478
+%>
+%\end{verbatim}
+%\end{solution}
+%\tutorNotes{How many decimal places is appropriate?}
+%\item    Calculate the standard error of the mean
+%\begin{solution}
+%\begin{verbatim}
+%
+%> mean(huron)
+%[1] 579.0478
+%> sd(huron)
+%[1] 1.311214
+%> length (huron)
+%[1] 98
+%> SEM <- sd(huron)/sqrt(length(huron))
+%> SEM
+%[1] 0.1324526
+%>  
+%\end{verbatim}
+%\end{solution}
+%\item State the precise definition of p-value and state what ``more extreme'' means in this context
+%\begin{solution}
+%p-value is the probability, if the null is true, of obtaining the observation or one more extreme.  In this context, ``more extreme'' means ``the sample mean of the dataset is higher than the observed sample mean of 579''
+%\end{solution}
+%\item Calculate the p-value
+%\begin{solution}
+%\begin{verbatim}
+%> pnorm(mean(huron),mean=579.3,sd=sd(huron)/sqrt(length(huron)))
+%[1] 0.02842798
+%> 
+%\end{verbatim}
+%\end{solution}
+%\item Interpret
+%\begin{solution}
+%$p<0.05$ so there is evidence that the level has increased
+%\end{solution}
+%\tutorNotes{Observe that the two-sided p-value exceeds 5\% so there is no evidence for a change.  Try to explain why there is evidence for an increase, but no evidence for a change}
+%\item A historian suggests that the later observations are flawed.  Perform a similar analysis on the first 70 observations.
+%\begin{solution}
+%\begin{verbatim}
+%> huron_older <- huron[1:70]
+%> pnorm(mean(huron_older),mean=579.3,sd=sd(huron_older)/sqrt(length(huron_older)))
+%[1] 0.2093983
+%
+%
+%
+%> 
+%\end{verbatim}
+%No evidence!
+%\end{solution}
+%\item (harder) What null hypotheses would you fail to reject? [this
+%is known as a {\em confidence interval}]
+%\begin{solution}
+%one-sided:
+%\begin{verbatim}
+%> qnorm(0.95,mean=mean(huron),sd=sd(huron)/length(huron))
+%[1] 579.0698
+%> 
+%\end{verbatim}
+%Thus the CI is values less than 579.07.
+%
+%Two-sided:
+%
+%\begin{verbatim}
+%> qnorm(0.025,mean=mean(huron),sd=sd(huron)/length(huron))
+%[1] 579.0215
+%> qnorm(0.975,mean=mean(huron),sd=sd(huron)/length(huron))
+%[1] 579.074
+%> 
+%\end{verbatim}
+%
+%Thus the two-sided CI is 579.02 to 579.07.
+%\end{solution}
+%
+%\tutorNotes{How would you interpret a confidence interval that covered the whole real line? Such  things occur when considering ratios}
+%\end{enumerate}
+%
+%\item Perform a similar analysis for randomly generated data and repeat
+%\begin{solution}
+%\begin{verbatim}
+%
+%> x <- rnorm(50)
+%> 1-pnorm(abs(mean(x)),sd(x)/sqrt(50))
+%[1] 0.5176411
+%> 
+%> 
+%> x <- rnorm(50)
+%> 1-pnorm(abs(mean(x)),sd(x)/sqrt(50))
+%[1] 0.4276078
+%> 
+%> x <- rnorm(50)
+%> 1-pnorm(abs(mean(x)),sd(x)/sqrt(50))
+%[1] 0.5266773
+%> 
+%
+%\end{verbatim}
+%\end{solution}
+%
+%Consider how often we reject the null hypothesis when, as here, it is known to be {\em true}
+%
+%
+%\end{enumerate}
+
+
+\item 
+Thirteen babies are born in a maternity ward. Their lengths in centimetres are
+
+49  50  45  51  47  49  48  54  53  55  45  50  48.
+
+Over long previous experience the mean length at birth at this
+hospital has been 50cm. Does this sample suggest that this mean has
+changed?  Use a t-test to assess the evidence, with a 5\% level of
+significance.
+
+\begin{enumerate}
+\item Specify a null hypothesis $H_0$ and the alternative hypothesis $H_1$. 
+
+\begin{solution}
+  The null hypothesis would be that the mean length of babies born in
+  this maternity ward is 50\,cm exactly.
+
+  (The null hypothesis is that the effect is absent, no difference,
+  nothing going on.)  
+  
+  \tutorNotes{Tutors: \rule{0mm}{10mm} spot the flaw in this specimen answer.  For
+    extra credit, spot the flaw in the question}
+  
+
+\end{solution}
+
+\item Use \texttt{t.test} to assess the claim.
+
+\begin{solution}
+<<>>=
+babies = c(49, 50, 45, 51, 47, 49, 48, 54, 53, 55, 45, 50, 48)
+b = t.test(babies, mu=50, alternative="two.sided")
+b
+@
+\end{solution}
+\item What is the test statistic $t$? (Identify from the R output)
+
+\begin{solution}
+<<>>=
+b$statistic
+@
+$t =-0.53241$
+\end{solution}
+
+\item What is the p-value?  (Identify from the R output)
+\begin{solution}
+<<>>=
+b$p.value
+@
+p value = 0.6042
+\end{solution}
+
+\item Interpret the results
+\begin{solution}
+
+  The p-value exceeds the significance level of 5\%, therefore we fail
+  to reject the null hypothesis.  We conclude that the data are
+  consistent with a mean length at birth of 50\,cm.  There is no
+  evidence for any difference. 
+  
+  \tutorNotes{Is\rule{0mm}{10mm} the interpretation of the result
+  correct?  Can you alter the question so that the answer given above
+  is logically consistent with it?  For extra credit, analyse the data
+  from a pure likelihood perspective, and a Bayesian perspective.
+  Does either answer differ from the results of a conventional
+  frequentist analysis?}
+  
+\end{solution}
+
+\end{enumerate}
+
+\item Baz decides to train himself as a life-saver and as part of his
+fitness campaign he has to race against another swimmer, Bob.  The
+times for swimming 100m are as follows:
+
+\begin{verbatim}
+baz <- c(14.2, 14.4, 12.3, 14.3, 12.6, 13.9, 12.1, 11.9, 15.2, 12.3)
+bob <- c(13.7, 14.9, 13.6, 17.5, 13.9, 13.5)
+\end{verbatim}
+
+We seek to determine whether there is a significant difference between
+the two swimmers.  %You may assume that the t-test is appropriate.
+
+\begin{enumerate}
+
+\item Is a one-sided or two-sided test appropriate?   Justify your answer
+\begin{solution}
+A two-sided test is appropriate because the situation is symmetric
+between the swimmers.  We have no reason to expect Baz to be
+faster or slower than Bob.
+\end{solution}
+
+\item State the hypotheses.
+
+\begin{solution}
+Let $\mu_1$ denote Baz's mean time and $\mu_2$ denote Bob's mean time.\\
+
+$H_0\colon\mu_1=\mu_2$\\
+$H_1: \mu_1 \neq \mu_2$
+
+\end{solution}
+
+\item Is a paired or unpaired test indicated?
+\begin{solution}
+Unpaired: there is no natural pairing between the datasets
+
+Furthermore, the sample sizes are different, which means we cannot do a paired test.
+\end{solution}
+
+\item What is the mean time for the two datasets?
+\begin{solution}
+\begin{verbatim}
+> baz <- c(14.2, 14.4, 12.3, 14.3, 12.6, 13.9, 12.1, 11.9, 15.2, 12.3)
+> bob <- c(13.7, 14.9, 13.6, 17.5, 13.9, 13.5)
+> mean(baz)
+[1] 13.32
+> mean(bob)
+[1] 14.51667
+> 
+
+\end{verbatim}
+\end{solution}
+\item Perform a t-test, and indicate whether there is a significant
+difference at the 5\% level between the two swimmers.
+\begin{solution}
+\begin{verbatim}
+
+> t.test(baz,bob,alternative="two.sided")
+
+Welch Two Sample t-test
+
+data:  baz and bob
+t = -1.6254, df = 8.6137, p-value = 0.14
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+-2.8735529  0.4802196
+sample estimates:
+mean of x mean of y 
+13.32000  14.51667 
+
+> 
+\end{verbatim}
+\tutorNotes{Observe that R does not use the equal variance assumption.  Should it? (I don't think it should)}
+
+\end{solution}
+
+\item Interpret the result of the t-test in a way that Baz and Bob
+(who are not statisticians) could understand.
+\begin{solution}
+The p-value exceeds 5\% therefore there is not enough evidence to establish a difference between the swimmers.
+
+\tutorNotes{What \rule{0mm}{10mm} if the pvalue was 4.999999999\%?}
+\end{solution}
+
+
+
+\end{enumerate}
+\item A physics student measures the speed of light in a laboratory.  His results are as follows:
+
+<<>>=
+x <- c(299792459.1, 299792457.87, 299792457.59, 299792459.6, 299792457.74, 
+299792460.08, 299792459.27)
+@
+
+(Note: all figures in meters per second; if you type
+``\verb+options(digits=14)+'' on the commandline, you will see more
+the significant figure on the output).  The true value of the speed of
+light is known to be 299792458 exactly.
+
+The student's professor says that the equipment generally gives readings that are too high.
+
+\tutorNotes{The\rule{0mm}{10mm} speed of light is not an experimental
+  value; the SI system uses units defined so that the speed of light
+  is 299792458 meters per second.  If you measure $c$ and get a
+  different answer, your ruler is the wrong length}
+
+\begin{enumerate}
+
+\item State a sensible null hypothesis for this situation
+\begin{solution}
+Null: the  mean value of all the student's readings is the true
+speed of light exactly, namely 299792458.\\
+
+Let $\mu$ denote the mean value of the speed of light obtained by the equipment in the lab.
+
+$H_0\colon\mu = 299792458$
+
+\tutorNotes{See how \rule{0mm}{10mm} poorly the English language deals
+  with this issue.  The null refers to the {\em ensemble}, not the
+  dataset.  Also observe how difficult it is to precisely state
+  exactly what ensemble you are dealing with.}
+
+\end{solution}
+
+
+\item State a sensible alternative hypothesis for this situation
+\begin{solution}
+
+$H_1\colon\mu > 299792458$
+
+\end{solution}
+
+
+\item What is the mean of the observations?
+\begin{solution}
+<<>>=
+options(digits=14)
+mean(x)
+#[1] 299792458.75
+@
+\end{solution}
+
+\item State the precise definition of p-value and state what the
+observation is, and what ``more extreme'' means in this context
+\begin{solution}
+The pvalue is the probability, if the null is true, of obtaining
+the observation or a value more extreme.  Here, the observation is
+the sample mean of 299792458.75.  In this context, ``more
+extreme'' means ``the sample mean is higher than 299792458.75''.
+\end{solution}
+
+\item Conduct a t test and interpret.
+\begin{solution}
+The professor said that the equipment tended to over-read so a one-sided test is needed.
+<<>>=
+t.test(x, mu=299792458,alternative="greater")
+@
+
+The p-value is less than 5\% so the test is significant and we may
+reject the null.  There is evidence that the equipment is
+over-reading.
+
+\tutorNotes{Observe that the two-tailed test is not significant. Thus
+the readings are significantly {\em higher}, but not significantly
+{\em different}.  Does this make any sense at all?}
+
+\end{solution}
+\end{enumerate}
+\end{enumerate}
+\end{document}
