@@ -582,7 +582,7 @@ Our priors would be $p(H_f)=0.999, p(H_d)=0.001$ and our data would be 9
 successive heads.
 
 * Apply Bayes's theorem to calculate the posterior probabilities for
-  $H_f$ and H_d$.
+  $H_f$ and $H_d$.
 
 ```{r}
 prior_Hf <- 0.999  # prior fair
