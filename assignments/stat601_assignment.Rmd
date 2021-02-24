@@ -576,7 +576,7 @@ correctly recalled with 90\% probability.
 Here we apply Bayesian inference to an everyday problem.  Suppose we
 have a coin and are not sure if it is a fair coin or a double-headed
 coin.  The two hypotheses would be $H_f\colon p(H)=0.5$ and $H_d\colon
-p(H) 1$.
+p(H)=1$.
 
 Our priors would be $p(H_f)=0.999, p(H_d)=0.001$ and our data would be 9
 successive heads.
