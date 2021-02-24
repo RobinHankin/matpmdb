@@ -5,9 +5,17 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include = TRUE) # change to TRUE when rendering solutions; this changes
-                                      # the default visibility (which is overridden by explicitly
-                                      # setting  include=TRUE in chunk options) 
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=TRUE in chunk options) 
 ```
+
+# Instructions
+
+Answer the following questions, which all have equal mark value.  Show
+your working by including output from your R session.
+
+
+
 
 # Question 1
 
@@ -49,7 +57,8 @@ pnorm(TT,mean=1,sd=1/sqrt(6))
 So the power is just under 80\%
 ```
 
-* Consider a test of size $\alpha=0.01$.  Calculate the power of this test
+* Consider a test of size $\alpha=0.01$.  Define the _power_ of a
+  test, and calculate the power of this test.
 
 ```{r}
  1-pnorm(qnorm(0.99,mean=0,sd=1/sqrt(6)),mean=1,sd=1/sqrt(6))
@@ -80,7 +89,7 @@ we have bracketed the number to be between 216475 and 216476
 Consider the following dataset: 
 
 ```{r,include=TRUE}
-(fuel <- c(0.95, 0.52, 0.82, 0.89, 0.81) )
+(fuel <- c(0.75, 0.52, 0.82, 1.03, 0.89, 0.93, 0.71) )
 ```
 
 The numbers correspond to the amount of fuel burnt by a new type
@@ -111,16 +120,18 @@ observation or an observation more extreme
   t.test(fuel,mu=1,alternative="less")
 ```
 
-* Interpret the onfidence interval reported by R in such a way that a
-nonstatistician  could understand it
+* Interpret the confidence interval reported by R in such a way that a
+nonstatistician could understand it
 
 ```{asis}
 We  cannot rule out arbitrarily negative fuel efficiencies with this test
 ```
 
-
-* (harder) Considering only whether the efficiencies are greater than
-  or less than 1, state a sensible null and test it
+* (harder) Now suppose that the observations remain the same as above,
+  but the experimenter was somewhat lazy, and only wrote down "<1" if
+  the observation was less than one or ">1" if it was greater than
+  one.  Given this simplified dataset, state a sensible null, test it,
+  interpret, and compare the result with that of the t-test.
   
   
 ```{asis}
@@ -128,12 +139,14 @@ probability of efficiency being less than 1 is 0.5
 ```
 
 ```{r}
-dbinom(0,5,1/2)
+table(fuel<1)
+sum(dbinom(0:1,7,1/2))      # one-sided
+sum(dbinom(0:1,7,1/2))*2    # two-sided
 ```
 
 ```{asis}
-pvalue less than 0.05, we can reject null [observe that the pvalue is greater than
-that given by the Student test; we lose information]
+pvalue over 0.05, fail to reject null.  Observe that the pvalue (one or two sided) is greater than
+that given by the Student test; we lose information by recording only the sign of fuel-1
 ```
 
 # Question 3
@@ -158,6 +171,9 @@ pow(158)  # beta acceptable
 * Now generalize and consider $H_A\colon p = 0.5+\delta$.  Choose
   sensible values for $\delta$ and quantify the number of observations
   needed to maintain $\alpha,\beta$.
+* Give an example drawn from your daily life of repeated Bernoulli
+  trials.  State and justify a sensible null hypothesis and test it by
+  giving a $p$-value and a likelihood ratio statistic.
 
 ```{r}
 pow <- function(n,delta){  # power function for H_A:p=0.5+delta
@@ -178,10 +194,7 @@ for(i in seq_along(deltas)){ # loop
 plot(deltas,nval)
 ```
 
-
-
 # Question 4
-
 
 Consider a variable $X$ known to have a Poisson distribution.  We will
 consider a null hypothesis that $\lambda=3.1$ (this question will
@@ -240,10 +253,14 @@ But, the professional uses \verb+uniroot()+:
 * (harder) A Bayesian comes along and announces that his prior for
 $\lambda$ is an exponential distribution with rate 0.6 (that is,
 $P(\lambda)\propto e^{-0.6\lambda}$).  Plot his posterior likelihood
-function for $\lambda$, given the observation of 7.
+function for $\lambda$, given the observation of 7.  (hint: you can
+calculate the density of the exponential distribution using
+`dexp(x,rate=0.6)`).
 
-hint: you can calculate the density of the exponential distribution
-using `dexp(x,rate=0.6)`
+* Give an example of observations drawn from a Poission distribution
+in your daily life.  Give either a confidence interval or credible
+interval [hint: credible intervals are much easier] for the mean of
+your observations.
 
 ```{r}
 lambda <- seq(from=2,to=17,len=100)
@@ -313,7 +330,6 @@ or even
 ```{r}
 qbeta(c(0,0.95),shape1=1.5+3,shape2=1.3+2)
 ```
-
 
 # Question 6
 
@@ -528,8 +544,8 @@ fails to recall it.
 ```
  
  Here, `times` shows the amount of time given to the student, and
-`correct` is a Bernoulli variable, with `1` meaning the number
- was correctly recalled `0` meaning it was not.
+`correct` is a Bernoulli variable, with `1` meaning the number was
+correctly recalled and `0` meaning it was not.
  
 * Perform a logistic regression of `correct` against `times`.
  Report your p-value, state your null hypothesis, state whether your
@@ -547,10 +563,72 @@ points(x,logistic(-3.42 + 0.68*x),type="l")
 abline(h=0.9)
 ```
  
- 
 * Give a rough estimate for the time required for the number to be
 correctly recalled with 90\% probability.
 
 ```{asis}
  From the graph, about 8m.
 ```
+
+# Question 9
+
+
+Here we apply Bayesian inference to an everyday problem.  Suppose we
+have a coin and are not sure if it is a fair coin or a double-headed
+coin.  The two hypotheses would be $H_f\colon p(H)=0.5$ and $H_d\colon
+p(H) 1$.
+
+Our priors would be $p(H_f)=0.999, p(H_d)=0.001$ and our data would be 9
+successive heads.
+
+* Apply Bayes's theorem to calculate the posterior probabilities for
+  $H_f$ and H_d$.
+
+```{r}
+prior_Hf <- 0.999  # prior fair
+prior_Hd <- 0.001  # prior double-headed
+LHf <- dbinom(9,9,0.5)   # likelihood fair
+LHd <- dbinom(9,9,1)     # likelihood double
+
+a <- prior_Hf*LHf
+b <- prior_Hd*LHd
+
+(post_Hf <- a/(a+b))
+(post_Hd <- b/(a+b))
+```
+
+* With these priors, how many heads would you need to observe to take
+  your posterior probability for $H_d$ to exceed 0.5?
+
+```{r}
+post_d <- function(n){
+  a <- prior_Hf*dbinom(n,n,0.5)
+  b <- prior_Hd*dbinom(n,n,1.0)
+  b/(a+b)
+}
+post_d(9)
+post_d(10)   # need 10 successive heads
+post_d(11)
+```
+
+* (harder) Compare the results  with a conventional frequentist
+  analysis.
+
+```{r}
+freq <- function(n){dbinom(n,n,0.5)}
+freq(9)
+freq(10)
+freq(11)
+```
+
+```{asis}
+Frequentist analysis does not use prior information, which is why the pvalues are so strongly
+significant.  Many statisticians, including your lecturer, are unsure how to interpret
+this.
+```
+
+* Give an example of Bayes's theorem in your everyday life.  State 2
+  or 3 hypotheses _clearly_, state your priors _clearly_, state your
+  data _clearly_, state your likelihoods _clearly_ and apply Bayes's
+  theorem to your situation.  Comment briefly on whether Bayesian
+  logic is operating as expected in this situation.
