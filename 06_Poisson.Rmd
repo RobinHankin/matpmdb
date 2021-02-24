@@ -20,7 +20,11 @@ grow very large, but require $p$ to become small in such a way as to
 hold the product $np$ constant.  Consider table
 \@ref(tab:poissonlimit), showing values of $n$ becoming larger and
 larger, and $p$ adjusted so that the product $np$ is always equal to
-$4$:
+$4$.  See how the variance rapidly approaches 4 as $n$ approaches
+infinity.  We can get a visual impression of the limiting process by
+examining the following diagram which shows a range of $n$:
+
+
 
 ```{r poissonlimit}
 e <- 1:5
@@ -28,9 +32,6 @@ jj <- data.frame(n=10^e, p=0.4/10^e, np=4, var=4*(1-1/10^e))
 knitr::kable(jj,caption="limiting process for the Poisson distribution")
 ```
 
-See how the variance rapidly approaches 4 as $n$ approaches infinity.
-We can get a visual impression of the limiting process by examining
-the following diagram which shows a range of $n$:
 
 ```{r}
 n <- 10^(1:3)
