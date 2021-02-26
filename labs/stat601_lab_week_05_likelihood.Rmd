@@ -1,0 +1,262 @@
+---
+title: "Likelihood and the Gaussian distribution"
+output:
+  html_document:
+    df_print: paged
+fontsize: 12pt
+---
+
+# Likelihood and the Gaussian distribution
+
+This short handout takes you through the basics of likelihood as
+applied to the Gaussian distribution and the binomial distribution.
+Go through the material, typing the R commands at the R prompt, making
+sure you understand the content.
+       
+Remember that you can type `?rnorm` at the R prompt to get help
+on that command.
+       
+Then see the figure for a graph.
+    
+```{r}
+x <- seq(from=-4,to=4,len=100)
+plot(x,dnorm(x),pch=16,ylim=c(0,0.6),type='l',main='some Gaussian distributions')
+points(x,dnorm(x,mean=1),col="red",type='l')
+points(x,dnorm(x,mean=2),col="green",type='l')
+points(x,dnorm(x,sd=2),col="blue",type='l')
+points(x,dnorm(x,sd=0.7),col="yellow",type='l')
+points(x,dnorm(x,mean=1,sd=1.1),col="orange",type='l')
+abline(v=0,lwd=5,col='purple')
+```
+
+If the purple line represents an observation, which is the best Gaussian curve to choose?
+
+
+# Likelihood
+
+You will recall that the likelihood function is defined for a particular dataset $D$ as
+
+$$
+\mathcal{L} = C\times\operatorname{Prob}\left(D\left|H\right.\right)
+$$
+
+where $C$ is an arbitrary constant, $D$ a (fixed) dataset, and $H$ a hypothesis that we use to describe the data (such as a particular value for the mean and standard deviation of a Gaussian distribution, or the parameter $p$ in a binomial distribution).
+
+In lectures we considered the Nile dataset.  Today we are going to
+consider only the first 20 measurements:
+
+```{r}
+D <- Nile[1:20]
+``` 
+
+Assuming that the dataset has a Gaussian distribution we may calculate
+the probability of observing this dataset, conditional on specific
+parameters for the mean and standard deviation, with `dnorm()`:
+    
+    
+```{r}
+dnorm(D,mean=900,sd=140)
+```
+
+See how the values are quite small because of the high (140) standard
+deviation.  To get the overall probability  (which would be a likelihood), we multiply all the
+individual probabilities together with `prod()`:
+
+    
+```{r}
+prod(dnorm(D,mean=900,sd=140))
+```
+
+
+And we may investigate the effect of changing the mean:
+
+
+```{r}
+prod(dnorm(D,mean=902,sd=140))
+```
+
+so the likelihood has increased, which tells you that 902 is a better
+estimate for the mean than 900.
+
+We can also investigate changing the standard deviation:
+
+```{r}
+prod(dnorm(D,mean=902,sd=141))
+```
+
+Observe that we do not care about the absolute value of the
+likelihood; we only care about relative changes.
+
+
+**YOUR TASK** play around with different values of the mean and
+standard deviation until you find the *maximum likelihood estimate*
+
+## Graphical methods
+
+See the following figure, in which vertical lines correspond to the
+data.  Which colour curve corresponds to the highest likelihood?
+
+```{r}
+D <- Nile[1:20]
+x <- seq(from=800,to=1500,len=100)
+plot(x,dnorm(x,mean=850,sd=100),type="l",lwd=3)
+points(x,dnorm(x,mean=950,sd=100),type="l",lwd=3,col='red')
+points(x,dnorm(x,mean=950,sd=140),type="l",lwd=3,col='green')
+points(x,dnorm(x,mean=1300,sd=190),type="l",lwd=3,col='blue')
+segments(x0=D,y0=0,y1=0.004)
+```
+
+It makes sense to *plot* the likelihood when changing one or other
+parameter.  The following graph shows what happens when you change the
+mean.
+
+
+```{r}
+f <- function(m){prod(dnorm(D,mean=m,sd=141))}
+m <- seq(from=900,to=909,len=100)
+plot(m,sapply(m,f))
+```
+
+It is more common to work with the log of the likelihood.   The professional uses the fact that $\log\prod_{i=1}^nx_i=\sum_{i=1}^n\log x_i$, so uses the `log` argument of `dnorm()`:
+
+```{r}
+f2 <- function(m){sum(dnorm(D,mean=m,sd=141,log=TRUE))}
+f2(900)
+```
+
+This is more accurate, and less susceptible to overflow.
+
+*YOUR TASKS*: play with the R idiom for these two figures.
+ 
+For the mean, for example, change the range (currently 900 to 909) to
+a more sensible range.  Then vary the standard deviation from 141.
+
+ write R idiom for plotting the likelihood as a
+function of standard deviation, holding the mean constant.
+
+Try including the whole Nile dataset instead of just the first few
+observations.
+
+
+# Likelihood maximization
+
+
+R can perform maximization automatically using the `optim()` function.
+Unfortunately, this minimizes its objective function rather than
+maximizing (which is a pain).
+
+We will also work with the log likelihood, as this is more convenient
+for numerical work:
+    
+```{r}
+D <- Nile[1:10]
+log(prod(dnorm(Nile,mean=900,sd=150)))
+sum(log(prod(dnorm(Nile,mean=900,sd=150))))
+sum(dnorm(Nile,mean=900,sd=150,log=TRUE))
+```
+
+Make sure you understand the above logic.  All the lines calculate the
+same quantity using different R idiom.  
+
+In the following, we define a vector `p` with two elements, the first
+being the mean and the second the standard deviation.  The `optim()`
+function is minimizing `f()` which is *minus* the
+log-likelihood:
+
+```{r}
+f <- function(p){-sum(dnorm(Nile,mean=p[1],sd=p[2],log=TRUE))}
+optim(c(900,150),f)
+```
+
+In the above R session, the output from `optim()` splits into
+different parts.  The one we want is `$par`, which gives the value
+that maximizes the objective function `f()`.  The first argument to
+`optim()` is the start point for the optimization routine.
+
+
+This shows us that the maximum likelihood estimate is 919.3 for the
+mean and 168.4 for the standard deviation.
+
+*YOUR TASK* is to adapt the previous R idiom to work with random
+observations from a standard Gaussian.  To ensure everyone has a
+different dataset, we will use our student ID as a seed.  In the
+following, I have used my student ID, you replace this with your ID.
+    
+    
+```{r}
+set.seed(1266402)  # my student ID: you use yours!
+myRandom <- rnorm(10)
+f <- function(p){-sum(dnorm(myRandom,mean=p[1],sd=p[2],log=TRUE))}
+optim(c(0,1),f)
+```
+
+
+I want everyone to do this and report to me the maximimum likelihood
+estimate.  Eliot will collate them.
+
+Further, I want everyone to evaluate the likelihood of the *TRUE*
+values of the parameters:
+
+
+    
+```{r}
+set.seed(1266402)  # my student ID: you use yours!
+myRandom <- rnorm(10)
+f <- function(p){-sum(dnorm(myRandom,mean=p[1],sd=p[2],log=TRUE))}
+f(c(0,1))   # negative log-likelihood for mean=0, sd=1 
+```
+
+
+## Binomial distribution.
+
+Suppose we have some observations of independent Bernoulli trials.  We observe, say, 16 trials of which 5 are failures and 11 successes.  What can we say about $p$, the probability of success?
+
+By definition, the likelihood function is just $C\operatorname{Prob}\left(D|H\right)$, where $D$ is the data (here 11 successes and 5 failures) and $H$ is just 
+
+The first thing we can do is to state that the likelihood function is 
+
+$$
+\mathcal{L}=C{16\choose 11\,5} p^{11}\left(1-p\right)^{5}
+$$
+
+But we can chose $C=1/{16\choose 11}$ to give us just $p^{5}\left(1-p\right)^{11}$.  But in practice it is often easier to choose $C=1$, which enables us to use `dbinom()` directly:
+
+```{r}
+like <- function(p){dbinom(11,16,p)}
+p <- seq(from=0,to=1,len=100)
+plot(p,dbinom(11,16,p),xlab='probability of success',ylab='likelihood')
+abline(v=11/16)
+```
+
+The *support* $\mathcal{S}$ is just the log of the likelihood function.  Here we have 
+
+$$
+\mathcal{S}=\log\mathcal{L} = \log\left(C{16\choose 11\,5}p^5\left(1-p\right)^{11}\right)=\log K+5\log p+11\log\left(1-p\right)
+$$
+
+where $K=\log C+\log{10\choose 11\,5}$. In this case it makes sense to choose $K$ so the support has a maximum of zero.  We know that the maximum likelihood estimate is $\hat{p}=\frac{11}{16}$, so if we subtract off the probability at that point we have a support function that has a maximum of zero.  Here we will use `dbinom(...,log=TRUE)` rather than mucking about with logs:
+
+
+```{r}
+p <- seq(from=0.2,to=0.9,len=100)
+support <- function(p){dbinom(11,16,p,log=TRUE) - dbinom(11,16,11/16,log=TRUE)}
+plot(p,support(p))
+abline(h= -2)
+abline(v=11/16)
+```
+
+
+If we want to give a support interval we find where the support curve intersects the line at -2.  The values are about 0.4 and 0.9 but to find them exactly we can use numerical methods (solving the equations analytically is difficult).   In R the way to solve an equation numerically is to use `uniroot()`.  This takes two arguments, a function and a two-element vector bracketing the root.  `uniroot()` solves $f(x)=0$ and we want $S=-2$ so we need $f(x)=S+2$ because then $f(x)=0$ means $S+2=0$, ie $S= -2$.
+
+```{r}
+f <- function(p){support(p)+2 }  #uniroot solves f(x)=0 so S+2=0
+uniroot(f,c(0.3,0.5))       # second argument brackets the root
+```
+
+So the lower limit is about 0.439 (this is given in the `$root` line).  Finding the upper limit is analogous:
+
+```{r}
+uniroot(f,c(0.8,0.95))
+```
+
+giving an upper limit of about 0.877.  So a support interval might be $(0.439,0.877)$.  Inside this range, you cannot improve the likelihood by two units of support.  So this range is OK.  Outside this range, you can find a better estimate for $p$ that is much better (better by more than two units of support)  simply by moving to the maximum likelihood estimate of $11/16$.

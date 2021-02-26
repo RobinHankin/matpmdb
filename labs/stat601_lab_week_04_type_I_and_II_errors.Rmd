@@ -1,0 +1,268 @@
+---
+output: pdf_document
+title: "Type I and type II errors with Gaussian distributions"
+fontsize: 12pt
+---
+# Size and power of statistical tests part 2: Gaussian distributions
+
+Recall the central definitions:
+   
+> type I error: rejecting the null hypothesis when it is true.
+
+> type II error: failing to reject the null hypothesis when it is false.
+
+> $\alpha$, the size of a test: the probability of committing a type I error
+
+> $\beta$, the probability of committing a type II error
+
+> the power of a test is $1-\beta$.
+
+> P-value: the probability, if the null is true, of obtaining the observation or an observation more extreme
+
+Recall that a Gaussian distribution $N(\mu,\sigma^2)$ is characterised by its mean $\mu$ and variance $\sigma^2$.  See the help page for details (`?rnorm`); you also have the screencasts on AUTonline for help.  Our first null is $H_0\colon\mu=0$.
+
+We will start by assuming the variance is known to be 1 exactly; and a sample size of 6:
+
+```{r}
+set.seed(0)
+n <- 6
+x <- rnorm(n)
+x
+mean(x)
+```
+
+So we can see the sample mean of our observations is different from the population mean of zero.  What is the distribution of the sample mean?  Well, we know from theory that if $x\sim N(\mu,\sigma^2)$, then $\overline{x}\sim N(\mu,\sigma^2/n)$, so the standard deviation is $\sqrt{\sigma^2/n}=\sigma/\sqrt{n}$.  Here $n$ is the sample size.
+
+Just to get a feel for the situation, we can sample from the null:
+
+```{r}
+hist(rnorm(10000,mean=0,sd=1/sqrt(n)),xlab='sample mean')
+```
+
+We can plot a more exact curve using dnorm():
+
+
+```{r}
+x <- seq(from=-2,to=2,len=1000)
+plot(x,dnorm(x,mean=0,sd=1/sqrt(n)),type='l')
+```
+
+We need to find a test with the property that $\alpha=0.05$.
+
+```{r}
+qnorm(0.95,mean=0,sd=1/sqrt(n))
+```
+
+that is, about 0.67 (recall that `qnorm()` gives the value of x with $Pr(X<x)=0.95$; if the probability of $X$ being less than 0.67 is 0.95, then the probability of $X$ being greater than 0.67 is 0.05).  Alternatively we can view the situation in terms of pictures:
+```{r}
+plot(x,dnorm(x,sd=1/sqrt(n)),type='l')
+abline(v=qnorm(0.95,sd=1/sqrt(n)))
+text(1.1,0.2,'reject')
+text(0.3,0.2,'fail to reject')
+
+```
+
+so the test is to reject the null if the sample mean is bigger than about 0.67
+
+Let us check this:
+
+```{r}
+mean(rnorm(n))
+mean(rnorm(n))
+mean(rnorm(n))
+```
+
+None of these three trials has a sample mean exceeding 0.67, so we do not reject the null in any of these trials.  Remember that here the null is true so rejecting it would be a type I error.
+
+Let us do this loads of times:
+
+```{r}
+replicate(100,mean(rnorm(n)))
+```
+
+and then to save a lot of bother we can make a table:
+
+```{r}
+table(replicate(1000,mean(rnorm(n))>0.67))
+```
+
+So we reject the null only rarely, when it is true (actually we reject it with a probability of 5%).  Alternatively, we can calculate the p-value directly from the observed value of the sample mean.  The first trial had a sample mean of 0.4, so this would correspond to a p-value of
+
+```{r}
+pnorm(0.4,mean=0,sd=1/sqrt(n),lower.tail=FALSE)
+```
+
+So a sample mean of 0.4 has a pvalue of about 16%, thus failing to reject the null.  Make sure you understand why we specify `lower.tail=FALSE` as an argument to `pnorm()`: the **p-value is the probability, if the null is true, of obtaining the observation or one more extreme**.
+
+Let us use repeated sampling to assess the p-value:
+
+```{r}
+hist(replicate(1000,pnorm(mean(rnorm(n)),sd=1/sqrt(n))))
+```
+
+The p-value is uniformly  distributed, so the probability of it being less than 0.05 is 0.05.
+
+## Power of the test.
+
+
+We can now assess the power of the test.  Recall that the power of a test is $1-\beta$, where $\beta$ is the probability of failing to reject the null, when the null is false.  To calculate this, we need to specify a particular alternative.
+
+We will start with $H_A\colon\mu=1$.  What is the probability of failing to reject the null now?
+
+```{r}
+replicate(100,mean(rnorm(n,mean=1))<0.75)
+```
+
+The null is incorrect here (`mean=1`) so we want to reject it.  If the sample mean is greater than 0.75 we correctly reject the null.  Alternatively, if the sample mean is less than 0.75 we fail to reject the null, and commit a type II error.  So in the above, the `TRUE` corresponds to a type II error.
+
+We can use `table()` to summarize:
+
+
+```{r}
+table(replicate(1000,mean(rnorm(n,mean=1))<0.75))
+```
+
+So $\beta$ is about 0.26 and the power is about 0.74.
+We could replace the 0.75 with the exact value:
+
+```{r}
+table(replicate(10000,mean(rnorm(n,mean=1))<qnorm(0.95,sd=1/sqrt(n))))
+```
+
+See how the test has a power of about 74\%.  This is the probability of correctly rejecting $H_0$ when it is false. We can calculate the value exactly:
+
+```{r}
+1-pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=1,sd=1/sqrt(n))
+pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=1,sd=1/sqrt(n),lower.tail=FALSE)
+```
+(remember you can view the screencasts on `pnorm` etc to remind yourself what these functions do).
+
+In pictures:
+
+
+```{r}
+plot(x,dnorm(x,sd=1/sqrt(n)),type='l')
+points(x,dnorm(x,mean=1,sd=1/sqrt(n)),col='red',type='l')
+abline(v=qnorm(0.95,sd=1/sqrt(n)))
+text(1.0,0.2,'reject')
+text(0.3,0.2,'fail to reject')
+```
+
+We can perform the same process for an alternative $H_A\colon\mu=0.3$.  In pictures:
+
+
+
+```{r}
+plot(x,dnorm(x,sd=1/sqrt(n)),type='l')
+points(x,dnorm(x,mean=0.3,sd=1/sqrt(n)),col='red',type='l')
+abline(v=qnorm(0.95,sd=1/sqrt(n)))
+text(1.0,0.2,'reject')
+text(0.3,0.2,'fail to reject')
+```
+
+See how the two distributions are now more close to one another, and this should make it harder to distinguish between them.
+
+
+```{r}
+1-pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=0.3,sd=1/sqrt(n))
+pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=0.3,sd=1/sqrt(n),lower.tail=FALSE)
+```
+
+# Your first task
+
+Vary the number of observations (choose three or four representative values in the range 5-50), and find the power of the test against for the same null, $H_0\colon\mu=0$ against different alternatives:  $H_A\colon\mu=0.1,0.2,0.5,1,2$.
+
+
+
+# Student t test
+
+In the above we could assume a standard deviation of exactly one, but in practice you have to estimate the standard deviation using `sd()`.
+
+
+In the first part of this tutorial we calculated the test statistics (which was the sample mean) and calculated a p-value for it.  We then compared the p-value with the 5% cut-off value.
+
+We can show that estimation of standard deviation is unreliable for small sample sizes:
+
+```{r}
+n <- 5
+sd(rnorm(n))
+sd(rnorm(n))
+sd(rnorm(n))
+```
+
+
+and we can streamline the process somewhat:
+
+
+```{r}
+hist(replicate(10000,sd(rnorm(n))))
+```
+
+Try this yourself with different values of $n$.
+
+The R language can accommodate the uncertainty in the standard deviation using the t.test() function.  Remember to consult `?t.test` for further information.
+
+In practice you can just type `t.test()` on the terminal to test a particular null hypothesis:
+
+
+```{r}
+d <- c(2.1, 2.3, -0.1, 0.9, -1.08, 1.72, 0.59)
+t.test(d,alternative="greater")
+```
+
+See how the p-value is less than 5% so we reject the null (which is $\mu=0$ by default).
+What is the standard deviation of the dataset?
+
+
+```{r}
+sd(d)
+```
+ 
+ but we do not not know if this is an overestimate of the true standard deviation or an underestimate (which is why we use the t test in the first place).
+ 
+ 
+Making the observation that the pvalue is a random variable, we can estimate its sampling distribution:
+
+```{r}
+n <- 7
+hist(replicate(1000,t.test(rnorm(n))$p.value))
+```
+
+This looks uniform.  Can you see that if the pvalue is uniform, we reject it 5% of the time?
+ 
+```{r}
+table(replicate(1000,t.test(rnorm(n))$p.value < 0.05))
+```
+ 
+so again we reject the null about 5\% of the time.  What is the power of this test for $H_0\colon\mu=0$ against an alternative of $H_A\colon\mu=1$?
+ 
+```{r}
+table(replicate(1000,t.test(rnorm(n,mean=1))$p.value > 0.05))
+```
+
+(Here the null is incorrect so we want to reject it (that is, observe a p-value less than 0.05).  Obtaining a p-value greater than 0.05 corresponds to a type II error.  And $\beta$ is the probability of committing a type I error which in this caes is about 38%; the power is about 61%.
+
+We can do the same task but with a larger number of observations:
+
+ 
+```{r}
+n <- 20
+table(replicate(1000,t.test(rnorm(n,mean=1))$p.value > 0.05))
+```
+
+The power has risen to about 98%.  This is what more data buys you!
+
+Finally, we will leave the number of observations at $n=20$ but now we will test our ability to reject the null when it is only slightly incorrect.  We will use $\mu=0.1$:
+
+```{r}
+n <- 20
+table(replicate(1000,t.test(rnorm(n,mean=0.1))$p.value > 0.05))
+```
+
+With such a tiny difference between the null and alternative hypotheses, we see that the power has declined to about 8%.
+
+
+# Your task
+ 
+Calculate the power of the t-test, varying the number of observations from n=5,10,20 and the alternative hypothesis 0.1,0.2,0.5,1.0,2.  I will collate.
+ 

@@ -1,0 +1,229 @@
+---
+output: pdf_document
+title: Linear regression
+fontsize: 12pt
+---
+
+
+# introduction
+
+This short handout takes you through linear regression.  Go through
+the material, typing the R commands at the R prompt, making sure you
+understand the content.
+       
+Remember that you can type `?lm` at the R prompt to get help
+on that command.
+
+
+# Linear regression: trees.
+
+The R system includes a dataset called ```trees```:
+
+```{r}
+data(trees)
+head(trees)
+```
+
+We will use linear regression to analyse this dataset.  We will start
+by analysing the dependency of volume on tree height; The first step
+is to plot a scattergraph:
+
+
+```{r}
+plot(Volume~Height,data=trees)
+```
+
+The points are reasonably scattered, without any outliers or
+nonlinearity.  The points are showing broadly uniform variance about a
+line.  We can use R to calculate the best-fit line using the
+```lm()``` function:
+
+
+```{r}
+lm(Volume~Height,data=trees)
+```
+
+This shows that the relation is approximately
+
+\[
+V =  -87.124    +    1.543H
+\]
+
+We can get more information by using the ```summary()``` command:
+
+
+```{r}
+fit <- lm(Volume~Height,data=trees)
+summary(fit)
+```
+
+This gives more information such as p-values and standard errors. For
+example, the slope is 1.5433 (estimated) but with an error of $\pm
+0.3839$.
+
+
+We can plot the regression line on the scattergraph as follows.
+
+```{r}
+plot(Volume~Height,data=trees)
+abline(fit)
+```
+
+However, this model has a serious defect in that short trees are
+predicted to have negative volumes, an absurdity.  We can mitigate
+this defect by using a logarithmic transform:
+
+
+```{r}
+plot(Volume~Height, data=trees, log='xy')
+```
+
+The ```plot()``` command takes a `log` argument, in this case
+instructing R to use logarithmic transforms on the x and y axes.
+
+However, ```abline()``` does not work with this type of plot, so we will have to work manually:
+
+
+```{r}
+plot(log(Volume)~log(Height),data=trees)
+logfit <- lm(log(Volume)~log(Height),data=trees)
+abline(logfit)
+```
+
+And to see the details we use ```summary()```:
+
+```{r}
+summary(logfit)
+```
+
+
+## Using Girth instead
+
+The girth of the tree is a more useful predictor than height:
+
+```{r}
+plot(Volume~Girth,data=trees,log='xy')
+```
+
+We can try linear regression:
+
+
+```{r}
+logfit2 <- lm(log(Volume)~log(Girth),data=trees)
+summary(logfit2)
+```
+
+The plot is more convincing than the numbers, IMHO:
+
+```{r}
+plot(log(Volume)~log(Girth),data=trees)
+abline(logfit2)
+```
+
+
+It is possible to use both height and weight together as regressors:
+
+```{r}
+summary(lm(Volume ~ Girth + Height, data=trees))
+```
+
+This would mean that $V = -57.9877 + 4.7082G + 0.3393H$.  Again the
+model has a defect that small trees are predicted to have negative
+volume.  So it might be better to use logarithmic transformation:
+
+```{r}
+summary(lm(log(Volume) ~ log(Girth) + log(Height), data=trees))
+```
+
+This would mean that $\log V = -6.63 + 1.98\log G + 1.117\log H$,
+or $V = e^{-6.63}G^{1.98}H^{1.117}$.
+
+If the height and weight have combined effects we can use the star operator:
+
+
+```{r}
+summary(lm(log(Volume) ~ log(Girth) * log(Height), data=trees))
+```
+
+This would indicate that $\log V = -3.68 + 0.79\log G + 0.43\log H +
+0.27\log G*\log H$.  Do you think this is a better model?
+
+
+# Another dataset.
+
+
+Download file `heightweight.txt` from AUTonline and load it into R, using
+
+`a <- read.table(file.choose())`
+
+Then use commands such as 
+
+
+```plot(weight~height,data=a)```
+
+to produce scattergraphs (one is shown below) but produce other ones,
+maybe logarithmically transformed).
+
+```{r}
+a <- read.table("heightweight.txt")
+plot(weight~height, data=a)
+summary(lm(weight~height, data=a))
+```
+
+## your task
+
+See how the predicted line is $w=60.138 + 11.343h$ from the R output
+on the figure.  What is the predicted weight of someone
+with a height of 2m exactly?  What is the predicted weight of someone
+with a height of 0m exactly?  Is this sensible?
+
+1. Using R idiom such as
+```plot(weight~height,data=a,xlim=c(0,2.1),ylim=c(0,90))```, plot the
+data on axes that include the origin; fit a line that goes through the
+origin using ```lm(weight~height+0,data=a)```.
+
+2. Plot a straight line using ```abline()``` and observe that it does
+not give a close fit.
+
+
+Now consider that a logarithmic transformation may be used; see
+the figure.
+
+
+```{r}
+plot(log(weight)~log(height), data=a)
+fit <- lm(log(weight)~log(height), data=a)
+summary(fit)
+abline(fit)
+```
+
+Now the relationship is
+
+\[
+\log(w) = 4.24865 + 0.23994\log(h)
+\]
+
+where the numbers are from the R output.  This is equivalent to
+
+\[
+w = \exp(4.24865) h^{0.23994}
+\]
+
+or even (approximately).
+
+\[
+w = 70 h^{0.24}
+\]
+
+It is possible to regress against age using the ```+``` symbol:
+
+```{r}
+ summary(lm(weight~height+age,data=a))
+```
+
+
+but the high (and thus non-significant) p-value of ```age``` (0.266)
+shows that the effect of age is not significant in this model.
+
+
+

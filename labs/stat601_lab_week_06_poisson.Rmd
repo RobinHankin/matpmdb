@@ -1,0 +1,131 @@
+---
+output: pdf_document
+title: Poisson distribution
+fontsize: 12pt
+---
+
+# The Poisson distribution
+
+
+This short handout takes you through some theory and
+practical work with the Poisson distribution; and shows how the
+Pearson Chi-square test works.
+  
+Remember that you can type \texttt{?rpois} at the R prompt to get help
+  on the Poisson distribution.  You are also encouraged to search for
+  ``Poisson distribution'' on Google; the wikipedia page is an
+  excellent source of information.  }
+
+
+\section{The Poisson Distribution}
+
+You will recall the probability mass function of the Poisson from
+lectures:
+
+$$
+\newcommand{\prob}[1]{\operatorname{Prob}\left(#1\right)}
+\prob{X=n} =\frac{e^{-\lambda}\lambda^n}{n!}
+$$
+
+The R commands are \texttt{rpois} etc, so type \texttt{?rpois} for help.
+
+Try to think of a few examples from your day-to-day life that follow
+the Poisson distribution.  Remember that the Poisson is the limit of
+the binomial distribution as $n$ goes to infinity, $p$ goes to zero,
+but maintaining $np$ constant.  So your examples should have large $n$
+and small $p$.
+
+We will just do a few things first with \texttt{lambda = 2.1}:                  
+                  
+```{r}
+f <- function(n,lambda){exp(-lambda)*lambda^n/factorial(n)}
+f(0:10,lambda=2.1)
+dpois(0:10,lambda=2.1)
+
+f(0:10,2.1)-dpois(0:10,lambda=2.1)
+```
+
+See how close the two methods are.  Try to assess the difference
+between the two methods, which should be small; can you quantify it?
+Produce a graphical representation of the difference between the two methods.
+Here is one method:
+```{r}
+plot(dpois(0:10,lambda=2.1),f(0:10,2.1))
+```
+
+but note that this is a very poor graph.  Try to improve it! We will use \texttt{dpois()} from now on as it is more accurate and faster.  One of the first things to do is to check that the sum of the
+probabilities is one, for a few different values of $\lambda$:
+
+```{r}
+sum(dpois(0:10,lambda=0.4))
+sum(dpois(0:10,lambda=1.2))
+sum(dpois(0:10,lambda=3.3))
+sum(dpois(0:10,lambda=3.8))
+```
+
+(actually this will be very very slightly less than one (why?))
+
+See the following figure:
+
+```{r}
+n <- 0:10
+plot(n,dpois(n,lambda=2.3),type="h",lwd=5)
+```
+
+We can also try a likelihood approach.  Suppose we are trying to
+estimate $\lambda$ and have an observation of $n=7$.  What values of
+$\lambda$ are consistent with this?  (see Figure~\ref{like}).
+
+```{r}
+lambda <- seq(from=2,to=15,len=100)
+like  <- dpois(7,lambda=lambda)
+plot(lambda,like)
+abline(v=7)
+```
+
+
+```{r}
+lambda <- seq(from=2,to=15,len=100)
+support  <- dpois(7,lambda=lambda,log=TRUE)
+plot(lambda,support-max(support))
+abline(v=7)
+abline(h=c(0,-2))
+```
+
+# Your tasks
+
+\begin{itemize}
+
+\item Give three or four examples of the Poisson distribution from your everyday life.  For example, the number of times in a month that I lose my glasses.  Each day there is a small probability that I will lose my glasses, but the number of days is about 31, which counts as large.  Come up with examples from your life.
+
+\item Using \texttt{rpois()}, verify the wikipedia results for the
+mean and variance of the distribution.  Try to verify the formula
+given for the median.
+
+\item Produce support and likelihood plots for different values of
+the observation.  What happens if $n=0$?
+
+\item Suppose we have an observation of~$n=7$.  Calculate a likelihood
+ratio for~$H_1\colon\lambda=6$ against~$H_2\colon\lambda=11$.
+
+\item (harder) Now suppose you are working with $L=\log\lambda$.  Plot
+a support curve for $L$.
+
+\item (also hard).  Now bring in Bayesian logic.  Suppose
+  Your\footnote{It is conventional and polite to capitalize ``You''
+    and ``Your'' when using Bayesian logic.} prior for $L$ is Gaussian
+  with mean zero and standard deviation 1; a single observation of
+  $n=3$ is made.  Plot a support curve for $L$; superimpose support
+  curves for different priors.
+
+\item Suppose we test a null hypothesis $H_0\colon\lambda=1$, against
+an alternative~$H_A\colon\lambda>1$.  State the precise definition of
+p-value, then find a value of $n$ such that a test (of the form
+``reject $H_0$ if the observation is greater than
+$n$") has size less than 5\%.
+
+\item Now consider a specific alternative hypothesis, specifically
+$H_A\colon\lambda=\lambda_0$.  Find the minimum value of $\lambda_0$
+so that $\alpha\leqslant 0.05$ and $\beta\leqslant 0.2$.
+\end{itemize}
+
