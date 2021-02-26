@@ -1,0 +1,115 @@
+hello everyone, welcome to STAT601!
+
+My name is Robin Hankin, your lecturer.  I can be contacted on
+<robin.hankin@aut.ac.nz> -- although this should be viewed as a last
+resort (after asking your classmates and tutor).
+
+My office hours are 9-10am Tuesdays, which I reserve to help any
+student with any academic issue.  If you want to see me during this
+time no appointment is needed; simply come to WT level 1 reception and
+ask for me, I will be happy to see you.  
+
+The course material is covered by the following youtube series:
+
+https://www.youtube.com/playlist?list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84
+
+Please note that although the course content will closely follow the
+youtube playlist, I generally alter the order of presentation
+slightly, so the weeks are somewhat out of sequence.  I will also post
+various resources and learning materials on Blackboard as the semester
+progresses.
+
+The course will use the R programming language, freely available at
+https://cran.r-project.org/ and you are encouraged to download and
+play with the system on your own laptop.  I also use Rstudio, freely
+available at https://www.rstudio.com/products/rstudio/download/ and
+this includes a nice front-end and display capabilities.
+
+
+STAT601 has one assignment, a portfolio, and an examination, due dates
+to be advised.
+
+
+Semester schedule
+
+This is provisional, and might change slightly as the semester
+progresses.  Text in brackets refers to video resources, available on
+AUTonline or YouTube.
+
+
+* Introduction to R and Rstudio; Bernoulli RVs and binomial distribution
+* Normal distribution
+* Introduction to hypothesis testing 
+* Type I and type II errors
+* Likelihood and support
+* Point estimation; likelihood
+* Poisson distribution
+* Bayesian reasoning; beta distribution
+* Hypergeometric distn; Fisher's exact test
+* Chi-square distribution and Pearson's chi-square test
+* Linear regression including logistic and logarithmic
+* Quantile methods
+* Nonparametric techniques: qqplot(), qqnorm(), Mann-Whitney etc (10)
+
+Teaching resources to be distributed via AUTonline as the semester
+progresses and will include printed materials and video recordings.
+
+Video resources available for download under the 'video recordings'
+tab under 'Resources' on AUTonline, or on YouTube at
+
+https://www.youtube.com/playlist?list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84
+
+
+Class_01_pt1_Binomial_distribution.mp4
+Class_01_pt2_Binomial_rbinom_dbinom.mp4
+Class_01_pt3_Null_hypothesis_type_I_and_II_errors_pvalue.mp4
+Class_02_pt1_Stirlings_formula.mp4
+Class_02_pt2_Stirlings_formula2.mp4
+Class_02_pt3_Gaussian_intro.mp4
+Class_02_pt4_Gaussian_approximation_to_binomial.mp4
+Class_03_pt1_alpha_beta_set_intersection.mp4
+Class_03_pt2_conditional_probability_and_Bayes.mp4
+Class_03_pt3_Bayes_and_priors_and_posterior.mp4
+Class_03_pt4_Bayes_in_practice.mp4
+Class_04_pt1_poisson.mp4
+Class_04_pt2_poisson.mp4
+Class_04_pt3_pearsons_chisquare.mp4
+Class_04_pt4_pearsons_chisquare.mp4
+Class_05_pt1_Bayes_again.mp4
+Class_05_pt2_Bayes_and_hypergeometric_dist_intro.mp4
+Class_05_pt3_hypergeometric_dist.mp4
+Class_05_pt4_fisher_exact_test.mp4
+Class_06_pt1_beta_distribution_proportions.mp4
+Class_06_pt2_beta_distribution.mp4
+Class_06_pt3_Bayes_and_elicitation.mp4
+Class_06_pt4_likelihood.mp4
+Class_07_pt1_odds_ratios_fisher_exact_test.mp4
+Class_07_pt2_likelihood_and_support.mp4
+Class_07_pt3_Gaussian_likelihood.mp4
+Class_07_pt4_Gaussian_likelihood.mp4
+Class_08_pt1_Dirichlet_multinomial.mp4
+Class_08_pt2_student_t_test.mp4
+Class_08_pt3_student_t_and_regression.mp4
+Class_08_pt4_regression.mp4
+Class_09_pt1_fisher_vs_chisquared_test.mp4
+Class_09_pt2_correlation_does_not_imply_causation.mp4
+Class_09_pt3_regression_with_interaction.mp4
+Class_09_pt4_logarithmic_and_logistic_regression.mp4
+Class_10_pt1_order_statistics_and_ecdf.mp4
+Class_10_pt2_qqnorm_and_kolmogorov.mp4
+Class_10_pt3_cauchy_distribution_and_mann-whitney.mp4
+Class_10_pt4_confidence_intervals.mp4
+Class_11_pt1_anova.mp4
+Class_11_pt2_bonferroni_correction.mp4
+Class_11_pt3_multiple_regression.mp4
+Class_11_pt4_regression_and_exam_practice.mp4
+Class_12_pt1_exam_practice.mp4
+Class_12_pt2_exam_practice.mp4
+Class_12_pt3_exam_practice.mp4
+Class_12_pt4_exam_practice.mp4
+
+
+
+Best wishes
+
+Robin
