@@ -105,39 +105,60 @@ The p-value is uniformly  distributed, so the probability of it being less than 
 ## Power of the test.
 
 
-We can now assess the power of the test.  Recall that the power of a test is $1-\beta$, where $\beta$ is the probability of failing to reject the null, when the null is false.  To calculate this, we need to specify a particular alternative.
+We can now assess the power of the test.  Recall that the power of a
+test is $1-\beta$, where $\beta$ is the probability of failing to
+reject the null, when the null is false.  To calculate this, we need
+to specify a particular alternative.
 
-We will start with $H_A\colon\mu=1$.  What is the probability of failing to reject the null now?
+In this example we will use $n=6$, one-sided, and take
+$H_0\colon\mu=0$ and $H_A\colon\mu=1$.  The critical region for a test
+of size $\alpha=0.05$ is given by
 
 ```{r}
-replicate(100,mean(rnorm(n,mean=1))<0.75)
+qnorm(0.95,sd=1/sqrt(6))
 ```
 
-The null is incorrect here (`mean=1`) so we want to reject it.  If the sample mean is greater than 0.75 we correctly reject the null.  Alternatively, if the sample mean is less than 0.75 we fail to reject the null, and commit a type II error.  So in the above, the `TRUE` corresponds to a type II error.
+or about 0.67: we reject the null if $\overline{x}\geq 0.67$.  To
+calculate $\beta$, the probablility of committing a type II error, we
+can use numerical simulation.
 
+```{r}
+replicate(100,mean(rnorm(n,mean=1))<0.67)
+```
+
+The null is incorrect here (`mean=1`) so we want to reject it.  If the
+sample mean is greater than 0.67 we correctly reject the null.
+Alternatively, if the sample mean is less than 0.67 we fail to reject
+the null, and commit a type II error.  So in the above, the `TRUE`
+corresponds to a type II error.
 
 
 We can use `table()` to summarize:
 
 
 ```{r}
-table(replicate(1000,mean(rnorm(n,mean=1))<0.75))
+table(replicate(10000,mean(rnorm(n,mean=1))<0.67))
 ```
 
-So $\beta$ is about 0.26 and the power is about 0.74.
-We could replace the 0.75 with the exact value:
+So $\beta$ is about 0.21 and the power is about 0.79.
+We could replace the 0.67 with the exact value:
 
 ```{r}
 table(replicate(10000,mean(rnorm(n,mean=1))<qnorm(0.95,sd=1/sqrt(n))))
 ```
 
-See how the test has a power of about 74\%.  This is the probability of correctly rejecting $H_0$ when it is false. We can calculate the value exactly:
+See how the test has a power of about 79\%.  This is the probability
+of correctly rejecting $H_0$ when it is false.  We can calculate the
+value exactly using `pnorm()` and `qnorm()`:
 
 ```{r}
+n <- 6
 1-pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=1,sd=1/sqrt(n))
 pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=1,sd=1/sqrt(n),lower.tail=FALSE)
 ```
-(remember you can view the screencasts on `pnorm` etc to remind yourself what these functions do).
+
+(remember you can view the screencasts on `pnorm` etc to remind
+yourself what these functions do).
 
 In pictures:
 
@@ -152,7 +173,6 @@ text(0.3,0.2,'fail to reject')
 ```
 
 We can perform the same process for an alternative $H_A\colon\mu=0.3$.  In pictures:
-
 
 
 ```{r}
