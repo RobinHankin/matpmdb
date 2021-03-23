@@ -5,19 +5,19 @@ fontsize: 12pt
 ---
 # Size and power of statistical tests part 2: Gaussian distributions
 
-Recall the central definitions:
+Recall the following definitions from lectures:
    
-> type I error: rejecting the null hypothesis when it is true.
+* type I error: rejecting the null hypothesis when it is true.
 
-> type II error: failing to reject the null hypothesis when it is false.
+* type II error: failing to reject the null hypothesis when it is false.
 
-> $\alpha$, the size of a test: the probability of committing a type I error
+* $\alpha$, the size of a test: the probability of committing a type I error
 
-> $\beta$, the probability of committing a type II error
+* $\beta$, the probability of committing a type II error
 
-> the power of a test is $1-\beta$.
+* the power of a test is $1-\beta$.
 
-> P-value: the probability, if the null is true, of obtaining the observation or an observation more extreme
+* P-value: the probability, if the null is true, of obtaining the observation or an observation more extreme
 
 Recall that a Gaussian distribution $N(\mu,\sigma^2)$ is characterised by its mean $\mu$ and variance $\sigma^2$.  See the help page for details (`?rnorm`); you also have the screencasts on AUTonline for help.  Our first null is $H_0\colon\mu=0$.
 
