@@ -115,6 +115,8 @@ replicate(100,mean(rnorm(n,mean=1))<0.75)
 
 The null is incorrect here (`mean=1`) so we want to reject it.  If the sample mean is greater than 0.75 we correctly reject the null.  Alternatively, if the sample mean is less than 0.75 we fail to reject the null, and commit a type II error.  So in the above, the `TRUE` corresponds to a type II error.
 
+
+
 We can use `table()` to summarize:
 
 
@@ -144,6 +146,7 @@ In pictures:
 plot(x,dnorm(x,sd=1/sqrt(n)),type='l')
 points(x,dnorm(x,mean=1,sd=1/sqrt(n)),col='red',type='l')
 abline(v=qnorm(0.95,sd=1/sqrt(n)))
+legend("topleft",lty=1,col=c("black","red"),pch=NA,legend=c("null","alternative"))
 text(1.0,0.2,'reject')
 text(0.3,0.2,'fail to reject')
 ```
@@ -170,8 +173,44 @@ pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=0.3,sd=1/sqrt(n),lower.tail=FALSE)
 
 # Your first task
 
-Vary the number of observations (choose three or four representative values in the range 5-50), and find the power of the test against for the same null, $H_0\colon\mu=0$ against different alternatives:  $H_A\colon\mu=0.1,0.2,0.5,1,2$.
+Vary the number of observations (choose three or four representative
+values in the range 5-50), and find the power of the test against for
+the same null, $H_0\colon\mu=0$ against different alternatives:
+$H_A\colon\mu=0.1,0.2,0.5,1,2$.  Use `pnorm()` etc and then verify
+numerically.
 
+
+
+
+# Tradeoff between type I and type II errors.
+
+Suppose we have $n=5$ observations and wish to test $H_0\colon\mu=0$
+against $H_A\colon\mu=1$.  Here we use one-sided tests for simplicity.
+
+```{r}
+p <- 0.05 # pvalue
+u <- qnorm(1-p,0,sd=1/sqrt(5))  # u is the test: reject H0 if xbar > u
+pnorm(u,1,sd=1/sqrt(5),lower.tail=FALSE)  # power of the test
+```
+
+The above calculates directly the power of the test for $\alpha=0.05$
+
+
+# Task
+
+* For $H_0\colon\mu=0, H_A\colon\mu=1$.  Keeping $n=5$ for the moment,
+vary the size $\alpha$ of the test and investigate how the power
+changes in response.
+
+* For $H_0\colon\mu=0, H_A\colon\mu=1$.  Vary $n$ and see how the power
+  changes, for a fixed value of $\alpha$, in response.  Try $n=8$,
+  $n=15$, $n=20$ for a start.  Describe the effect of increasing $n$
+  on the power of the test.
+
+* (harder) Consider a different alternative hypothesis, say
+  $H_A\colon\mu=0.5$.  How do the answers to the two questions above
+  change when we consider this new $H_A$?  How about
+  $H_A\colon\mu=0.1$ or $H_A\colon\mu=0.01$?
 
 
 # Student t test
@@ -200,18 +239,46 @@ hist(replicate(10000,sd(rnorm(n))))
 
 Try this yourself with different values of $n$.
 
-The R language can accommodate the uncertainty in the standard deviation using the t.test() function.  Remember to consult `?t.test` for further information.
+# Task
 
-In practice you can just type `t.test()` on the terminal to test a particular null hypothesis:
+(in all the tasks below, use numerical simulation)
 
+* With $n=6$, what is the probability of overestimating the standard
+  deviation by a factor of 2 or more?  What is the probability of
+  underestimating by a factor of 2 or more? What is the probability of
+  estimating the sd correct to within a factor of 2? (use numerical
+  simulation)
+  
+* What are the corresponding probabilities if $n=10$ and $n=15$?
+
+* (harder) How many observations do we need to make to ensure that the
+  probability of overestimating or underestimating by a factor of 2 or
+  more is less than 5\%? (use numerical simulation).
+
+*  With $n=4$, what is the expected value of the estimated variance?
+  [hint: `var(x)` gives the estimated variance of `x`] 
+
+* Again with $n=4$, what is the expected value of the estimated
+  standard deviation?  [this is not a trick question but can be
+  confusing.  Do not stress].
+
+
+
+The R language can accommodate the uncertainty in the standard
+deviation using the `t.test()` function.  Remember to consult
+`?t.test` for further information.
+
+In practice you can just type `t.test()` on the terminal to test a
+particular null hypothesis and this will, as per the lecture, correct
+for having to use an estimated standard deviation.
 
 ```{r}
-d <- c(2.1, 2.3, -0.1, 0.9, -1.08, 1.72, 0.59)
-t.test(d,alternative="greater")
+d <- c(2.1, 2.3, -0.1, 0.9, -1.08, 1.72, 0.59)   # some data
+t.test(d,alternative="greater")     # test H0: mu=0 (two-sided by default)
 ```
 
-See how the p-value is less than 5% so we reject the null (which is $\mu=0$ by default).
-What is the standard deviation of the dataset?
+See how the p-value is less than 5% so we reject the null (which is
+$\mu=0$ by default).  What is the standard deviation of the dataset?
 
 
 ```{r}
@@ -240,7 +307,11 @@ so again we reject the null about 5\% of the time.  What is the power of this te
 table(replicate(1000,t.test(rnorm(n,mean=1))$p.value > 0.05))
 ```
 
-(Here the null is incorrect so we want to reject it (that is, observe a p-value less than 0.05).  Obtaining a p-value greater than 0.05 corresponds to a type II error.  And $\beta$ is the probability of committing a type I error which in this caes is about 38%; the power is about 61%.
+(Here the null is incorrect so we want to reject it (that is, observe
+a p-value less than 0.05).  Obtaining a p-value greater than 0.05
+corresponds to a type II error.  And $\beta$ is the probability of
+committing a type II error which in this case is about 38%; the power
+is about 61%.
 
 We can do the same task but with a larger number of observations:
 
@@ -259,10 +330,13 @@ n <- 20
 table(replicate(1000,t.test(rnorm(n,mean=0.1))$p.value > 0.05))
 ```
 
-With such a tiny difference between the null and alternative hypotheses, we see that the power has declined to about 8%.
+With such a tiny difference between the null and alternative
+hypotheses, we see that the power has declined to about 8%.
 
 
 # Your task
  
-Calculate the power of the t-test, varying the number of observations from n=5,10,20 and the alternative hypothesis 0.1,0.2,0.5,1.0,2.  I will collate.
+Calculate the power of the t-test, varying the number of observations
+from $n=5,10,20$ and the alternative hypothesis
+$\mu=0.1,0.2,0.5,1.0,2$.
  
