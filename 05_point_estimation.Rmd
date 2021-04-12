@@ -124,7 +124,8 @@ the binomial cancels out and we are left with
 which is easier to deal with^[Actually, "*the* likelihood function" is
 a slight misnomer, because it is defined only up to a multiplicative
 constant.  We really should say "*a* likelihood function", by which we
-mean any function that is proportional to $\prob{D|H}$.].  In R it is just 
+mean any function of $H$ that is proportional to $\prob{D|H}$.].  In R
+it is just
 
 ```
 function(p){p^35*(1-p)^65}
@@ -133,6 +134,12 @@ function(p){p^35*(1-p)^65}
 and later when we consider Bayesian analysis we will see how this line
 of reasoning allows us to pursue a different form of statistical
 inference.
+
+### Note on $C$
+
+It looks like the constant $C$ is a difficulty, but actually it can
+make 
+
 
 
 ## Likelihood functions for the Gaussian
