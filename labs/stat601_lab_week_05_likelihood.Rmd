@@ -117,7 +117,11 @@ m <- seq(from=900,to=909,len=100)
 plot(m,sapply(m,f))
 ```
 
-It is more common to work with the log of the likelihood.   The professional uses the fact that $\log\prod_{i=1}^nx_i=\sum_{i=1}^n\log x_i$, so uses the `log` argument of `dnorm()`:
+(above, the `sapply()` function is just R idiom to pass the elements
+of `m` to the function `f()`).  It is more common to work with the log
+of the likelihood.  The professional uses the fact that
+$\log\prod_{i=1}^nx_i=\sum_{i=1}^n\log x_i$, so uses the `log`
+argument of `dnorm()`:
 
 ```{r}
 f2 <- function(m){sum(dnorm(D,mean=m,sd=141,log=TRUE))}
@@ -126,20 +130,23 @@ f2(900)
 
 This is more accurate, and less susceptible to overflow.
 
-*YOUR TASKS*: play with the R idiom for these two figures.
+**YOUR TASKS**: play with the R idiom for these two figures.
  
-For the mean, for example, change the range (currently 900 to 909) to
-a more sensible range.  Then vary the standard deviation from 141.
+ 
+* For dataset D plot a likelihood function for the mean but use a
+  sensible range.  Then vary the standard deviation from 141.
+* Write R idiom for plotting the likelihood as a function of standard
+  deviation, holding the mean constant.
+* Try including the whole Nile dataset instead of just the first few
+  observations.
+* (harder) The following dataset is drawn from a Gaussian distribution:
 
- write R idiom for plotting the likelihood as a
-function of standard deviation, holding the mean constant.
+   `1.1, 1.2, 4.6`.
 
-Try including the whole Nile dataset instead of just the first few
-observations.
-
+Calculate a likelihood function for the hypothesis that the mean is
+$(1.1+1.2+4.6)/3=2.3$ but the standard deviation is between 0.3 and 5.
 
 # Likelihood maximization
-
 
 R can perform maximization automatically using the `optim()` function.
 Unfortunately, this minimizes its objective function rather than
@@ -177,7 +184,7 @@ that maximizes the objective function `f()`.  The first argument to
 This shows us that the maximum likelihood estimate is 919.3 for the
 mean and 168.4 for the standard deviation.
 
-*YOUR TASK* is to adapt the previous R idiom to work with random
+**YOUR TASK** is to adapt the previous R idiom to work with random
 observations from a standard Gaussian.  To ensure everyone has a
 different dataset, we will use our student ID as a seed.  In the
 following, I have used my student ID, you replace this with your ID.
@@ -209,17 +216,23 @@ f(c(0,1))   # negative log-likelihood for mean=0, sd=1
 
 ## Binomial distribution.
 
-Suppose we have some observations of independent Bernoulli trials.  We observe, say, 16 trials of which 5 are failures and 11 successes.  What can we say about $p$, the probability of success?
+Suppose we have some observations of independent Bernoulli trials.  We
+observe, say, 16 trials of which 5 are failures and 11 successes.
+What can we say about $p$, the probability of success?
 
-By definition, the likelihood function is just $C\operatorname{Prob}\left(D|H\right)$, where $D$ is the data (here 11 successes and 5 failures) and $H$ is just 
-
-The first thing we can do is to state that the likelihood function is 
+By definition, the likelihood function is just
+$C\operatorname{Prob}\left(D|H\right)$, where $D$ is the data (here 11
+successes and 5 failures) and $H$ is the hypothesis that the
+probability of success is a particular value $p$ which we can supply.
+The first thing we can do is to state that the likelihood function is
 
 $$
-\mathcal{L}=C{16\choose 11\,5} p^{11}\left(1-p\right)^{5}
+\mathcal{L(p)}=C{16\choose 11\,\,\,\,5} p^{11}\left(1-p\right)^{5}
 $$
 
-But we can chose $C=1/{16\choose 11}$ to give us just $p^{5}\left(1-p\right)^{11}$.  But in practice it is often easier to choose $C=1$, which enables us to use `dbinom()` directly:
+But we can choose $C={16\choose 11\,\,\,5}^{-1}$ to give us just
+$p^{5}\left(1-p\right)^{11}$.  But in practice it is often easier to
+choose $C=1$, which enables us to use `dbinom()` directly:
 
 ```{r}
 like <- function(p){dbinom(11,16,p)}
@@ -245,8 +258,14 @@ abline(h= -2)
 abline(v=11/16)
 ```
 
-
-If we want to give a support interval we find where the support curve intersects the line at -2.  The values are about 0.4 and 0.9 but to find them exactly we can use numerical methods (solving the equations analytically is difficult).   In R the way to solve an equation numerically is to use `uniroot()`.  This takes two arguments, a function and a two-element vector bracketing the root.  `uniroot()` solves $f(x)=0$ and we want $S=-2$ so we need $f(x)=S+2$ because then $f(x)=0$ means $S+2=0$, ie $S= -2$.
+If we want to give a support interval we find where the support curve
+intersects the line at -2.  The values are about 0.4 and 0.9 but to
+find them exactly we can use numerical methods (solving the equations
+analytically is difficult).  In R the way to solve an equation
+numerically is to use `uniroot()`.  This takes two arguments, a
+function and a two-element vector bracketing the root.  `uniroot()`
+solves $f(x)=0$ and we want $S=-2$ so we need $f(x)=S+2$ because then
+$f(x)=0$ means $S+2=0$, ie $S= -2$.
 
 ```{r}
 f <- function(p){support(p)+2 }  #uniroot solves f(x)=0 so S+2=0
@@ -259,4 +278,39 @@ So the lower limit is about 0.439 (this is given in the `$root` line).  Finding 
 uniroot(f,c(0.8,0.95))
 ```
 
-giving an upper limit of about 0.877.  So a support interval might be $(0.439,0.877)$.  Inside this range, you cannot improve the likelihood by two units of support.  So this range is OK.  Outside this range, you can find a better estimate for $p$ that is much better (better by more than two units of support)  simply by moving to the maximum likelihood estimate of $11/16$.
+giving an upper limit of about 0.877.  So a support interval might be
+$(0.439,0.877)$.  Inside this range, you cannot improve the likelihood
+by two units of support.  So this range is OK.  Outside this range,
+you can find a better estimate for $p$ that is much better (better by
+more than two units of support) simply by moving to the maximum
+likelihood estimate of $11/16$.
+
+**YOUR TASK**
+
+Perform the same calculations with the following data:
+
+* 2 trials, 1 success and 1 failure
+* 20 trials, 10 successes and 10 failures
+* 80 trials, 40 successes and 40 failures (compare these three with
+  one another and observe the effect of having more observations)
+
+* 2 trials, 2 successes
+* 10 trials, 10 successes
+* 20 trials, 20 successes
+
+Interpret these using non-statistical language (the trials may be
+assumed to be independent).
+
+(harder).  Suppose we conduct 5 repeated independent Bernoulli trials
+with probability $p$ of success.  Our observation is that "one or two
+successes were observed".  Plot a likelihood function for $p$.
+
+(even harder).  An experiment is performed: independent Bernoulli
+trials are performed until a total of two successes are observed, at
+which point the experiment stops.  The observations are FFFSFFFFFFFS.
+Write down a likelihood function for $p$.  Firstly, test the
+hypothesis that $p=0.5$ using likelihood methods; and secondly test
+the null hypothesis that $p=0.5$ by giving a $p$-value (you can use
+numerical simulation for this, or utilise the inverse binomial
+distribution if you find that easier).  Compare these two answers and
+methods.
