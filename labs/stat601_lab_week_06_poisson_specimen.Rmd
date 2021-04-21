@@ -1,0 +1,130 @@
+---
+output: pdf_document
+title: Poisson distribution
+fontsize: 12pt
+---
+
+# Your tasks
+
+
+Give three or four examples of the Poisson distribution from
+your everyday life.  For example, the number of times in a month that
+I lose my glasses.  Each day there is a small probability that I will
+lose my glasses, but the number of days is about 31, which counts as
+large.  Come up with examples from your life.
+
+
+\begin{itemize}
+\item number of people at my bus stop
+\item number of times I have to tie my shoelaces in a day
+\item number of goals in a football match
+\item etc
+\end{itemize}
+
+ Using \texttt{rpois()}, verify the wikipedia results for the
+mean and variance of the distribution.  Try to verify the formula
+given for the median.
+
+Mean is just $\lambda$.
+
+```{r}
+mean(rpois(1e6,lambda=3.9))
+mean(rpois(1e6,lambda=3.9))
+mean(rpois(1e6,lambda=3.9))
+```
+
+Median is $\lfloor\lambda+1/3\rfloor$ which is 4 for $\lambda=3.9$:
+
+```{r}
+median(rpois(1e6,lambda=3.9))
+median(rpois(1e6,lambda=3.9))
+median(rpois(1e6,lambda=3.9))
+```
+
+
+ Produce support and likelihood plots for different values of the
+observation.  What happens if $n=0$?
+
+Try $n=6$:
+
+```{r}
+lam <- seq(from=3,to=10,len=100)
+plot(lam,dpois(6,lam))
+```
+
+
+Try $n=0$:
+
+```{r}
+lam <- seq(from=3,to=10,len=100)
+plot(lam,dpois(0,lam))
+```
+
+(just an exponential curve)
+
+Suppose we have an observation of~$n=7$.  Calculate a likelihood
+ratio for~$H_1\colon\lambda=6$ against~$H_2\colon\lambda=11$.
+
+```{r}
+dpois(7,6)/dpois(7,11)
+```
+
+ (harder) Now suppose you are working with $L=\log\lambda$.  Plot
+a support curve for $L$.
+
+
+```{r}
+lam <- seq(from=3,to=16,len=100)
+plot(lam,dpois(7,lam,log=TRUE))
+```
+
+ (also hard).  Now bring in Bayesian logic.  Suppose
+  Your\footnote{It is conventional and polite to capitalize ``You''
+    and ``Your'' when using Bayesian logic.} prior for $L$ is Gaussian
+  with mean zero and standard deviation 1; a single observation of
+  $n=3$ is made.  Plot a support curve for $L$; superimpose support
+  curves for different priors.
+  
+  
+```{r}
+lam <- seq(from=0.1,to=10,len=100)
+L <- log(lam)
+plot(L,dnorm(L,log=TRUE))
+plot(L,dnorm(L) + dpois(6,exp(L)))
+```
+
+
+ Suppose we test a null hypothesis $H_0\colon\lambda=1$, against
+an alternative~$H_A\colon\lambda>1$.  State the precise definition of
+p-value, then find a value of $n$ such that a test (of the form
+``reject $H_0$ if the observation is greater than
+$n$") has size less than 5\%.
+
+
+pvalue is the probability, if the null is true, of obtaining the
+observation or an observation more extreme.
+
+```{r}
+sum(dpois(0:3,1))
+sum(dpois(0:2,1))
+```
+
+reject null if $n\geq 3$ (2 is not big enough, size is over 0.05)
+
+
+
+ Now consider a specific alternative hypothesis, specifically
+$H_A\colon\lambda=\lambda_0$.  Find the minimum value of $\lambda_0$
+so that $\alpha\leqslant 0.05$ and $\beta\leqslant 0.2$.
+
+
+Need probability of correctly rejecting null to be over 0.8:
+
+```{r}
+1-sum(dpois(0:2,lambda=4.2))
+1-sum(dpois(0:2,lambda=4.3))
+```
+
+
+Value between 4.2 and 4.3
+

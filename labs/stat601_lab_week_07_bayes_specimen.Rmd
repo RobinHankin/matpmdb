@@ -1,0 +1,310 @@
+---
+output: pdf_document
+title: Priors and posteriors in the beta distribution
+fontsize: 12pt
+---
+# Bayes's theorem
+
+\newcommand{\prob}[1]{\operatorname{Prob}\left(#1\right)}
+
+
+\section{The Beta distribution}
+
+You will recall from lectures that the beta distribution is
+proportional to $p^{\alpha-1}\left(1-p\right)^{\beta-1}$
+for $0\leqslant p\leqslant 1$.
+
+Look at the R help page for the beta distribution by typing 
+  ```?rbeta```
+
+We will sample from this distribution and play with it.
+
+* choose different values of alpha and beta and examine the
+  resulting histogram.  Use R idiom like `hist(rbeta(10000,2,5)}`.
+  Try $\alpha=2,\beta=2$,
+  $\alpha=4,\beta=4$, $\alpha=12,\beta=12$.  Try increasing the
+  parameters and see what happens. See how the distribution is
+  symmetric about $p=0.5$.
+* Now try $\alpha=1,\beta=2$, $\alpha=3,\beta=6$, etc.  The
+  mean value of the beta distribution is known from theory to be
+  $\frac{\alpha}{\alpha+\beta}$.  Is this reasonable?
+* Now try to verify the formula for the variance, given in
+  the infobox on the wikipedia page.
+
+* Do the same for the median (use the approximate formula; use
+  either  `median(rbeta(...))` or (better; harder) `qbeta(0.5,alpha,beta)}`.
+  Try a range of alpha and beta values.
+
+
+# suggested analysis: mean
+
+
+```{r}
+alpha <- 3.3
+beta <- 6.6
+hist(rbeta(1e6,alpha,beta))
+numerical_mean <- mean(rbeta(1e6,alpha,beta))
+analytical_mean <- alpha/(alpha + beta)
+c(numerical_mean,analytical_mean)  # close match
+```
+
+
+# suggested analysis: median
+
+```{r} 
+alpha <- 3.3
+beta <- 6.6
+numerical_median <- median(rbeta(1e6,alpha,beta))
+analytical_median <- (alpha-1/3)/(alpha + beta - 2/3)
+c(numerical_median,analytical_median)  # close match
+```
+
+# suggested analysis: variance
+```{r} 
+alpha <- 3.3
+beta <- 6.6
+numerical_var <- var(rbeta(1e6,alpha,beta))
+analytical_var <- alpha*beta/((alpha+beta)^2*(alpha+beta+1))
+c(numerical_var,analytical_var)  # close match
+```
+
+
+
+\section{Analytical formula}
+
+We can plot the analytical form of the beta distribution using ```dbeta()``` which gives the density of the beta distribution:
+
+```{r} 
+p <- seq(from=0,to=1,len=300)
+plot(p,dbeta(p,shape1=1.2,shape2=1.1),type='l',ylim=c(0,3))
+points(p,dbeta(p,shape1=2,shape2=2),col="red",type='l')
+points(p,dbeta(p,shape1=1,shape2=3),col="green",type='l')
+points(p,dbeta(p,shape1=5,shape2=3),col="blue",type='l')
+points(p,dbeta(p,shape1=0.3,shape2=0.6),col="yellow",type='l')
+points(p,dbeta(p,shape1=2,shape2=0.2),col="orange",type='l')
+```
+
+Try to replicate the first figure on the wikipedia page.
+
+Pay special attention to what happens when $0\leqslant\alpha,\beta\leqslant 1$ and interpret.
+
+
+## Analytical formula
+
+In lectures we gave an equation proportional to the density:
+
+    
+$$\prob{p}\propto p^{\alpha-1}\left(1-p\right)^{\beta-1}$$
+
+
+The actual formula is 
+
+$$\prob{p}=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\cdot
+        p^{\alpha-1}\left(1-p\right)^{\beta-1}$$
+
+where $\Gamma(x) = (x-1)!$ = ``factorial $x-1$'' is the gamma function.
+Look at the wikipedia page for the gamma function, and the R help page
+(type ```?rgamma```).  This term is present to ensure that the area
+under the graph is exactly one.
+
+Verify for yourself that this formula is correct by comparing it with
+R's internal function, ```dbeta()```.
+
+
+```{r}
+dbeta(0.2,2.1,4.1)
+gamma(2.1+4.1)/(gamma(2.1)*gamma(4.1))*0.2^1.1*0.8^3.1
+```
+
+Try other values of $\alpha$ and $\beta$ and compare.  Which evaluation is
+more accurate?
+
+# Prior and posterior PDF
+
+
+Now consider a case where we have a Bernoulli experiment with unknown
+probability of success, $p$.  Our prior is a beta distribution with
+$\alpha=1.3, \beta=2$ and our data is 10 experiments with 7 successes
+and 3 failures.  The posterior distribution will also be a beta
+distribution with $\alpha=1.3+7=8.3$ and $\beta=2+3=5$.
+
+We can plot these:
+    
+```{r} 
+p <- seq(from=0,to=1,len=300)
+plot(p,dbeta(p,shape1=1.3,shape2=2),type='l',lwd=3,ylim=c(0,3))
+points(p,dbeta(p,shape1=8.3,shape2=5),col="red",type='l',lwd=3)
+legend("topright",col=c("black","red"),legend=c("prior","posterior"),lty=1,lwd=3)
+```
+
+Your task:
+    
+* Try different priors, such as alpha=10,beta=11, and see what
+happens.
+* Try different datasets, such as 100 experiments with
+71 successes, and see what happens.
+
+* (harder).  Try alpha=0.1, beta=0.1 with the following sets of data:  (a) 100 trials, 100 successes; (b) 100 trials, 99 successes; (c) 100 trials, 1 success; (d) 100 trials, 50 successes.  Interpret.
+
+# suggested analysis for last point
+
+
+100 trials, 100 successes:
+```{r} 
+p <- seq(from=0,to=1,len=300)
+plot(p,dbeta(p,shape1=0.1,shape2=0.1),type='l',lwd=3)
+points(p,dbeta(p,shape1=100.1,shape2=0.1),col="red",type='l',lwd=3)
+legend("topright",col=c("black","red"),legend=c("prior","posterior"),lty=1,lwd=3)
+```
+
+
+ 100 trials, 99 successes
+```{r} 
+p <- seq(from=0,to=1,len=300)
+plot(p,dbeta(p,shape1=0.1,shape2=0.1),type='l',lwd=3)
+points(p,dbeta(p,shape1=99.1,shape2=1.1),col="red",type='l',lwd=3)
+legend("topright",col=c("black","red"),legend=c("prior","posterior"),lty=1,lwd=3)
+```
+
+  100 trials, 99 successes
+```{r} 
+p <- seq(from=0,to=1,len=300)  # 100 trials, 1 success
+plot(p,dbeta(p,shape1=1.1,shape2=99.1),type='l',lwd=3)
+points(p,dbeta(p,shape1=100.1,shape2=0.1),col="red",type='l',lwd=3)
+legend("topright",col=c("black","red"),legend=c("prior","posterior"),lty=1,lwd=3)
+```
+
+
+
+
+# Elicitation
+
+The following examples are typical of the statistical consulting
+process.  The informants' quotes closely resemble what actual people
+say when I need a prior.  Note the usage of perfectly sensible English
+and the difficulty of translating this into mathematical statements.
+
+In each case, $p$ represents the probability of success.
+ 
+ 
+## exercise 1
+  
+An informant has beliefs about $p$, and you are trying to represent
+these beliefs in terms of a beta distribution. He says ``I don't know
+what p is exactly.  It's probably about 0.35, but I'm not sure.  I'd
+say it's most likely not less than about 0.2 and I'd be surprised if
+it was more than about 0.6''.
+
+Translate this rather vague information into a statement about the
+parameters of a beta distribution.  This is the prior PDF.  Then
+imagine that your data is $n=10$ trials with $r=2$ successes.
+Calculate and plot your posterior PDF.
+
+# suggested analysis
+
+to match the "probably 0.35 we need to ensure that
+$\alpha/(\alpha+\beta)$ is about 0.35, or $\alpha/\beta\simeq 35/65$.
+To match the "less than about 0.2" and "more than about 0.6" we would
+need to play with different values.  Trial and error gives something like:
+
+```{r}
+plot(p,dbeta(p,7.5,13.5))
+```
+    
+
+
+## exercise 2    
+
+(harder) Suppose your informant expresses his prior beliefs in the
+following terms: "I don't know what p is, but I reckon it's unlikely
+to be moderate; it is almost certainly not in the range 0.25-0.75.  It
+is either either close to zero or close to one.  I'd say it's a bit
+more likely to be close to zero than it is to be close to 1.  But I
+wouldn't be surprised if it was 0.95.  If it was 0.4 or 0.5, I'd be
+astonished.  I'd expect values of say 0.03 or 0.07, or on the other
+hand 0.94 or 0.99 even.  But it won't be in mid-range.  It's not a
+fair coin.  It's strongly biased, and I don't know which way''.
+    
+An experiment is performed twice, with two successes.  Give a reasonable prior and a reasonable posterior distribution for $p$.
+
+
+
+
+# suggested analysis
+
+the prior might be represnted by something like $\alpha=0.2,\beta=0.2$:
+
+```{r}
+plot(p,dbeta(p,0.2,0.2))
+```
+
+See how the distribution is bimodal. The posterior is then
+
+
+```{r}
+plot(p,dbeta(p,2.2,0.2))
+```
+
+
+## exercise 3
+
+
+(much much harder) Your informant states: ``I don't know what p is,
+but I can definitely rule out the ranges 0-0.1, 0.2-0.5, and 0.8-1.
+So it must be either 0.1-0.2 or 0.5-0.8.  I'd say it is twice as
+likely to be in the low range as the high range.
+
+A single experiment is performed which succeeds.  State your prior and
+posterior PDF [you may assume that the prior PDF is uniform in both
+ranges, although the density might be different in the two ranges]
+
+Hint 1: state Bayes's theorem, and think carefully about what the denominator means.
+
+Hint 2: consider $H_L$, which is that $0.1\leqslant p\leqslant 0.2$, and $H_U$, $0.5\leqslant p\leqslant 0.8$.  State prior probabilities for $H_L$ and $H_U$.
+
+
+# suggested analysis
+
+The value of $p$ must be either in the range 0.1-0.2 or 0.5-0.8.
+Observe that the lower range has width 0.1 and the upper range 0.3,
+total 0.4.  Prior:
+
+```{r}
+dp <- 1/300 # increment of p
+f_prior  <- function(p){
+  out <- p*0
+  out[(p>0.1)&(p<0.2)] <- 6/0.9
+  out[(p>0.5)&(p<0.8)] <- 1/0.9
+  out
+}
+plot(p,f_prior(p),type='b')
+sum(f_prior(p))*dp  # area under curve, should be 1 exactly
+```
+
+
+likelihood:
+
+```{r}
+likelihood <- function(p){f_prior(p)*p}
+plot(p,likelihood(p),type='b')
+```
+
+Posterior:
+
+```{r}
+NC <- sum(likelihood(p))*dp  # normalization constant
+NC
+f_posterior <- function(p){likelihood(p)/NC}
+plot(p,f_posterior(p),type='b')
+```
+
+To work out the probabilities of $H_L$ and $H_U$:
+
+```{r}
+sum(f_posterior(p[p<0.4]))*dp
+sum(f_posterior(p[p>0.4]))*dp
+```
+
+so the probability of $H_L$ is now about half the probability of $H_U$
+compared to the prior estimate, which was that $H_L$ was twice the
+probability of $H_U$.
