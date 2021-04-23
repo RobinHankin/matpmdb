@@ -5,9 +5,6 @@ fontsize: 12pt
 ---
 
 
-
-\newcommand{\prob}[1]{\operatorname{Prob}\left(#1\right)}
-
 Remember that you can type \code{?fisher.test} at the R prompt to get
 help on Fisher's test.  You are also encouraged to search for
 ``Fisher's exact test'' on Google; the wikipedia page is an excellent
@@ -43,7 +40,7 @@ contingency <- table(a$gender,a$handedness)
 Often in lectures you will see me improving the appearance of the output with the following cosmetic improvement:
 
 ```{r}
-dimnames(contingency) <- list(gender=c("M","F"),handedness=c("L","R"))
+dimnames(contingency) <- list(gender=c("F","M"),handedness=c("L","R"))
 contingency
 ```
 
