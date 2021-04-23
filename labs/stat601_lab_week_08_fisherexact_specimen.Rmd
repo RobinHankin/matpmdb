@@ -64,6 +64,9 @@ L
   `dhyper()` probability", state the precise definition of p-value,
   and calculate it.  Is this a one-sided test or a two-sided test?
 
+p-value is the probability, if the null is true, of obtaining the
+observation or an observation more extreme.
+
 ```{r}	
 (p <- dhyper(0:5,5,16,9))
 sum(p)  #why do this?

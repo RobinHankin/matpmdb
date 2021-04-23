@@ -5,7 +5,7 @@ fontsize: 12pt
 ---
 
 
-Remember that you can type \code{?fisher.test} at the R prompt to get
+Remember that you can type `?fisher.test` at the R prompt to get
 help on Fisher's test.  You are also encouraged to search for
 ``Fisher's exact test'' on Google; the wikipedia page is an excellent
 source of information.
