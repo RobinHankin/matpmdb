@@ -7,9 +7,9 @@ fontsize: 12pt
 # The Poisson distribution
 
 
-This short handout takes you through some theory and
-practical work with the Poisson distribution; and shows how the
-Pearson Chi-square test works.
+This short handout takes you through some theory and practical work
+with the Poisson distribution, and has some exercises at the end.
+
   
 Remember that you can type \texttt{?rpois} at the R prompt to get help
   on the Poisson distribution.  You are also encouraged to search for
