@@ -19,3 +19,4 @@ ID	gender	handedness
 1266616  M	  L
 1265657  F	  R
 1267092  F	  L
+1268263  F	  L

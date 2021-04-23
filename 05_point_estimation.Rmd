@@ -103,22 +103,23 @@ $\prob{D|H}$.
 
 The formal definition of likelihood function is a little harder: We
 may multiply the likelihood function as described above by an
-arbitrary positive value $C$ and come to the same conclusions.  The
-wikipedia page gives more details.
-
-For the example of 35 successes out of 100 trials the likelihood
-function is
+arbitrary positive value $C$ and come to the same conclusions: it is
+only _relative_ changes in likelihood that matter, not the absolute
+value.  For the example of 35 successes out of 100 trials the
+likelihood function is
 
 \begin{equation}
 \like{p}=C.{100\choose 35}p^{35}(1-p)^{65}
 \end{equation}
 
-We can choose the constant $C$ to be any positive number.  If we
-choose $C=\frac{1}{{100\choose 35}}$, then the combinatorial term in
-the binomial cancels out and we are left with
+The combinatorical term ${100\choose 35}$ is just a constant, and such
+constants can be very difficult to evaluate.  But we can choose the
+constant $C$ to be any positive number, and if we choose
+$C=\frac{1}{{100\choose 35}}$, then the combinatorial term in the
+binomial cancels out and we are left with
 
 \begin{equation}
-\like{p}=\frac{1}{{100\choose 35}}{100\choose 35}=p^{35}(1-p)^{65}
+\like{p}=\frac{1}{{100\choose 35}}{100\choose 35}p^{35}(1-p)^{65}=p^{35}(1-p)^{65}
 \end{equation}
 
 which is easier to deal with^[Actually, "*the* likelihood function" is
@@ -131,16 +132,10 @@ it is just
 function(p){p^35*(1-p)^65}
 ```
 
-and later when we consider Bayesian analysis we will see how this line
-of reasoning allows us to pursue a different form of statistical
-inference.
-
-### Note on $C$
-
-It looks like the constant $C$ is a difficulty, but actually it can
-make 
-
-
+We will see many examples where the arbitrary constant $C$ saves us a
+huge amount of mathematical difficulty.  Later when we consider
+Bayesian analysis we will see how this line of reasoning allows us to
+pursue a different form of statistical inference.
 
 ## Likelihood functions for the Gaussian
 
@@ -387,3 +382,4 @@ has spent his entire life thinking about bias of estimates.  He does
 not think that bias is a useful or informative thing to calculate and
 believes that pursuit of unbiased (that is, a bias of zero) estimators
 is pointless, counter-productive and indeed actively misleading.
+
