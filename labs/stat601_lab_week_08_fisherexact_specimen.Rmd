@@ -1,0 +1,200 @@
+---
+output: html_document
+title: Fisher exact test suggested analysis
+fontsize: 12pt
+---
+
+Suggested analysis follows.
+
+# Example 1
+
+```{r}
+a <- read.table("handedness.txt",header=TRUE)
+contingency <- table(a$gender,a$handedness)
+dimnames(contingency) <- list(gender=c("F","M"),handedness=c("L","R"))
+contingency
+```
+
+
+* What is the probability of a person in this dataset being Female? 16/21
+
+  What is the probability of a person being Left-handed?  9/21
+
+  What is the probability of a left handed person being male?  5/9
+
+  What is the probability of a female being right-handed? 11/16
+
+
+* State a sensible null hypothesis.  
+
+  probability of a male being LH is equal to the probability of a
+  female being LH; $p(LH|M) = p(LH|F)$.
+
+* Translate `contingency` into the white ball, black ball language
+  used in the R help page under `?hypergeometric`
+  
+  male -> white 
+  
+  female -> black
+  
+  LH -> drawn 
+  
+  RH -> left in bag
+  
+  
+* Use `dhyper()` to calculate the probability of observing
+  `contingency` with given marginal totals.
+
+```{r}
+ dhyper(4,5,16,9)
+ ```
+
+* Write out all possible contingency tables with the same marginal
+  totals.  That is, all two-by-two tables with non-negative integer
+  entries that have the same rowsums and columnsums as table
+  `contingency` in the R code above.
+  
+```{r}
+f <- function(n){matrix(c(9-n,n,7+n,5-n),2,2)}
+L <- sapply(0:5,f,simplify=FALSE)
+L
+```
+  
+* Define "more extreme" to mean "contingency table with a smaller
+  `dhyper()` probability", state the precise definition of p-value,
+  and calculate it.  Is this a one-sided test or a two-sided test?
+
+```{r}	
+(p <- dhyper(0:5,5,16,9))
+sum(p)  #why do this?
+sum(p[p<=p[5]])  # contains a slight infelicity, can you spot the issue?
+```
+
+* Verify with `fisher.test()`.
+
+```{r}
+fisher.test(contingency)
+```
+
+
+\newpage
+
+
+# Example 2
+
+
+```{r}
+M <- matrix(c(7,1,2,5),2,2)
+dimnames(M) <- list(professor=c(T,F),owns_car=c(T,F))
+M
+```
+
+This shows incidence of car ownership among AUT academic staff.  One
+might expect a professor, earning a massive salary, to be more likely
+to be able to afford a car than a mere Senior Lecturer earning just
+above minimum wage.
+
+## your tasks
+
+* State a sensible null hypothesis and specify whether a one-sided or
+  two-sided test is more appropriate.
+
+	Null: probability of owning a car is independent of professorial
+    status.  One-sided test, more wealth implies higher prob of having
+    a car.
+
+* Use `fisher.test()` to test your null and interpret.
+
+
+professor -> white
+
+SL -> black
+
+drawn -> car
+
+not drawn -> no car
+
+```{r}
+M
+fisher.test(M,alternative="greater")
+```
+
+
+* Verify using `dhyper()`.
+
+
+```{r}
+sum(dhyper(7:9,9,6,8))
+```
+
+(it is very easy to get this wrong)
+
+\newpage
+
+# Example 3
+
+Nine English and seven Scottish cows are tested for a particular
+disease and six cows, of which four are Scottish, test positive.
+
+## Your tasks
+
+* Translate this into a contingency table
+* State a sensible null and decide whether one-sided or two-sided tests are appropriate
+* Test your null using `fisher.test()` and interpret.
+
+
+```{r}
+cows <- matrix(c(2,4,7,3),2,2)
+dimnames(cows) <- list(nationality=c("English","Scottish"),disease=c(T,F))
+cows
+fisher.test(cows)
+```
+
+(two-sided, not significant)
+
+
+
+
+# Example 4
+
+Technically, Fisher's test applies only to two-by-two contingency
+tables but is easily generalized to larger tables.  Enumerating the
+sample space (that is, tables with matching marginal totals) is harder
+than the two-by-two case, but easy with computers.  The null
+distribution is not hypergeometric but again easy for computers to
+evaluate.  In R, function `fisher.test()` takes contingency tables of
+any size.  
+
+
+The following table presents data on students' favourite
+colours:
+
+
+```{r}
+M <- matrix(c(5,8,3,2,2,6,1,2,8),3,3)
+dimnames(M) <- list(paper=c("ENGE502","STAT601","STAT805"),colour=c("red","blue","green"))
+M
+```
+
+The following table presents data on a particular family in Auckland,
+and how often they cooked different types of food over the last few
+weeks.
+
+
+```{r}
+M <- matrix(c(1, 3, 5, 3, 6, 7, 5, 2, 2, 4, 2, 6, 2, 12, 3, 9, 4, 6, 0, 5),5,4)
+dimnames(M) <- list(person=c("robin","lesley","alice","zac","annabel"),colour=c("pasta","soup","pizza","salad"))
+M
+```
+
+
+
+## Your tasks
+
+state sensible nulls for these two datasets and analyse using Fisher's
+exact test.  Hint: you may need to use argument `simulate.p.value` to
+enable R to operate (why do you think this is needed?)
+
+
+
+
