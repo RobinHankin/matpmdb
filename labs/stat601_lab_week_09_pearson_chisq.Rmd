@@ -15,7 +15,7 @@ This short handout takes you through some theory and practical work
 with the Poisson distribution; and shows how the Pearson Chi-square
 test works.
   
-Remember that you can type ?rbeta at the R prompt to get help on the
+Remember that you can type `?rbeta` at the R prompt to get help on the
 beta distribution.  You are also encouraged to search for "Poisson
 distributuion" and "Pearson chi square test" on Google; wikipedia is
 an excellent source of information.
@@ -158,7 +158,7 @@ badness <- replicate(20000,sum((tabulate(sample(1:4,n,replace=TRUE,prob=p),nbins
 hist(badness)
 ```
 
-Compare this with results from the \verb+rchisq()+ function in R.
+Compare this with results from the `rchisq()` function in R.
 
 # Pearsons chi-square test: horse kicks
 
@@ -234,8 +234,8 @@ pchisq(0.324,df=2)
 1-pchisq(0.324,df=2)
 ```
 
-The second figure is the pvalue because \texttt{pchisq()} gives the area
-to the left and we want the area to the right.  This exceeds 5\% so is
+The second figure is the pvalue because `pchisq()}` gives the area to
+the left and we want the area to the right.  This exceeds 5\% so is
 not significant.
 
 
@@ -248,18 +248,25 @@ The figure shows a histogram of the $\chi^2_2$ distribution.  A value
 of B of 6 is shown; for this the p-value would be the area to the
 right of the line.
 
-We can perform the same process but using data from which we know the
-null hypothesis is true:
 
+
+# Your tasks
+
+
+### task 1
+
+Generate poisson observations using `rpois()`:
 
 ```{r}
 set.seed(1266402)   # my student ID; use yours
 table(rpois(200,lambda=0.61))
 ```
 
-Your task is to go through the process above but with your randomly
+
+Go through the chi-square process above but with your randomly
 generated dataset.  Observe that the null hypothesis is true for this
 dataset.  Calculate B for your dataset and give a p-value as above.
+
 
 
 
