@@ -136,13 +136,19 @@ Null would be that the two agencies have the same probability of
 success.
 
 ```{r}
-(e <- outer(rowSums(M),colSums(M))/sum(M))
-B <- sum((M-e)^2/e)
-pchisq(B,df=1,lower.tail=FALSE)
-fisher.test(M,alternative="greater")$p.value
+(e <- outer(rowSums(M),colSums(M))/sum(M))  # expectation
+B <- sum((M-e)^2/e)   # badness
+pchisq(B,df=1,lower.tail=FALSE)  ## Pearson's chi-square pvalue
+fisher.test(M)$p.value
 ```
 
-p-values comparable.
+
+Pearson's chi-square questionable because of small entries; Fisher is
+preferable here.  Pearson gives a pvalue about half that of Fisher
+(which I found surprising: Fisher's test is more powerful [in the
+sense of having a smaller $\beta$ ( that is, a smaller probability of
+committing a type-two error)] than Pearson which usually translates
+into having a smaller pvalue...but not in this case).
 
 ### Task 5: binomial vs hypergeometric
 
@@ -176,14 +182,16 @@ supp_B-supp_H
 exp(supp_B-supp_H)
 ```
 
-Binomial chi-sq:
+Likelihood ratio strongly supports hypergeometric over binomial.
+
+First do the binomial chi-square test:
 
 ```{r}
 e <- sum(o)*dbinom(0:4,4,1/2)
 pchisq(sum((o-e)^2/e),df=4,lower.tail=FALSE)
 ```
 
-Hypergeometric:
+Next the Hypergeometric chi-square:
 
 ```{r}
 e <- sum(o)*dhyper(0:4,4,4,4)
