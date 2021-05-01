@@ -208,11 +208,7 @@ a <- prior_H * exp(supp_H)
 b <- prior_B * exp(supp_B)
 posterior_H <- a/(a+b)
 posterior_B <- b/(a+b)
-c(H=posterior_H,B=posterior_B)
+c(hypergeometric=posterior_H,binomial=posterior_B)
 ```
 
-small prior overwhelmed by data
-
-
-
-
+The small prior for $P_B$ is overwhelmed by data

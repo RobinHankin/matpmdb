@@ -6,31 +6,28 @@ fontsize: 12pt
 
 # Introduction
 
-This short handout takes you through the basics of likelihood as
-applied to the Gaussian distribution and the binomial distribution.
-Go through the material, typing the R commands at the R prompt, making
-sure you understand the content.
+This short handout takes you through the basics of Pearson's
+chi-square test.  Go through the material, typing the R commands at
+the R prompt, making sure you understand the content.  There are some
+tasks at the end which you should attempt, and ask a tutor or
+colleague if you have any questions.
        
-This short handout takes you through some theory and practical work
-with the Poisson distribution; and shows how the Pearson Chi-square
-test works.
-  
 Remember that you can type `?dchisq` at the R prompt to get help on
 the chi-square distribution.  You are also encouraged to search for
 "Poisson distributuion" and "Pearson chi square test" on Google;
 wikipedia is an excellent source of information.
 
-
 # Pearsons chi-square test
              
              
-Pearsons chi-square test applies to a fixed, large, number $n$ of
+Pearson's chi-square test applies to a fixed, large, number $n$ of
 trials, each one classified into one of $r$ categories.  I always
 think of throwing $n$ balls into one of $r$ boxes and counting how
 many balls end up in each of the boxes.
 
-Suppose we have $n=100$ balls and $r=4$ boxes.  We can
-simulate this situation as follows:
+Suppose we have $n=100$ balls and $r=4$ boxes; balls are independent
+of one another and the boxes are equally likely.  We can simulate this
+situation in R  as follows:
     
 ```{r}
 boxes <- paste("box",1:4,sep="")
@@ -81,10 +78,11 @@ There is ready R idiom for calculating this:
 B <- sum((o-e)^2/e)  
 B
 ```
+
 Note the placement of the brackets (what does `sum(o-e)^2/e` give?).
-We recall that, if the null is true, badness B is distributed with a
-chi-square distribution with 3 degrees of freedom.  We can plot a
-diagram, shown below.
+We recall from lectures that, if the null is true, badness B is
+distributed with a chi-square distribution with 3 degrees of freedom.
+We can plot a diagram, shown below.
     
     
 ```{r}
@@ -105,13 +103,14 @@ exact pvalue we use `pchisq()`:
 pchisq(14.16,df=3,lower.tail=FALSE)
 ```
 
-which indicates that we may reject the null.  It is possible to test
-other hypotheses.  We might, for example, hypothesise that boxes 1 and
-2 were were twice as large as boxes 3 and 4. In this case our
-hypothesis would be $p_1=\frac{1}{3},p_2=\frac{1}{3}, p_3=\frac{1}{6},
-p_4=\frac{1}{6}$.  A good way to understand the meaning of this null
-is to sample from it.  Sampling from this null requires a new argument
-to the `sample()` function:
+which indicates that we may reject the null because it is less than
+0.05.  It is possible to test other hypotheses.  We might, for
+example, hypothesise that boxes 1 and 2 were were twice as large as
+boxes 3 and 4. In this case our hypothesis would be
+$p_1=\frac{1}{3},p_2=\frac{1}{3}, p_3=\frac{1}{6}, p_4=\frac{1}{6}$.
+A good way to understand the meaning of this null is to sample from
+it.  Sampling from this null requires a new argument to the `sample()`
+function:
 
 ```{r}
 args(sample)
@@ -162,10 +161,13 @@ Compare this with results from the `rchisq()` function in R.
 
 # Pearsons chi-square test: horse kicks
 
-We will assess a null hypothesis that the number of horse kick deaths
-was distributed as a Poisson.  You will recall from lectures that it
-is possible to quantify the goodness-of-fit for a distribution by
-calculating $B$.  The Horse kick data was as follows:
+You will recall from lectures or the course manual the horse-kick
+dataset.  This showed the number of regiments that suffered
+$n=0,1,2,\ldots$ deaths from horse kicks.  We will assess a null
+hypothesis that the number of horse kick deaths was distributed as a
+Poisson.  You will recall from lectures that it is possible to
+quantify the goodness-of-fit for a distribution by calculating $B$.
+The Horse kick data was as follows:
 
 ```{r}
 o <- c(109,65,22,3,1,0,0)
@@ -188,7 +190,7 @@ We will combine the 3,1,0,0 together to form 4, giving data:
 o <- c(109,65,22,4)
 ```
 
-So the ``4'' means 4 regiments had $\geqslant 3$ deaths.  We need to
+So the "4" means 4 regiments had $\geqslant 3$ deaths.  We need to
 calculate the probabilities of having $0,1,2,\geqslant 3$ deaths:
     
     
@@ -222,7 +224,7 @@ B
 Now, if the null is true, B is distributed as a chi-square
 distribution.  Look at the wikipedia page.  The difficult part of
 Pearson's test is figuring out $d$, the number of degrees of freedom.
-I'll cover this in lectures more fully, but for now we will just use
+I cover this in lectures more fully, but for now we will just use
 $d=2$.  So, if the null is true, we have $B\sim\chi^2_2$; see the
 figure.  Recall the definition of p-value: the probability, if the
 null is true, of obtaining the observation or one more extreme.  Here
@@ -236,7 +238,6 @@ pchisq(0.324,df=2)
 The second figure is the pvalue because `pchisq()}` gives the area to
 the left and we want the area to the right.  This exceeds 5\% so is
 not significant.
-
 
 ```{r}
 hist(rchisq(1e6,df=2),nclass=100,col='gray')
