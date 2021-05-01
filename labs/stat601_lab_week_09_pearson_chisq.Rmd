@@ -248,11 +248,10 @@ of B of 6 is shown; for this the p-value would be the area to the
 right of the line.
 
 
-
 # Your tasks
 
 
-### task 1: chi-square analysis for favourite colours
+### Task 1: chi-square analysis for favourite colours
 
 A researcher asks 89 students which of four colours is their
 favourite.  The observations are:
@@ -264,7 +263,7 @@ o <- c(red=10,green=16,blue=17,yellow=20)
 
 State a sensible null and analyse it using Pearson's chi-square test.
 
-### task 2: chi-square for Poisson observations.
+### Task 2: chi-square for Poisson observations.
 
 The number of goals scored by the home team in 45 soccer games played
 in the UK in one week is as follows:
@@ -282,7 +281,7 @@ of goals is in fact Poisson.  What would be a good justification for
 the counts being Poisson?
 
 
-## task 3: chi-square for family gender distribution.
+## Task 3: chi-square for family gender distribution.
 
 
 A sample of 400 families with exactly 5 children is surveyed and the
@@ -300,3 +299,43 @@ o
 * Estimate the probability of a birth being a boy and test the null
     that the number of boys in each family is binomial
 
+### Task 4: chi-square as an alternative to Fisher's exact test
+
+the following contingency table shows the results of American and Russian
+(USSR) missions to Mars.
+
+```{r}
+M <- matrix(c(16,5,6,16),byrow=TRUE,2,2)
+dimnames(M) <- list(nation=c("USSR","USA"),mission=c("success","fail"))
+M
+```
+
+* Given the marginal totals, calculate expected values for each of the
+  four table entries
+* Calculate a badness value
+* Using one degree of freedom, calculate a p-value and compare with
+  the result from Fisher's exact test.
+
+
+### Task 5: binomial vs hypergeometric
+
+A total of 400 random observations are drawn from _either_ a binomial
+distribution $\operatorname{Bin}(4,0.5)$ ($H_B$), _or_ a
+hypergeometric distribution with $m=n=k=4$, ($H_H$), but it is not
+known which.  Here is a table of the observations:
+
+```
+  0   1   2   3   4 
+  7  70 222  93   8
+```
+
+Thus, "0" was observed 7 times, "1" was observed 70 times, and so on
+up to "4", which was observed 8 times.
+
+* Conduct a Pearson's chi-square test on the hypothesis of binomial
+   distribution
+* Conduct a Pearson's chi-square test on the hypothesis of hypergeometric
+   distribution
+* Calculate a likelihood ratio for these two hypotheses
+* Bayesian: suppose the priors are $\operatorname{Prob}(H_H)=10^{-3},
+  \operatorname{Prob}(H_B)=0.999$.  Calculate the posterior probabilities.

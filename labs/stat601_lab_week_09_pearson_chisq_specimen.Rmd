@@ -1,0 +1,210 @@
+---
+output: html_document
+title: Pearson's chi square test _suggested analyis_
+fontsize: 12pt
+---
+
+
+# Task 1: chi-square analysis for favourite colours
+
+A researcher asks 89 students which of four colours is their
+favourite.  The observations are:
+
+
+```{r}
+o <- c(red=10,green=16,blue=17,yellow=20)
+```
+
+State a sensible null and analyse it using Pearson's chi-square test.
+
+
+## suggested analysis
+
+all colours have equal probability (0.25).
+
+```{r}
+e <- o
+e[] <- mean(e)
+e
+B <- sum((o-e)^2/e)
+pchisq(B,df=3,lower.tail=FALSE)
+```
+
+p-value exceeds 0.05, fail to reject null
+
+
+### Task 2: chi-square for Poisson observations.
+
+The number of goals scored by the home team in 45 soccer games played
+in the UK in one week is as follows:
+
+
+```{r}
+o <- c(6,9,15,11,3,2,1)
+names(o) <- paste("goals",0:6,sep="")
+o
+```
+
+Remembering that counts should be $>=5$, test the null that the number
+of goals is in fact Poisson.  What would be a good justification for
+the counts being Poisson?
+
+### suggested analysis
+
+A soccer match has a large number of minutes during each of which
+there is a small probability of scoring (you may ignore
+nonindependence between successive minutes).
+
+```{r}
+(lambda <- sum(o*(0:6))/sum(o))  # goals / matches = mean
+p <-dpois(0:3,lambda)
+p <- c(p,1-sum(p))  # calculate prob(X=-0,1,2,3, >= 4)
+(e <- p*sum(o))  # expected values
+o <- c(6,9,15,11,6)
+B <- sum((o-e)^2/e)
+pchisq(B,df=5-1-1,lower.tail=F) # subtract one for total, one for estimated lambda
+```
+
+Large pvalue, fail to reject null.
+
+
+
+## Task 3: chi-square for family gender distribution.
+
+
+A sample of 400 families with exactly 5 children is surveyed and the
+number of boys is recorded (the number of boys is in the range 0-5).
+The results are as follows:
+
+
+```{r}
+o <- c(17, 70, 143, 117, 47, 6)
+names(o) <- paste("boys",0:5,sep="")
+o
+```
+
+* Test the null that each birth is a boy with probability 0.5
+
+
+```{r}
+e <- sum(o)*dbinom(0:5,5,0.5)
+B <- sum((o-e)^2/e)
+pchisq(B,df=6-1,lower.tail=F) # no estimation here
+```
+
+Reject null.
+
+
+* Estimate the probability of a birth being a boy and test the null
+    that the number of boys in each family is binomial
+
+### Suggested analysis
+
+
+```{r}
+(p <- sum(o*(0:5))/(sum(o)*5))  # number of boys/number of children = #boys/#(families*5)
+e <- sum(o)*dbinom(0:5,5,p)
+B <- sum((o-e)^2/e)
+pchisq(B,df=6-1-1,lower.tail=F) # estimate reduces DF by 1
+```
+
+Fail to reject null, observations consistent with a binomial but not
+with probability one half.
+
+
+### Task 4: chi-square as an alternative to Fisher's exact test
+
+the following contingency table shows the results of American and Russian
+(USSR) missions to Mars.
+
+```{r}
+M <- matrix(c(16,5,6,16),byrow=TRUE,2,2)
+dimnames(M) <- list(nation=c("USSR","USA"),mission=c("success","fail"))
+M
+```
+
+
+* Given the marginal totals, calculate expected values for each of the
+  four table entries
+* Calculate a badness value
+* Using one degree of freedom, calculate a p-value and compare with
+  the result from Fisher's exact test.
+
+### Suggested analysis
+
+Null would be that the two agencies have the same probability of
+success.
+
+```{r}
+(e <- outer(rowSums(M),colSums(M))/sum(M))
+B <- sum((M-e)^2/e)
+pchisq(B,df=1,lower.tail=FALSE)
+fisher.test(M,alternative="greater")$p.value
+```
+
+p-values comparable.
+
+### Task 5: binomial vs hypergeometric
+
+A total of 400 random observations are drawn from _either_ a binomial
+distribution $\operatorname{Bin}(4,0.5)$ ($H_B$), _or_ a
+hypergeometric distribution with $m=n=k=4$, ($H_H$), but it is not
+known which.  Here is a table of the observations:
+
+```
+  0   1   2   3   4 
+  7  70 222  93   8
+```
+
+Thus, "0" was observed 7 times, "1" was observed 70 times, and so on
+up to "4", which was observed 8 times.
+
+* Conduct a Pearson's chi-square test on the hypothesis of binomial
+   distribution
+* Conduct a Pearson's chi-square test on the hypothesis of hypergeometric
+   distribution
+* Calculate a likelihood ratio for these two hypotheses
+* Bayesian: suppose the priors are $\operatorname{Prob}(H_H)=10^{-3}, \operatorname{Prob}(H_B)=0.999$.  Calculate the posterior probabilities.
+
+### Suggested analysis
+
+```{r}
+o <- c(7,  70, 222,  93,   8)
+supp_B <- sum(o*dbinom(0:4,4,0.5,log=TRUE))
+supp_H <- sum(o*dhyper(0:4,4,4,4,log=TRUE))
+supp_B-supp_H
+exp(supp_B-supp_H)
+```
+
+Binomial chi-sq:
+
+```{r}
+e <- sum(o)*dbinom(0:4,4,1/2)
+pchisq(sum((o-e)^2/e),df=4,lower.tail=FALSE)
+```
+
+Hypergeometric:
+
+```{r}
+e <- sum(o)*dhyper(0:4,4,4,4)
+pchisq(sum((o-e)^2/e),df=4,lower.tail=FALSE)
+```
+
+reject binomial, fail to reject hypergeometric.
+Now Bayes:
+
+```{r}
+prior_H <- 1e-3
+prior_B <- 1-prior_H
+a <- prior_H * exp(supp_H)
+b <- prior_B * exp(supp_B)
+posterior_H <- a/(a+b)
+posterior_B <- b/(a+b)
+c(H=posterior_H,B=posterior_B)
+```
+
+small prior overwhelmed by data
+
+
+
+
