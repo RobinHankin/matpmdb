@@ -266,7 +266,7 @@ State a sensible null and analyse it using Pearson's chi-square test.
 
 ### Task 2: chi-square for Poisson observations.
 
-The number of goals scored by the home team in 45 soccer games played
+The number of goals scored by the home team in 47 soccer games played
 in the UK in one week is as follows:
 
 
