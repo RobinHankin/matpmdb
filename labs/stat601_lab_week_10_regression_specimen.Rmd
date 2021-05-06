@@ -1,0 +1,128 @@
+---
+output: html_document
+title: Regression _suggested analyis_
+fontsize: 12pt
+---
+
+
+# Task 1:  Height-weight analysis
+
+
+Download file `heightweight.txt` from AUTonline and load it into R, using
+
+`a <- read.table(file.choose())`
+
+Then use commands such as 
+
+`plot(weight~height,data=a)`
+
+to produce a scattergraphs.  
+
+What is the predicted weight of someone with a height of 2m exactly?
+What is the predicted weight of someone with a height of 0m exactly?
+Is this a sensible question?  Does it have a sensible answer?
+
+
+Now produce a few different scattergraphs, maybe logarithmically
+transformed.
+
+
+```{r}
+plot(log(weight)~log(height), data=a)
+fit <- lm(log(weight)~log(height), data=a)
+summary(fit)
+abline(fit)
+```
+
+Now the relationship is
+
+\[
+\log(w) = 4.24865 + 0.23994\log(h)
+\]
+
+where the numbers are from the R output.  This is equivalent to
+
+\[
+w = \exp(4.24865) h^{0.23994}
+\]
+
+or even (approximately).
+
+\[
+w = 70 h^{0.24}
+\]
+
+It is possible to regress against age using the `+` symbol:
+
+```{r}
+ summary(lm(weight~height+age,data=a))
+```
+
+
+but the high (and thus non-significant) p-value of `age` (0.266)
+shows that the effect of age is not significant in this model.
+
+# Task 2: econometric dataset
+
+```{r}
+e3mg <- read.table("e3mg.txt",header=TRUE)
+head(e3mg)
+plot(e3mg)
+summary(lm(rec_dep~oil.price+direct.tax+interest.rate+saving.ratio+investment,data=e3mg))
+```
+
+The R-squared value is about 98\%, pretty good.  But can we do better?
+The least significant entry is `interest.rate` and even this has a
+borderline sigifnicant pvalue of about 0.04.  But note how small the
+slope is, a factor of 20 smaller than the next smallest which is
+`direct.tax`.
+
+I would suggest as a next step, combining the two independent
+variables with the highest estimated slopes together and removing
+`interest.rate`:
+
+```{r}
+summary(lm(rec_dep~oil.price*saving.ratio + direct.tax + investment,data=e3mg))
+```
+
+But see how the R-square value is not changed and anyway the
+interaction term has a nonsignificant pvalue.  I would be tempted to
+drop the interaction term as a bad idea (it is not paying its way) and
+also drop `interest.rate`:
+
+```{r}
+summary(lm(rec_dep~oil.price + saving.ratio + direct.tax + investment,data=e3mg))
+```
+
+which at least has the virtue of parsimony.
+
+
+# Task 4: swiss dataset
+
+
+
+```{r}
+head(swiss)
+plot(swiss)
+```
+
+draughtsmans plot shows that Catholicism is pretty much a binary RV,
+and also the education is left-skewed.
+
+
+```{r}
+summary(lm(Infant.Mortality~
+Fertility + Agriculture + Examination + Education + (Catholic > 50),data=swiss))
+```
+
+Nothing is significant except for Fertility.  I would suggest losing
+everything else, leaving us with a nice parsimonious fit:
+
+
+```{r}
+summary(lm(Infant.Mortality~Fertility,data=swiss))
+```
+
+(but observe that the pvalue has halved in this case; this is because
+the parsimonious model has less random variability than the full
+model).
