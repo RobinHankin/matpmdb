@@ -28,13 +28,23 @@ transformed.
 
 
 ```{r}
+plot(weight~height, data=a)
+fit <- lm(weight~height, data=a)
+summary(fit)
+abline(fit)
+```
+
+```{r}
 plot(log(weight)~log(height), data=a)
 fit <- lm(log(weight)~log(height), data=a)
 summary(fit)
 abline(fit)
 ```
 
-Now the relationship is
+(the R-squared value is about the same for these two regressions; we
+will use the log-transformed one on the grounds that both weight and
+height are inherently positive).  Now the relationship for the log
+data is
 
 \[
 \log(w) = 4.24865 + 0.23994\log(h)
@@ -46,13 +56,8 @@ where the numbers are from the R output.  This is equivalent to
 w = \exp(4.24865) h^{0.23994}
 \]
 
-or even (approximately).
-
-\[
-w = 70 h^{0.24}
-\]
-
-It is possible to regress against age using the `+` symbol:
+or even $w = 70 h^{0.24}$ (approximately).  It is possible to regress
+against age and height jointly using the `+` symbol:
 
 ```{r}
  summary(lm(weight~height+age,data=a))
@@ -73,9 +78,10 @@ summary(lm(rec_dep~oil.price+direct.tax+interest.rate+saving.ratio+investment,da
 
 The R-squared value is about 98\%, pretty good.  But can we do better?
 The least significant entry is `interest.rate` and even this has a
-borderline sigifnicant pvalue of about 0.04.  But note how small the
-slope is, a factor of 20 smaller than the next smallest which is
-`direct.tax`.
+borderline significant pvalue of about 0.04.  But note how small the
+coefficient is, a factor of 20 smaller than the next smallest which is
+`direct.tax` [comparison of coefficients is possible because the
+ranges of the independent variables are all normalized].
 
 I would suggest as a next step, combining the two independent
 variables with the highest estimated slopes together and removing

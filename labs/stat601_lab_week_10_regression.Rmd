@@ -151,9 +151,9 @@ This would indicate that $\log V = -3.68 + 0.79\log G + 0.43\log H +
 
 
 
-## Your Tasks
+# Your Tasks
 
-# Task 1:  Height-weight analysis
+## Task 1:  Height-weight analysis
 
 Download file `heightweight.txt` from AUTonline and load it into R, using
 
@@ -174,7 +174,7 @@ Now produce a few different scattergraphs, maybe logarithmically
 transformed.
 
 
-# Task 2: econometric dataset
+## Task 2: econometric dataset
 
 Download the file `e3mg.txt` from AUTonline and load it using
 
@@ -197,13 +197,13 @@ five independent variables.
   accuracy.
 
 
-# Task 3: portfolio
+## Task 3: portfolio
 
 You should by now have a small dataset which you are analysing for
 your portfolio.  Apply linear regression to it and discuss your
 results.
 
-# Task 4: swiss dataset
+## Task 4: swiss dataset
 
 The `swiss` dataset is an R builtin.  Type `swiss` at the R
 commandline to see it, and `?swiss` to see some documentation.  Try to
