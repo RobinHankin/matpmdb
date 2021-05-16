@@ -1,5 +1,5 @@
 ---
-output: pdf_document
+output: html_document
 title: logistic regression
 fontsize: 12pt
 ---
@@ -13,9 +13,7 @@ there is a particular feature in an image that is presented to the
 subject.
 
 ```{r}
-x <- seq(from=0,to=6,len=30)
-y <- c(0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,1,1,1,1,
-          0,0,1,1,1,1,1,1,1,1)
+y <- c(F,F,T,F,F,T,T,T,F,F,T,T,T,F,T,T)
 ```
 
 Dataset y is the time in seconds that the subject is allowed to
@@ -26,10 +24,9 @@ We can plot this easily:
 
 
 ```{r}
+x <- seq_along(y)
 plot(y~x,pch=16)
 ```
-
-
 
 # Doing logistic regression by hand
 
@@ -54,8 +51,10 @@ z <- rnorm(100)
 max(abs(z-LO(logistic(z))))
 ```
 
-Make sure you understand what these lines do, and why we need both of them.
-We can now use these functions to plot the regression line.
+Above, we see verification of `LO()` and `logistic()`, which are
+inverses of one another.  Make sure you understand what these lines
+do, and why we need both of them.  We can now use these functions to
+plot the regression line.
 
 
 First of all we need a likelihood function.
@@ -69,14 +68,25 @@ like <- function(beta){
 }
 ```
 
-so we can evaluate this at a couple of points:
+(See how `like()` is a direct R implementation of the likelihood
+function under investigation).  We can evaluate this at a couple of
+points:
 
 ```{r}
 like(c(1,1))
 like(c(1,2))
 ```
 
-and we can use optim() to find the MLE:
+So we have a direct comparison of $H_1\colon\beta_1=1,\beta_2=1$ and
+$H_2\colon\beta_1=1,\beta_2=2$ by way of a likelihood ratio:
+
+```{r}
+like(c(1,1)) / like(c(1,2))
+```
+
+In this case, $H_1$ is astronomically more likely than $H_2$.  But of
+course we are free to choose $\beta_1,\beta_2$ as we wish, and can use
+optim() to find the MLE:
 
 
 ```{r}
@@ -85,35 +95,105 @@ optim(c(1,1),f)
 ```
 
 (a more mathematical approach would show that we do not need to worry
-about local maxima).
+about local maxima).  We can plot the regression line using these
+values:
+
+```{r}
+plot(x,y,pch=16)
+xx <- seq(from=0,to=16,len=100)
+points(xx,logistic(-1.34 + 0.193*xx),type="l") # numbers from optim() result above
+```
 
 # Logistic regression using glm() 
 
-The regression is carried out usig the glm() function:
-
+We can get more information and a more sophisticated analysis using
+built-in R funcitonality.  The regression is carried out using the
+`glm()` function:
 
 
 ```{r}
-fit <- glm(y~x,family='binomial')
+fit <- glm(y~x,family='binomial')  #  "binomial" tells glm() that 'y' is Bernoulli
 fit
 ```
 
 And we can see more detail using summary():
 
-
 ```{r}
 summary(fit)
 ```
 
-So, from the pvalue of 0.00425 we can see that the relationship is significant.
-We can plot the regression using the logistic transform function.
-Taking the coefficients from the fit, we have:
+So, from the pvalue we can see that the relationship is not
+significant.  We can plot the regression using the logistic transform
+function.  Taking the coefficients from the fit, we have:
     
 ```{r}
 plot(y~x,pch=16)
-points(x,logistic(-3.07 + 0.95*x),type='l')
+points(x,logistic(-1.34 + 0.19*x),type='l')
+```
+
+And this would show that the estimate for the value of x that gives
+$p=0.5$, that is $\hat{x} = -B/A = 1.34/0.189=7.1$, is about right.
+Function `glm()` allows one to use the full power of the function
+specification and we are free to use multivariate regression, etc etc.
+
+
+# Synthetic example
+
+
+Here I show how to generate observations from a process in which the
+assumptions of logistic regression are known to be exactly correct.
+This is very similar to constructions from the first part of the
+course such as `mean(rnorm(100))`, which was used to study properties
+of the sample mean of iid Gaussian RVs.
+
+
+```{r}
+set.seed(0)
+n <- 50
+x <- seq(from = -3,to=3,len=n)
+alpha <- 0.3
+beta <- -1.2
+p <- logistic(alpha + beta*x)  # probability of success
+y <- rbinom(n,1,p)
+fit <- glm(y~x,family="binomial")
+summary(fit)
+jj <- fit$coefficients
+alpha_fit <- jj[1]
+beta_fit <- jj[2]
+
+plot(x,y,pch=16)
+points(x,logistic(alpha + beta*x),type="l",col="red")   # true values
+points(x,logistic(alpha_fit + beta_fit*x),type="l",col="blue") # fitted values
+legend("topright",lty=1,col=c("red","blue"),legend=c("truth","fitted"))
 ```
 
 
+Notes:
 
-And this would show that the estimate for the value of x that gives $p=0.5$, that is $\hat{x} = -B/A = 3.07/0.95=3.23$, is about right.
+* This time the probability of success _decreases_ with increasing x; the coefficient is negative.
+* The assumptions of `glm()` are met _exactly_ and we have a large amount of perfect data
+* The fit is not particularly close as the red and blue curves are quite distinct
+* The standard errors of the coefficients are quite large but the confidence interval
+     should include the true values (can you say with what probability this is so?)
+
+take-home message: logistic regression is easy but requires a lot of
+data to reject your null.
+
+
+# Your Tasks
+
+* Consider the following dataset: `y <-
+  c(F,F,T,F,F,T,T,T,F,F,T,T,T,F,T,T)`.  These observations represent
+  success or failure of a person trying to run a particular distance
+  within a prescribed time on successive days.  It is reasonable to
+  assume that this person gets fitter with time.  Analyse this data
+  using a logistic regression and justify your use of one-sided or
+  two-sided tests.
+
+* Download the `e3mg` dataset from last week.  We are interested in
+  the length of an economic recession being greater than five years.
+  Create a Bernoulli RV with `1` representing a recession being longer
+  than five years and `0` meaning the recession was less than five
+  years.  Analyse this using `glm()`.
+
+* Apply `glm()` to a Bernoulli column of your portfolio dataset.  

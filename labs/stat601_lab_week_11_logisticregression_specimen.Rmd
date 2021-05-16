@@ -1,0 +1,98 @@
+---
+output: html_document
+title: logistic regression suggested analysis
+fontsize: 12pt
+---
+
+
+# STAT601 lab, week 11, suggested analysis
+
+## Task 1
+
+Consider the following dataset:
+
+`y <- c(F,F,T,F,F,T,T,T,F,F,T,T,T,F,T,T)`.
+
+These observations represent success or failure of a person trying to
+run a particular distance within a prescribed time on successive days.
+It is reasonable to assume that this person gets fitter with time.
+Analyse this data using a logistic regression and justify your use of
+one-sided or two-sided tests.
+
+```{r}
+logistic <- function(x){exp(x)/(1+exp(x))}
+LO <- function(p){log(p/(1-p))}
+y <- c(F,F,T,F,F,T,T,T,F,F,T,T,T,F,T,T)
+x <- seq_along(y)
+plot(x,y,pch=16)
+fit <- glm(y~x,family='binomial')
+jj <- fit$coefficients
+points(x,logistic(jj[1] + jj[2]*x),type="l",col="red")
+summary(fit)
+```
+
+Note that the pvalue is half that reported by R: `glm()` gives
+two-sided pvalues by default, and we need a one-sided test because the
+subject is getting fitter.  The pvalue for the one-sided test will be
+about 0.066, not significant.
+
+
+## Task 2
+
+Download the `e3mg` dataset from last week.  We are interested in the
+length of an economic recession being greater than five years.  Create
+a Bernoulli RV with `1` representing a recession being longer than
+five years and `0` meaning the recession was less than five years.
+Analyse this using `glm()`.
+
+First we need some data wrangling:
+
+```{r}
+a <- read.table("e3mg.txt")
+a <- cbind(a,long=as.numeric(a$rec_len>5)) 
+head(a)
+```
+
+And we must not forget basic EDA:
+
+
+```{r}
+table(a$long)
+```
+
+[this is a less than ideal split, it would have been better to have a
+50-50 split (such a dataset is called "balanced"), but here as often
+in life we have to deal with what we have, not what we would like].
+
+We will try a visual plot:
+
+```{r}
+plot(long~oil.price,data=a)
+```
+
+Note that the points are overplotted, we could use `jitter()` to
+distinguish them:
+
+```{r}
+plot(jitter(long,amount=0.1)~oil.price,data=a)
+fit <- glm(long~oil.price, data=a,family='binomial')
+summary(fit)
+points(a$oil.price,fitted.values(fit),type="p",col='red')
+```
+
+(we can do the other variables in a similar way)
+
+
+```{r}
+summary(glm(long~oil.price+direct.tax+interest.rate+saving.ratio+investment,data=a))
+```
+
+I would suggest dropping `interest.rate`:
+
+```{r}
+summary(glm(long~oil.price+direct.tax+saving.ratio+investment,data=a))
+```
+
+
+
+* Apply `glm()` to a Bernoulli column of your portfolio dataset.  
