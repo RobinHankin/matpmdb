@@ -10,7 +10,9 @@ fontsize: 12pt
 
 Download file `heightweight.txt` from AUTonline and load it into R, using
 
-`a <- read.table(file.choose())`
+```{r}
+a <- read.table("heightweight.txt",header=TRUE)
+```
 
 Then use commands such as 
 
@@ -22,9 +24,9 @@ What is the predicted weight of someone with a height of 2m exactly?
 What is the predicted weight of someone with a height of 0m exactly?
 Is this a sensible question?  Does it have a sensible answer?
 
-
-Now produce a few different scattergraphs, maybe logarithmically
+First produce a few different scattergraphs, maybe logarithmically
 transformed.
+
 
 
 ```{r}
@@ -41,6 +43,7 @@ summary(fit)
 abline(fit)
 ```
 
+
 (the R-squared value is about the same for these two regressions; we
 will use the log-transformed one on the grounds that both weight and
 height are inherently positive).  Now the relationship for the log
@@ -56,8 +59,25 @@ where the numbers are from the R output.  This is equivalent to
 w = \exp(4.24865) h^{0.23994}
 \]
 
-or even $w = 70 h^{0.24}$ (approximately).  It is possible to regress
-against age and height jointly using the `+` symbol:
+or even $w = 70 h^{0.24}$ (approximately).
+
+So the predicted weight of someone with 0 or 2m eight would be
+
+```{r}
+60 + c(0,2)*11
+```
+
+under the linear model, and
+
+
+```{r}
+70*c(0,2)^0.24
+```
+
+under the logarithmic model; close agreement at 2m but neither one
+makes sense at 0m but then again asking the weight of a person with
+zero height is a stupid question.  It is possible to regress against
+age and height jointly using the `+` symbol:
 
 ```{r}
  summary(lm(weight~height+age,data=a))

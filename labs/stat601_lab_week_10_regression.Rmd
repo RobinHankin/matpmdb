@@ -34,8 +34,9 @@ plot(Volume~Height,data=trees)
 
 The points are reasonably scattered, without any outliers or
 nonlinearity.  The points are showing broadly uniform variance about a
-line.  We can use R to calculate the best-fit line using the
-`lm()` function:
+line, although there is a suggestion that the variance increases as we
+move rightwards along the x-axis.  We can use R to calculate the
+best-fit line using the `lm()` function:
 
 
 ```{r}
@@ -77,8 +78,11 @@ this defect by using a logarithmic transform:
 plot(Volume~Height, data=trees, log='xy')
 ```
 
-The `plot()` command takes a `log` argument, in this case
-instructing R to use logarithmic transforms on the x and y axes.
+The `plot()` command takes a `log` argument, in this case instructing
+R to use logarithmic transforms on the x and y axes.  Note that the
+increasing variance problem [the technical word is
+"heteroscedasticity", one of the very few eight-syllable words in this
+course] noted above is effectively nullified by the logarithmic axes.
 
 However, `abline()` does not work with this type of plot, so we will
 have to work manually:
@@ -113,7 +117,8 @@ logfit2 <- lm(log(Volume)~log(Girth),data=trees)
 summary(logfit2)
 ```
 
-The plot is more convincing than the numbers, IMHO:
+See how the R-squared value is higher than the previous analyses.
+But, the plot is more convincing than the numbers, IMHO:
 
 ```{r}
 plot(log(Volume)~log(Girth),data=trees)
