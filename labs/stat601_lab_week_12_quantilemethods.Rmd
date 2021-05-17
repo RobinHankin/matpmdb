@@ -1,5 +1,5 @@
 ---
-output: pdf_document
+output: html_document
 title: qqplot and similar techniques
 fontsize: 12pt
 ---
@@ -15,7 +15,7 @@ on that command.
 
 # The order statistic
 
-The R system includes a dataset called ``precip` which has information
+The R system includes a dataset called `precip` which has information
 about precipitation in various US cities.
 
 ```{r}
@@ -31,8 +31,8 @@ c(170.18, 138.938, 17.78, 123.19, 35.56, 43.688, 52.578,
 108.204, 98.552, 44.196, 103.632, 73.914, 37.084, 150.368)
 ```
 
-You can get help on this dataset by typing ``?precip` at the R
-prompt.  We will analyse this dataset.  We will start by a histogram:
+You can get help on this dataset by typing `?precip` at the R prompt.
+We will analyse this dataset.  We will start by a histogram:
 
 
 ```{r}
@@ -47,9 +47,10 @@ very different:
 hist(precip,nclass=50,col='gray')
 ```
 
-Specifically, the dataset appears to be bimodal.
-
-To plot this dataset in a more standard way, we can just plot the points:
+Specifically, the dataset appears to be bimodal; but it is not clear
+whether the bimodality is an artefact of the plotting techique, or
+genuinely present in the data.  To plot this dataset in a more
+objective way, we can just plot the points:
 
 ```{r}
 plot(precip)
@@ -108,20 +109,19 @@ which gives nice axes etc.  It is always good to see how the technique
 works for random data:
 
 ```{r} 
-plot(ecdf(rnorm(1e5)))
+plot(ecdf(rnorm(50)))
 ```
 
 # The qqnorm()  command
 
 
-Looking at the previous figure, if we could ``distort'' the horizontal
+Looking at the previous figure, if we could "distort" the horizontal
 axis in such a way as to produce a straight line, that would be a
-useful and interesting technique to assess normality.
-
-first we will produce the standard ecdf graph by hand:
+useful and interesting technique to assess normality.  First we will
+produce the standard ecdf graph by hand:
 
 ```{r}
-n <- 1000
+n <- 100
 x <- sort(rnorm(n))
 quant <- seq(from=1/(2*n),to=1-1/(2*n),len=n)
 plot(x,quant)
@@ -133,38 +133,30 @@ the datavalues:
 
 ```{r}
 quant <- seq(from=0,to=1,len=n)
-plot(pnorm(x),quant)
+plot(pnorm(x),quant)   # x-axis distorted by pnorm()
 ```
-
 
 See how the ogive has been transformed into a straight line.  It is,
 however, more common to distort the y-axis:
 
 
 ```{r}
-plot(x,qnorm(quant))
+plot(x,qnorm(quant))   # y-axis distorted with qnorm()
 ```
 
 See how the mean is given by the intercept and the slope gives the
 standard deviation.  It is also possible to use this technique on our
-original dataset but the function ``qqnorm()` does much of the hard
+original dataset but the function `qqnorm()` does much of the hard
 work for us:
 
 ```{r}
-qqnorm(precip)
-abline(mean(precip),sd(precip))
+qqnorm(precip)   # Function qqnorm() is an R builtin
+abline(mean(precip),sd(precip))  
 ```
 
 Above, see how the approximate straight line of the `qqnorm` plot
-shows that the data is approximately Gaussian.
-
-
-# Task
-
-Try the above techniques for the `rivers` dataset, built in to R.  To
-get details, type `?rivers` at the R prompt (a "mile" is an obsolete
-unit of length equal to about 1.6km, apparently still used in one or
-two primitive countries).
+shows that the data is approximately Gaussian.  Of course, there is
+some random noise present due to the random nature of the sample.
 
 # Two-sample nonparametric methods
 
@@ -209,7 +201,18 @@ qqplot(x,y)
 ```
 
 
-## Task 
+# Your tasks
+
+## Task 1
+
+Try the above techniques for the `rivers` dataset, built in to R.  To
+get details, type `?rivers` at the R prompt (a "mile" is an obsolete
+unit of length equal to about 1.6km, apparently still used in one or
+two primitive countries).
+
+
+
+## Task 2
 
 Consider the following data, representing yield efficiencies for a
 chemical process using two different methods:
@@ -232,4 +235,10 @@ c(0.444, 0.436, 0.107, 0.118, 0.414, 0.394, 0.061, 0.608, 0.025,
 
 Use `qqplot()` and `ks.test()` to investigate whether these two
 datasets are in fact drawn from the same distribution.  Investigate
-whether these datasets are normal.
+whether these datasets are normal
+
+
+
+
+
+
