@@ -39,22 +39,66 @@ Observe that `t.test(a)` and `t.test(b)` return non-significant
 p-values (try it!): there is no evidence that the mean of the datasets
 is different from zero.
 
+
+```{r}
+t.test(a)
+t.test(b)
+```
+
 ### Your tasks
 
 * Estimate the mean and standard deviation of these two datasets
+
+```{r}
+c(mean(a),mean(b))
+c(sd(a),sd(b))
+```
+
+
 * Using `qqplot()`  plot a quantile-quantile
   plot of `a` against `b`; use `abline(0,1)` to plot a line of equality
+
+```{r}
+qqplot(a,b)
+abline(0,1)
+```
+
+
 * Using `t.test()`, perform a Student t test on
   these two datasets
+
+```{r}
+t.test(a,b)  # two-sample
+```
+
 * Using `ks.test()`, perform a
   Kolmogorov-Smirnov test on the two datasets
+
+
+```{r}
+plot(ecdf(a))
+plot(ecdf(b),col='red',add=TRUE)
+legend("topleft",c("black","red"),lty=1,pch=16,legend=c("a","b"))
+```
+
 * Using `wilcox.test()`, perform a Wilcoxon
   rank sum test on the two datasets
+
+
+```{r}
+wilcox.test(a,b)
+```
+
 * By considering the null of each test, explain why two of the
   tests return non-significant p-values and one returns a significant result
+
+**The two datasets differ in width rather than central tendency**
+
 * Interpret your p-values in such a way that a metrologist who
   (due to gross organizational incompetence) is not a statistician,
   could understand
+
+**It looks like instrument "b" has a wider uncertainty than "a"**
 
 ## Example 2
 
@@ -83,6 +127,13 @@ x <- replicate(1000,t.test(rnorm(5),rnorm(5,mean=1))$p.value)
   data with mean 1.  Recall that "power" means "probability of
   correctly rejecting the null hypothesis when it is incorrect".
 
+```{r}
+x <- replicate(10000,t.test(rnorm(5),rnorm(5,mean=1))$p.value)
+table(x<0.05)
+```
+
+**Power of test about 26%**
+
 * You will recall that it is possible to generate random variables
   drawn from the Cauchy distribution with constructions like
   `rcauchy(5,loc=1)`.  Repeat the above analysis, with samples of size
@@ -90,10 +141,19 @@ x <- replicate(1000,t.test(rnorm(5),rnorm(5,mean=1))$p.value)
   and 1 respectively.  What is the power of the t test under these
   circumstances?
 
+
+```{r}
+x <- replicate(10000,t.test(rcauchy(5),rcauchy(5,location=1))$p.value)
+table(x<0.05)
+```
+
+**Power of test about 4.5%**
+
 * By this criterion, is the t test performing better or worse when the
   samples are Cauchy?  Briefly state why you might expect this answer.
 
-
+**The t-test assumes normality.  It has very low power if the
+  underlying distribution is Cauchy**
 
 ## Example 3
 
@@ -104,8 +164,8 @@ This question asks you to compare using the sample mean and the median
 mean(rnorm(10))
 ```
   
-generates 10 normal observations and calculates their mean.  Call
-this "estimator 1".  Then we can   calculate estimator 1 a total of 30 times:
+generates 10 normal observations and calculates their mean.  Call this
+"estimator 1".  Then we can calculate estimator 1 a total of 30 times:
 
 ```{r}
 est1 <- replicate(30,mean(rnorm(10)))
@@ -116,15 +176,83 @@ est1
   
 * What is the variance of this estimate of the mean? (you will need
     more than 30 replicates to get a sensible estimate)
+
+**We know from lectures that the mean will be distributed with
+  variance $1/10$.  Numerically:**
+
+```{r}
+var(replicate(1e5,mean(rnorm(10))))  # compare theoretical value of 0.1
+```
+
+
 * We will define "estimator 2" to be `median(rnorm(10))`.
     What is the variance of estimator 2?
+
+**Numerically:**
+
+```{r}
+var(replicate(1e5,median(rnorm(10)))) # compare theoretical value of 0.157
+```
+
+**(Theoretical analysis shows that the variance will be approximately
+  $\pi/20=0.157$)**
+
 * In this context, the variance is a good measure of the
     performance of an estimator.  Which estimator has a lower
     variance?  Which is the better estimator?
+
+**The mean is better: it has a lower variance (both are unbiased)**
+
 * Carry out the analysis above, but sampling from a Cauchy
     distribution (use `rcauchy()`).  Which is the better
     estimator now?
+
+*numerically*:
+
+```{r}
+var(replicate(1e5,mean(rcauchy(10))))
+var(replicate(1e5,median(rcauchy(10))))
+```
+
+**It looks like the mean has a crazily high variance.  Caveat emptor!**
+
+
 * (harder).  Carry out the analysis above but sample from a "cat
   Gaussian" in which a cat puts its paw on your keyboard when entering
   data and enters extra digits into your spreadsheet.
 
+**First define a `cat()` function to simulate the cat playing on the
+  keyboard:**
+
+```{r}
+cat_rv <- function(swipes=8, keys=as.character(0:9)){
+  as.numeric(paste(sample(keys,swipes,replace=TRUE),collapse=""))
+}
+cat_rv()
+cat_rv()
+```
+
+**Now sample from a regular Gaussian distribution but replace one
+  observation with the cat's pawprints:**
+
+```{r}
+rnormcat <- function(n,mean=0,sd=1, ...){
+   out <- rnorm(n,mean,sd)
+   out[sample(seq_along(out),1)] <- cat_rv(...)
+   return(out)
+}
+options(scipen=1000)  # makes the display nicer
+rnormcat(10)          # spot the effect of the cat
+rnormcat(10)
+```
+
+** Now investigate the difference between mean and median:**
+
+```{r}
+var(replicate(1e3,mean(rnormcat(10))))
+var(replicate(1e3,mean(rnormcat(10))))
+var(replicate(1e3,median(rnormcat(10))))
+```
+
+**The mean is strongly affected by the outlier, but the median is
+  robust to this.  If you have a cat, use the median.  Bad kitty!**
