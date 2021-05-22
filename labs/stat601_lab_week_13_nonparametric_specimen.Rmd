@@ -1,6 +1,6 @@
 ---
 output: html_document
-title: Nonparametric methods
+title: Nonparametric methods, suggested analysis
 fontsize: 12pt
 ---
 
@@ -244,9 +244,10 @@ rnormcat <- function(n,mean=0,sd=1, ...){
 options(scipen=1000)  # makes the display nicer
 rnormcat(10)          # spot the effect of the cat
 rnormcat(10)
+qqnorm(rnormcat(10))
 ```
 
-** Now investigate the difference between mean and median:**
+**Now investigate the difference between mean and median:**
 
 ```{r}
 var(replicate(1e3,mean(rnormcat(10))))
