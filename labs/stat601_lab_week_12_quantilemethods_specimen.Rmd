@@ -60,10 +60,18 @@ c(0.444, 0.436, 0.107, 0.118, 0.414, 0.394, 0.061, 0.608, 0.025,
 
 Use `qqplot()` and `ks.test()` to investigate whether these two
 datasets are in fact drawn from the same distribution.  Investigate
-whether these datasets are normal
+whether these datasets are normal.
 
 **Just do it:**
 
+
+```{r}
+qqnorm(a,pch=16)
+jj <- qqnorm(b,plot.it=FALSE)
+points(jj$x,jj$y,pch=16,col='red')
+```
+
+**Highly non-normal, t-test not applicable here**
 
 ```{r}
 plot(ecdf(a))
@@ -72,11 +80,16 @@ legend("topleft",pch=16,lty=1,col=c("black","red"),legend=c("a","b"))
 abline(v=0.33)
 ```
 
-**The ecdf() plot suggests that $D\simeq 0.35$, verify with Kolmogorov test:**
+**The ecdf() plot suggests that $D\simeq 0.35$ (vertical line drawn on
+ the graph at maximal discrepancy point).  Verify with Kolmogorov
+ test:**
 
 ```{r}
 ks.test(a,b)
 ```
+
+**p-value given by Kolmogorov-Smirnov is highly significant, test does
+  not rely on the assumption of normality**
 
 **Try a qqplot:**
 
