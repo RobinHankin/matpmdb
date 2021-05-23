@@ -1,0 +1,86 @@
+---
+output: html_document
+title: qqplot and similar techniques, suggested analysis
+fontsize: 12pt
+---
+
+
+# Your tasks
+
+## Task 1
+
+Try the above techniques for the `rivers` dataset, built in to R.  To
+get details, type `?rivers` at the R prompt (a "mile" is an obsolete
+unit of length equal to about 1.6km, apparently still used in one or
+two primitive countries).
+
+**Just load the data and look at using different techniques**
+
+```{r}
+rivers
+hist(rivers)
+plot(ecdf(rivers))
+qqnorm(rivers)
+abline(mean(rivers),sd(rivers))
+```
+
+
+**All the techniques point to a strong right skew; take a log transform:**
+
+```{r}
+lr <- log(rivers)
+hist(lr)
+plot(ecdf(lr))
+qqnorm(lr)
+abline(mean(lr),sd(lr))
+```
+
+**Still not entirely normal but better than the original data**
+
+## Task 2
+
+Consider the following data, representing yield efficiencies for a
+chemical process using two different methods:
+
+```{r}
+a <-
+c(0.282, 0.303, 0.239, 0.187, 0.131, 0.249, 0.088, 0.368, 0.406, 
+0.339, 0.441, 0.257, 0.124, 0.179, 0.334, 0.095, 0.19, 0.175, 
+0.275, 0.208, 0.048, 0.082, 0.079, 0.247, 0.443, 0.141, 0.387, 
+0.069, 0.067, 0.109, 0.387, 0.254, 0.328, 0.095, 0.452, 0.148, 
+0.186, 0.12, 0.088, 0.085, 0.218, 0.176, 0.245)
+b <-
+c(0.444, 0.436, 0.107, 0.118, 0.414, 0.394, 0.061, 0.608, 0.025, 
+0.387, 0.516, 0.403, 0.16, 0, 0.835, 0.226, 0.438, 0.239, 0.686, 
+0.169, 0.009, 0.338, 0.356, 0.769, 0.87, 0.001, 0.564, 0.437, 
+0.885, 0.422, 0.061, 0.42, 0.515, 0.022, 0.269, 0.211, 0.045, 
+0.219, 0.061, 0.507, 0.071, 0.216, 0.333, 0.513, 0.335, 0.565, 
+0.08, 0.492, 0.1, 0.237, 0.022, 0.221, 0.502, 0.263, 0.479, 0.476)
+```
+
+Use `qqplot()` and `ks.test()` to investigate whether these two
+datasets are in fact drawn from the same distribution.  Investigate
+whether these datasets are normal
+
+**Just do it:**
+
+
+```{r}
+plot(ecdf(a))
+plot(ecdf(b),add=TRUE,col="red")
+legend("topleft",pch=16,lty=1,col=c("black","red"),legend=c("a","b"))
+abline(v=0.33)
+```
+
+**The ecdf() plot suggests that $D\simeq 0.35$, verify with Kolmogorov test:**
+
+```{r}
+ks.test(a,b)
+```
+
+**Try a qqplot:**
+
+```{r}
+qqplot(a,b)
+abline(0,1)
+```
