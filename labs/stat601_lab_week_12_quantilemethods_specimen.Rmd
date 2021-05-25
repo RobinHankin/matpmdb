@@ -24,6 +24,12 @@ qqnorm(rivers)
 abline(mean(rivers),sd(rivers))
 ```
 
+**Also Shapiro test**
+
+```{r}
+shapiro.test(rivers)
+```
+
 
 **All the techniques point to a strong right skew; take a log transform:**
 
@@ -35,7 +41,19 @@ qqnorm(lr)
 abline(mean(lr),sd(lr))
 ```
 
+
 **Still not entirely normal but better than the original data**
+
+
+**Also Shapiro test on log data**
+
+```{r}
+shapiro.test(lr)
+```
+
+**Log data still significantly non-normal but p-value less extreme than original dataset**
+
+
 
 ## Task 2
 
