@@ -112,7 +112,7 @@ works for random data:
 plot(ecdf(rnorm(50)))
 ```
 
-# The qqnorm()  command
+# The `qqnorm()` command
 
 
 Looking at the previous figure, if we could "distort" the horizontal
@@ -124,7 +124,7 @@ produce the standard ecdf graph by hand:
 n <- 100
 x <- sort(rnorm(n))
 quant <- seq(from=1/(2*n),to=1-1/(2*n),len=n)
-plot(x,quant)
+plot(x,quantile=quant)
 ```
 
 Now we will plot the same dataset but distort the x-axis by plotting
@@ -133,12 +133,11 @@ the datavalues:
 
 ```{r}
 quant <- seq(from=0,to=1,len=n)
-plot(pnorm(x),quant)   # x-axis distorted by pnorm()
+plot(pnorm(x),quantile=quant)   # x-axis distorted by pnorm()
 ```
 
 See how the ogive has been transformed into a straight line.  It is,
 however, more common to distort the y-axis:
-
 
 ```{r}
 plot(x,qnorm(quant))   # y-axis distorted with qnorm()
