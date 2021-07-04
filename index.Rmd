@@ -49,10 +49,10 @@ class is a reasonably self-contained unit, split into three or four
 parts.  The videos are also available in a slightly different format
 on Mediasite.  To view, log in to AUTonline and then
 
-```content system -> institution -> learn -> maths```
+`content system -> institution -> learn -> maths`
 
 takes you to a number of mathematical resources, including the videos
-which are at ```STAT601```.
+which are at `STAT601`.
 
 This manual is distributed under the GNU GPL and is available at
 
