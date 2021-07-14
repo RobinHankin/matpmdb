@@ -181,7 +181,7 @@ A little under 2\%
 ### Question
 
 (harder) Given an integer $n>0$, and a random variable
-$X\sim\operatorname{bin}\left(n,\frac{1}{2}\right)$, we are interested
+$X\sim\operatorname{bin}\left(2n,\frac{1}{2}\right)$, we are interested
 in the probability $p_n$ that the number of failures is equal to the
 number of successes, that is, $\operatorname{Prob}(X=n)$.
 
