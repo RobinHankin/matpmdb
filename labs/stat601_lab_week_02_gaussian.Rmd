@@ -8,7 +8,7 @@ fontsize: 12pt
 
 This short handout takes you through the basics of the Gaussian
 distribution as discussed in lectures, although you should be aware
-that we asssume both the mean and variance are known precisely.
+that we assume both the mean and variance are known precisely.
 
        
 Remember that you can type `?rnorm` at the R prompt to get help
@@ -298,4 +298,13 @@ Now try different values of $n$ and $p$ with a view to:
 * Does the standard Gaussian have an upper limit?
 * What is the density of the standard Gaussian at $x=0$?
 * How would you *verify* that `dnorm()` has an area under the curve of exactly one?
-* The Gaussian density function is of the form $e^{-x^2/2}$.  What would densities like $e^{-|x|}$ look like?
+* The Gaussian density function is of the form $e^{-x^2/2}$.  What
+  would densities like $e^{-|x|}$ look like?
+* With mean $\mu$ and standard deviation $\sigma$, I assert that the
+  steepest point of the PDF is at $x=\mu\pm\sigma$: that is, the
+  points of highest gradient are distance $\sigma$ from the mean
+  $\mu$.  Verify this.
+* We know that if $X\sim\operatorname{Bin}(n,p)$ is approximately
+  Gaussian with mean $np$ and variance $npq$ if $n$ is large and $p,q$
+  moderate.  Verify this statement and quantify the error incurred for
+  different values of $n,p$.
