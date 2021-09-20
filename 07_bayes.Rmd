@@ -183,7 +183,7 @@ are interested in.  This may be extended further.  If we have
 hypotheses $H_1,H_2,\ldots H_n$ we would have
 
 \[
-\prob{H_i|D} = \prob{H}
+\prob{H_i|D} = \prob{H_i}
 \frac{\prob{D|H_i}
 }{
 \sum_{i=1}^n
@@ -195,7 +195,7 @@ and (although the formal mathematics gets a little gnarly) we can have
 an infinite number of hypotheses indexed by a parameter $x\in X$:
 
 \[
-\prob{H_y|D} = \prob{H}
+\prob{H_y|D} = \prob{H_y}
 \frac{\prob{D|H_y}}{\int_{x\in X} P(x)\prob{D|H_x} dx}
 \]
 
@@ -207,7 +207,7 @@ on $y$ and restate Bayes as:
 
 \begin{equation}
 (\#eq:propbayes)
-\prob{H_y|D}\propto\prob{H}\prob{D|H_y}
+\prob{H_y|D}\propto\prob{H_y}\prob{D|H_y}
 \end{equation}
 
 ### Independence and Bayes
