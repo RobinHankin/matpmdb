@@ -1,16 +1,16 @@
-This document gives general instructions for producing a portfolio,
-for STAT601.  The portfolio is to be submitted via Turnitin.  I have
-uploaded a couple of portfolios from last year to show what I'm
-looking for; these are available under the 'resources' tab. These
-portfolios are pretty good but not perfect.
+This document gives general instructions for producing a portfolio.
+The portfolio is to be submitted via Turnitin.  I have uploaded a
+couple of portfolios from last year to show what I'm looking for;
+these are available under the 'resources' tab. These portfolios are
+pretty good but not perfect.
 
 Recall that the idea of a portfolio is: "procure a small dataset from
-your everyday life and apply the methods of STAT601 to it".  A good
-size of dataset is say 20 lines and 4-7 columns: note that you must
-have data arranged so that each row is an observation.  People in the
-past have used data from their hobbies, their favourite sports teams,
-their work, home life, and so on.  Small and personal is good; I am
-not looking for anything deep or profound.  One student had a
+your everyday life and apply the methods of this course to it".  A
+good size of dataset is say 20 lines and 4-7 columns: note that you
+must have data arranged so that each row is an observation.  People in
+the past have used data from their hobbies, their favourite sports
+teams, their work, home life, and so on.  Small and personal is good;
+I am not looking for anything deep or profound.  One student had a
 spreadsheet of a particular video game that he played with his partner
 (each row was a single game); another used a dataset of time in
 minutes of phone calls to her mother and friends (each row was a phone
@@ -35,9 +35,9 @@ least sensible values.  For continuous hypotheses state your prior and
 posterior PDF.
 
 A good portfolio will have a good dataset which is amenable to
-analysis using STAT601 methods!  I am looking for your ability to
-choose and explain a suitable dataset.  Remember that I will not
-necessarily be familiar with your dataset.  If it is about a
+analysis using the methods of the course!  I am looking for your
+ability to choose and explain a suitable dataset.  Remember that I
+will not necessarily be familiar with your dataset.  If it is about a
 particular cricket team, for example, then I will not know who they
 are and you have to tell me about them and why you are interested in
 them.  If you are studying the temperature of your fishtanks, I want
