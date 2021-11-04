@@ -132,9 +132,6 @@ the writing is terse and compelling.  I am not particularly looking
 for formal scholarly writing, but the wording should be clear and
 unambiguous.
 
-
-conclusions.
-
 A good portfolio will have a short conclusions section.  A conclusions
 section covers things like what aspects of the analysis were most
 surprising or unexpected.  What have you learned about your data?
@@ -142,3 +139,25 @@ General comments such as how a statistical mindset has helped you
 understand your dataset are also good here.  There should be nothing
 in the conclusions that is not supported by the main body of your
 portfolio.
+
+
+
+Schedule: representative comments for grades A,B,C
+
+Grade A: dataset meets brief, appropriate picture included.  First 5
+lines of data given.  A structured, engaging sequence of correctly
+applied statistical analyses given, including R code, which are
+interpreted correctly.  A wide range of nulls considered and a wide
+set of appropriate visualizations given.  Conclusions clear and
+supported by the text.
+
+Grade B: dataset arguably meets brief.  Analyses mostly correct, but
+occasional lapses in application [e.g. applying Pearson chi-square to
+non-count data].  Material given in unclear or unmotivated order.
+Many nulls considered but some sensible nulls missing.  Conclusions
+sketchy.
+
+Grade C: Analysis includes some correct results but many flawed
+calculations.  Material given in haphazard or unjustifed sequence;
+repetitions given.  p-values misinterpreted.  Regression analysis
+presented with no scattergraph.  conclusions weak or unjustified. 
