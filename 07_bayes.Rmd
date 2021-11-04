@@ -169,7 +169,7 @@ to generalize to three.  Suppose we have $H_1$, $H_2$ and $H_3$ being
 three hypotheses one of which is true.  Then
 
 \[
-\prob{H_i|D} = \prob{H}
+\prob{H_i|D} = \prob{H_i}
 \frac{\prob{D|H_i}
 }{
 \prob{H_1}\prob{D|H_1}+ 
@@ -182,14 +182,15 @@ where $i$ is equal to 1,2 or 3 depending on which of $H_1,H_2, H_3$ we
 are interested in.  This may be extended further.  If we have
 hypotheses $H_1,H_2,\ldots H_n$ we would have
 
-\[
-\prob{H_i|D} = \prob{H_i}
-\frac{\prob{D|H_i}
+\begin{equation}
+(\#eq:bayesmultiple)
+\prob{H_j|D} = \prob{H_j}
+\frac{\prob{D|H_j}
 }{
 \sum_{i=1}^n
 \prob{H_i}\prob{D|H_i} 
 }
-\]
+\end{equation}
 
 and (although the formal mathematics gets a little gnarly) we can have
 an infinite number of hypotheses indexed by a parameter $x\in X$:
@@ -355,4 +356,64 @@ pbeta(1/2, 4.3, 8.7)
 ```
 
 
+## Further examples of Bayes's theorem.
+
+Bayes's theorem in the form of equation \@ref(eq:bayesmultiple) is
+very general.  Here are some other examples of Bayesian reasoning.
+
+
+### Poisson distribution
+
+Suppose we have a sample of a radioactive source.  It is either
+substance A or substance B but we do not know which.  The hypothesis
+that it is in fact substance A is written $H_A$ and the hypothesis
+that it is in fact substance B is written $H_B$.  Our priors are
+$p(H_A)= 0.9$ and $p(H_B)=0.1$.  Our experiment is to observe the
+number of counts on a Geiger counter.  Counts are known to be Poisson
+and substance A has $\lambda=5.4$ while substance B has $\lambda=7.7$.
+Our data is the observed number of counts which is $n=5$.  Bayes's
+theorem:
+
+\begin{equation}
+p(H_A|D) = \frac{p(H_A)p(D|H_A)}{p(H_A)p(D|H_A)+p(H_B)p(D|H_B)}
+\end{equation}
+
+We can use R to calculate the likelihoods:
+
+```{r}
+(LA <- dpois(5, 5.4))
+(LB <- dpois(5, 7.7))
+```
+
+Then Bayes gives us the posterior probability $p(H_A|D)$ as
+
+```{r}
+prior_A <- 0.9
+prior_B <- 0.1
+posterior_A <- prior_A*LA/(prior_A*LA + prior_B*LB)
+posterior_A
+```
+
+So in this case our prior probability $p(H_A)$ was 0.9 and our
+posterior $p(H_A|D)$ has increased to about 0.94, on account of the
+low count ($n=5$) being more consistent with $H_A$ ($\lambda=5.4$)
+than $H_B$ ($\lambda = 7.7$)
+
+### Dice
+
+Men of a certain age will be familiar with different dice used in
+board games.  Suppose someone has three dice, d4,d6,d8.  In standard
+terminology, "d4" is a four-sided die in the shape of a tetrahedron
+with results $\{1,2,3,4\}$, "d6" is a cube that can give
+$\{1,2,3,4,5,6\}$, and "d8" is an octahedron with $\{1,2\ldots 8\}$.
+A person takes one of these dice and throws it, obtaining a 5.
+Suppose our priors are $p(H_4)=0.1, p(H_6)=0.8, p(H_8)=0.1$.  Then the
+likelihoods are $p(D|H_4)=0$ (think about it), $p(D|H_6)=\frac{1}{6}$
+and $p(D|H_8)=\frac{1}{8}$.  Bayes gives us
+
+\begin{eqnarray}
+p(H_4|D) = \frac{p(H_4)p(D|H_4)}{p(H_4)p(D|H_4) + p(H_6)p(D|H_6) + p(H_8)p(D|H_8)}=\frac{0.1\cdot 0}{0.1\cdot 0 + 0.8\cdot\frac{1}{6} + 0.1\cdot\frac{1}{8}}=0\nonumber\\
+p(H_6|D) = \frac{p(H_6)p(D|H_6)}{p(H_4)p(D|H_4) + p(H_6)p(D|H_6) + p(H_8)p(D|H_8)}=\frac{0.8\cdot \frac{1}{6}}{0.1\cdot 0 + 0.8\cdot\frac{1}{6} + 0.1\cdot\frac{1}{8}}=91\%\nonumber\\
+p(H_8|D) = \frac{p(H_4)p(D|H_4)}{p(H_4)p(D|H_4) + p(H_6)p(D|H_6) + p(H_8)p(D|H_8)}=\frac{0.1\cdot \frac{1}{8}}{0.1\cdot 0 + 0.8\cdot\frac{1}{6} + 0.1\cdot\frac{1}{8}}=9\%\nonumber
+\end{eqnarray}
 
