@@ -1,7 +1,7 @@
 This document gives general instructions for producing a portfolio.
 The portfolio is to be submitted via Turnitin.  I have uploaded a
 couple of portfolios from last year to show what I'm looking for;
-these are available under the 'resources' tab. These portfolios are
+these are available under the 'resources' tab.  These portfolios are
 pretty good but not perfect.
 
 Recall that the idea of a portfolio is: "procure a small dataset from
@@ -29,10 +29,20 @@ I'd expect some scattergraphs and linear regression, some discrete
 tests such as Pearson's chi-squared.  It would be very very good if
 people tested for counts being Poisson.  Remember to state your nulls!
 A likelihood function would be good here, as would a Bayesian
-analysis.  For discrete hypotheses, use two or three sensible and
-meaningful hypotheses; for prior probabilities use justified or at
-least sensible values.  For continuous hypotheses state your prior and
+analysis.
+
+For Bayesian analysis:
+
+For discrete hypotheses, use two or three sensible and meaningful
+hypotheses; for prior probabilities use justified (or at least
+sensible) values.  For continuous hypotheses state your prior and
 posterior PDF.
+
+* State and justify your hypotheses and prior probabilities/PDF clearly
+* State your data and likelihood functions clearly
+* State your posterior probabilities or PDF
+* Interpret your posterior PMF/PDF
+
 
 A good portfolio will have a good dataset which is amenable to
 analysis using the methods of the course!  I am looking for your
@@ -113,6 +123,14 @@ were not distributed evenly among my friends (chi-square, p=0.023),
 probably due to a single outlier: Michael has a very large number of
 wigs, being a wardrobe manager.
 
+
+Good portfolios show the first five or six lines of their datasets, to
+give readers an understanding of the variables used and the extent of
+the data.  They use inferential techniques to learn about the data and
+make clear interpretations.  The document is structured clearly and
+the writing is terse and compelling.  I am not particularly looking
+for formal scholarly writing, but the wording should be clear and
+unambiguous.
 
 
 conclusions.
