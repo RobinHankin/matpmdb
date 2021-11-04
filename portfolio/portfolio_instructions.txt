@@ -140,6 +140,10 @@ understand your dataset are also good here.  There should be nothing
 in the conclusions that is not supported by the main body of your
 portfolio.
 
+The five-minute conversation is intended to allow a good student to
+show off their work to an appreciative audience (the course leader)
+who may not be familiar with the dataset used.  Students will be asked
+about their dataset and some of their analyses.
 
 
 Schedule: representative comments for grades A,B,C
@@ -149,15 +153,19 @@ lines of data given.  A structured, engaging sequence of correctly
 applied statistical analyses given, including R code, which are
 interpreted correctly.  A wide range of nulls considered and a wide
 set of appropriate visualizations given.  Conclusions clear and
-supported by the text.
+supported by the text.  Conversation reveals in-depth familiarity with
+dataset, visualisations and statistical analysis used.  
 
 Grade B: dataset arguably meets brief.  Analyses mostly correct, but
 occasional lapses in application [e.g. applying Pearson chi-square to
 non-count data].  Material given in unclear or unmotivated order.
 Many nulls considered but some sensible nulls missing.  Conclusions
-sketchy.
+sketchy.  Conversation shows some familiarity with dataset and
+analyses used.
 
 Grade C: Analysis includes some correct results but many flawed
 calculations.  Material given in haphazard or unjustifed sequence;
 repetitions given.  p-values misinterpreted.  Regression analysis
-presented with no scattergraph.  conclusions weak or unjustified. 
+presented with no scattergraph.  Conclusions weak or unjustified.
+Conversation shows little familiarity with dataset or structure of
+portfolio; and flawed understanding of statistical analysis presented.
