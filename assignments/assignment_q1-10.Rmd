@@ -1,0 +1,623 @@
+---
+title: "Assignment (statistics)"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE)  # use FALSE for student version, and TRUE
+                                       # when rendering solutions; this changes
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=TRUE in chunk options) 
+```
+
+# Instructions
+
+Answer the following questions, which all have equal mark value.  Show
+your working by including output from your R session.
+
+
+
+
+# Question 1
+
+In this question we will evaluate type I and type II error
+probabilities for one-sided tests.  We will consider normally
+distributed data, with known unit variance and independent
+obervations.  We will use $H_0\colon\mu=0$ for the null and
+$H_1\colon\mu=1$ for the alternative, unless otherwise stated.
+Suppose we have $n=6$ observations $x_1,\ldots,x_{6}$.
+
+* We want a test with size $\alpha=0.05$.  This test is to be of the
+form "reject $H_0$ if the sample mean $\overline{x}$ exceeds $T$"
+(where $T$ is a value to be determined).  You will recall that
+$\alpha$ is the probability of rejecting $H_0$ when true.  Find an
+appropriate value of $T$.
+
+
+```{r}
+TT <- qnorm(0.95,mean=0,sd=1/sqrt(6))
+TT
+```
+    
+* Calculate $\beta$, the probability of failing to reject the null
+hypothesis when the alternative is true, and state the power of the
+test.
+
+```{r}
+pnorm(TT,mean=1,sd=1/sqrt(6))
+```
+
+```{asis}
+So the power is just under 80\%
+```
+
+* Consider a test of size $\alpha=0.01$.  Define the _power_ of a
+  test, and calculate the power of this test.
+
+```{r}
+ 1-pnorm(qnorm(0.99,mean=0,sd=1/sqrt(6)),mean=1,sd=1/sqrt(6))
+```
+
+* Now we will consider the case where the null and alternative
+hypotheses are very close.  We will have $H_0\colon\mu=0$ but now
+$H_1\colon\mu=0.02$. Now how many observations are needed to ensure
+$\alpha$ is at most 0.01 and the power is at least 0.99?
+
+```{r}
+TT <- function(n){qnorm(0.99,sd=1/sqrt(n))}
+pow <- function(n){pnorm(TT(n),mean=0.01,sd=1/sqrt(n),lower.tail=FALSE)}
+                         
+pow(216475)
+pow(216476)
+```
+
+```{asis}
+we have bracketed the number to be between 216475 and 216476
+```
+
+
+# Question 2 
+
+
+Consider the following dataset: 
+
+```{r,include=TRUE}
+(grams <- c(1000.75, 1000.52, 1000.82, 1001.03, 1000.89, 1000.93, 999.71) )
+```
+
+The numbers correspond to the reported weight in grams of a standard
+kilogram mass, using a new balance that is being tested.  We are
+interested in the new balance being biased to either over- or under-
+reporting of masses
+
+* One-sided or two-sided test?  Justify
+
+```{asis}
+One- sided, looking for an increase
+```
+
+* State a sensible null hypothesis and state the precise definition of
+p-value.
+
+```{asis}
+null: mean mass reading =1000; more extreme = sample mean
+further from 1000 than observed value.
+```
+
+```{asis}
+p-value: the probability, if the null is true, of obtaining the
+observation or an observation more extreme
+```
+
+* Test your hypothesis using a Student t test and interpret (10 marks)
+
+```{r}
+  t.test(grams,mu=1000,alternative="less")
+```
+
+
+
+* (harder) Now suppose that the observations remain the same as above,
+  but the experimenter was somewhat lazy, and only wrote down "<1000"
+  if the observation was less than one or ">1000" if it was greater
+  than one.  Given this simplified dataset, state a sensible null,
+  test it, interpret, and compare the result with that of the t-test.
+  
+  
+```{asis}
+probability of efficiency being less than 1000 is 0.5
+```
+
+```{r}
+table(grams<1)
+sum(dbinom(0:1,7,1/2))      # one-sided
+sum(dbinom(0:1,7,1/2))*2    # two-sided
+```
+
+```{asis}
+pvalue over 0.05, fail to reject null.  Observe that the pvalue (one or two sided) is greater than
+that given by the Student test; we lose information by recording only the sign of the observation.
+```
+
+# Question 3
+
+Here we consider the amount of data needed to perform hypothesis testing.
+Suppose we are testing a coin using observations of tosses.
+		
+* We wish to test $H_0\colon p=\frac{1}{2}$ against an alternative of
+$H_A\colon p = 0.7$ (in this question use one-sided tests only).  How
+many tosses are needed to guarantee a size $\alpha\leq 0.05$ and
+$\beta\leq 0.2$?
+
+```{r}
+beta <- function(n){pbinom(qbinom(0.95,n,0.5),n,0.7)}
+beta(40)
+beta(41)
+```{asis}
+41 trials needed.
+```
+
+* Now generalize and consider $H_A\colon p = 0.5+\delta$.  Choose
+  sensible values for $\delta$ and quantify the number of observations
+  needed to maintain $\alpha,\beta$.
+* Give an example drawn from your daily life of repeated Bernoulli
+  trials.  State and justify a sensible null hypothesis and test it by
+  giving a $p$-value and a likelihood ratio statistic.
+
+```{r}
+pow <- function(n,delta){  # power function for H_A:p=0.5+delta
+  pbinom(qbinom(0.95,n,0.5),n,0.5 + delta,lower.tail=FALSE)
+}
+
+howmany <- function(delta){ # how many neeeded for a power of 0.2 exactly
+  uniroot(
+    f=function(n){pow(round(n),delta) - 0.2},
+    interval=c(10,100000))$root
+}
+
+deltas <- seq(from=0.01,to=0.04,len=40)
+nval <- deltas*0       # number needed
+for(i in seq_along(deltas)){ # loop
+  nval[i] <- howmany(deltas[i])
+}
+plot(deltas,nval)
+```
+
+# Question 4
+
+Consider a variable $X$ known to have a Poisson distribution.  We will
+consider a null hypothesis that $\lambda=3.1$ (this question will
+consider one-sided tests only).  Suppose we observe $X=7$.
+
+*    State the precise definition of p-value for our observation of 7 events
+
+```{asis}
+    p-value is the probability, if the null is true, of seeing the
+    data (7 events) or an observation more extreme (8 or more events)
+```
+
+* Calculate the p-value for this observation and interpret
+
+```{r}
+sum(dpois(7:1000,lambda=3.1))
+sum(ppois(6,lambda=3.1,lower.tail=F))
+```
+
+```{asis}
+So p is less than 5\% and we reject the null.
+```
+
+* For the observation of 7 events, plot a likelihood function for
+  $\lambda$, choosing a sensible range.
+
+```{r}
+lambda <- seq(from=3,to=12,len=100)
+plot(lambda,dpois(7,lambda))
+```
+
+* Again for the observation of 7 events, plot a log-likelihood
+function for $\lambda$, and estimate a credible interval for
+$\lambda$.  A rough estimate is fine.
+
+```{r}
+lambda <- seq(from=2,to=17,len=100)
+LL <- dpois(7,lambda,log=TRUE)
+plot(lambda,LL-max(LL))
+abline(h=0)
+abline(h=-2)
+```
+
+```{asis}
+From the figure, the interval is about 3 to about 14.
+
+But, the professional uses \verb+uniroot()+:
+```
+
+```{r}
+ f <- function(lambda){log(dpois(7,lambda)/dpois(7,7))+2}
+ uniroot(f,c(1,5))$root
+```
+
+
+* (harder) A Bayesian comes along and announces that his prior for
+$\lambda$ is an exponential distribution with rate 0.6 (that is,
+$P(\lambda)\propto e^{-0.6\lambda}$).  Plot his posterior likelihood
+function for $\lambda$, given the observation of 7.  (hint: you can
+calculate the density of the exponential distribution using
+`dexp(x,rate=0.6)`).
+
+* Give an example of observations drawn from a Poission distribution
+in your daily life.  Give either a confidence interval or credible
+interval [hint: credible intervals are much easier] for the mean of
+your observations.
+
+```{r}
+lambda <- seq(from=2,to=17,len=100)
+like <- dpois(7,lambda,log=FALSE)
+plot(lambda,like*dexp(lambda,rate=0.6))
+```
+
+```{asis}
+The posterior mode is smaller than the maximum likelihood estimate.
+```
+
+# Question 5
+  
+Consider an experiment which may either succeed or fail with
+probability $p$, where $p$ is unknown.  Trials are independent of one
+another.  An expert has a prior PDF for p which is a beta distribution
+with $\alpha=1.1 \beta=1.5$; the experiment is performed 5 times with
+3 successes and 2 failures.
+
+* Plot the prior and posterior PDFs.
+
+```{r}
+p <- seq(from=0,to=1,len=100)
+plot(p,dbeta(p,1.1+3,1/5+2),col="red",type="l")
+points(p,dbeta(p,1.1,1.5),col="black",type="l")
+legend("topleft",lwd=1,lty=1,col=c("black","red"),legend=c("posterior","prior"))
+```
+
+* Calculate the maximum likelihood estimate for $p$, and give the
+    posterior mode and mean.
+
+```{r}
+optimize(dbeta,interval=c(0,1),maximum=TRUE,shape1=1.5,shape2=1.3) # prior
+optimize(dbeta,interval=c(0,1),maximum=TRUE,shape1=1.5+3,shape2=1.3+2) # posterior
+```
+
+* Calculate the posterior mean
+
+```{r}
+# mean is a/(a+b)
+(1.5+3)/(1.5+3+1.3+2)
+
+#verify numerically:
+mean(rbeta(1e6,shape1=1.5+3,shape2=1.3+2))
+```
+
+*  (harder) give a Bayesian credible interval, that is, two values
+$p_L,p_U$ (for lower and upper, respectively), such that
+$\operatorname{Prob}_{\rm posterior}(p>p_L, p<p_U) = 0.95$. Hint:
+use `qbeta()`.
+
+```{r}
+qbeta(c(0.025,0.975),shape1=1.5+3,shape2=1.3+2)
+```
+
+```{asis}
+note that this is not unique and we might have
+
+```{r}
+qbeta(c(0.01,0.96),shape1=1.5+3,shape2=1.3+2)
+qbeta(c(0.02,0.93),shape1=1.5+3,shape2=1.3+2)
+```
+
+```{asis}
+or even
+```
+
+```{r}
+qbeta(c(0,0.95),shape1=1.5+3,shape2=1.3+2)
+```
+
+# Question 6
+
+A certain department in AUT has 11 staff including 5 professors.  Each
+staff member likes tea or coffee.  All 5 professors prefer tea.
+
+
+* In the context of assessing whether professors have a different
+  preference for drink compared with others, state a sensible null
+  hypothesis
+
+```{asis}
+Null: preferring tea is independent of professorial status
+```
+
+* Bearing in mind that we are not sure whether professors are more or
+  less likely to prefer tea than nonprofessors, is a one-sided test or
+  a two-sided test more appropriate?  Justify.
+
+```{asis}
+    two-sided; the situation is symmetrical
+```
+
+* Using R idiom such as
+  `fisher.test(x)`, test your null
+  hypothesis.  Interpret your result in a way in which a busy
+  professor, who prefers tea but is not a professor of
+  statistics, could understand.
+
+```{r}
+a <- matrix(c(5,0,2,4),2,2)
+dimnames(a) <- list(office=c("tea", "coffee"), professor=c("yes","no"))
+a
+fisher.test(a,alternative="two.sided")
+```
+
+```{asis}
+Significant, just.
+```
+
+* Give an example of a two-by-two contingency table that you encounter
+  in your personal day-to-day life.  State _clearly_ what your
+  observation is, state _clearly_ what your null is, and what it
+  means.  Carry out a Fisher's exact test using R.  State _clearly_
+  whether a one-sided or two-sided test is used, and justify this.
+  Interpret your findings in non-statistical language.
+
+# Question 7
+
+A software house records how many bug reports are submitted each day
+for a year and tabulates the results:
+
+```{r,include=TRUE}
+o <- c(c0=9, c1=11, c2=36, c3=54, c4=67,c5=66, c6=41, c7=37, c8=23, c9=10, c10=11)
+o
+```
+
+This means that on 9 days there were zero reported bugs, on 11 days
+there was one bug report, on 36 days there were two reports, and so
+on up to 11 days when tere were 10 reports.  We wish to test the
+hypothesis that the number of reports is distributed as a Poisson
+distribution.
+
+* Give a plausible reason why the Poisson distribution might be appropriate
+
+```{asis}
+There are a large number $n$ of users that might report a bug on any 
+given day, each with a small probability $p$ of filing a report;
+but the product $np$ is moderate.
+```
+
+* Verify that the dataset contains 365 observations.  Calculate the
+number of bug reports in the year and then calculate the average number
+ per day.
+
+```{r}
+sum(o)   # number of days
+sum(o*(0:10)) # number of reports
+sum(o*(0:10))/sum(o)  # reports per day
+```
+
+* Use your estimated value of the mean number of reports per day as
+$\lambda$ in the Poisson distribution to calculate the probability of
+having $0,1,2,\ldots,\geqslant 10$ reports on any day.  Remember that
+the final probability is "10 reports _or more_" so ensure that your
+probabilities sum to one.
+
+```{r}
+ 1732/365 -> lam
+ jj <- dpois(0:9,lam)
+ probs <- c(jj,1-sum(jj))
+ probs
+ sum(probs)   # verification
+```
+
+* Use R to calculate the expected number of days with 
+$0,1,2,3,4,5,6,7,8,9,\geqslant 10$ reports in the year.
+
+```{r}
+e <- probs*365
+e
+sum(e)  # verification
+```
+
+* Use R to calculate the Badness-of-fit $B=\sum\frac{(o-e)^2}{e}$
+
+```{r}
+ B <- sum((o-e)^2/e)
+ B
+```
+
+* Calculate a $p$-value for your B and interpret (note that the
+degrees of freedom is now $11-1-1=9$: there are 11 categories, minus
+one because the total is known, minus another one because the
+expectation uses an estimated value for $\lambda$.
+
+```{r}
+ pchisq(B,df=11-1-1,lower.tail=FALSE)
+```
+
+```{asis}
+Value exceeds 5\% so not significant.  There is no reason to reject
+  the null and the data appear to be Poisson.
+```
+
+
+* Someone observes that the number of zero-report days is quite high.
+Formulate a sensible null hypothesis and test it.  Interpret and give
+a plausible reason for your finding.
+
+```{asis}
+a sensible null would be that the number of days with zero reports is
+binomial with size 365 and probability
+```
+
+```{r}
+dpois(0,1732/365)
+```
+
+```{asis}
+We can provide a p-value as follows
+```
+
+```{r}
+1-sum(dbinom(0:9,365,dpois(0,1732/365)))
+pbinom(9,365,dpois(0,1732/365),lower.tail=FALSE)
+```
+
+```{asis}
+The pvalue is less than 5\%, so the result is significant! This might
+be because phone lines were down or perhaps few users report bugs on
+holidays such as Christmas.
+was flawed.
+
+It would be (equally?) plausible to say that the number of
+zero-report days is Poisson with parameter $365e^{-1732/365}$,
+but to see this requires Stein-Chen method (which is only asymptotic,
+BTW).
+```
+
+```{r}
+ppois(9,365*exp(-1732/365),lower.tail=FALSE)
+```
+
+```{asis}
+The professional would condition on the total number of callouts and
+simulate a year using `sample()`
+
+```{r}
+table(replicate(1e4,365-length(unique(sort(sample(1:365,1732,replace=TRUE))))))
+```
+
+```{asis}
+
+So according to this simulation of ten thousand years, we see how many
+years had zero zero-repoirt days, 1 zero-report days, and so on.  The
+p-value is then calculated by counting the years with the observed
+number, 8, or more:
+```
+
+```{r}
+n <- 1e4
+sum(replicate(n,365-length(unique(sort(sample(1:365,1732,replace=TRUE)))))>=8)/n
+sum(replicate(n,365-length(unique(sort(sample(1:365,1732,replace=TRUE)))))>=8)/n
+```
+
+```{asis}
+which is significant.
+```
+
+# Question 8
+
+A scientist is studying animal behaviour and presents a frog with a
+stimulus on a screen that resembles a small insect.  The scientist
+suspects that the frog will preferentially attack larger insects.
+ 
+ The results are as follows:
+ 
+```{r,include=TRUE}
+ length <-
+ c(10.73, 9.9, 9.61, 8.7, 8.56, 8.31, 8.18, 7.86, 7.63, 6.99, 
+ 6.66, 6.1, 5.92, 5.84, 5.67, 5.64, 5.56, 5.29, 5.1, 5.09, 4.92, 
+ 4.81, 2.86, 2.13, 2.05, 1.95, 1.67, 1.67, 1.38, 1.02)
+ 
+ attack <- 
+ c(1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 
+ 1, 1, 0, 0, 0, 0, 0, 1, 0, 0)
+```
+ 
+ Here, `length` shows the length of the virtual insect in millimeters
+and `attack` is a Bernoulli variable, with `1` meaning that the frog
+attacked the insect and `0` meaning that it did not.
+ 
+* Perform a logistic regression of `length` against `attack`.  Report
+ your p-value, state your null hypothesis, state whether your p-value
+ is significant, and interpret.
+ 
+```{r}
+plot(attack~length)
+fit <- glm(attack~length, family='binomial')
+summary(fit)
+
+
+logistic <- function(x){1/(1+exp(-x))}
+x <- seq(from=0,to=10,len=100)
+points(x,logistic(-3.42 + 0.68*x),type="l")
+abline(h=0.9)
+```
+ 
+* Give a rough estimate for smallest insect that will be attacked with
+  90\% probability
+
+```{asis}
+ From the graph, about 8mm.
+```
+
+# Question 9
+
+
+Here we apply Bayesian inference to an everyday problem.  Suppose we
+have a coin and are not sure if it is a fair coin or a double-headed
+coin.  The two hypotheses would be $H_f\colon p(H)=0.5$ and $H_d\colon
+p(H)=1$.
+
+Our priors would be $p(H_f)=0.9999, p(H_d)=0.0001$ and our data would be 9
+successive heads.
+
+* Apply Bayes's theorem to calculate the posterior probabilities for
+  $H_f$ and $H_d$.
+
+```{r}
+prior_Hf <- 0.9999  # prior fair
+prior_Hd <- 0.0001  # prior double-headed
+LHf <- dbinom(9,9,0.5)   # likelihood fair
+LHd <- dbinom(9,9,1)     # likelihood double
+
+a <- prior_Hf*LHf
+b <- prior_Hd*LHd
+
+(post_Hf <- a/(a+b))
+(post_Hd <- b/(a+b))
+```
+
+* With these priors, how many heads would you need to observe to take
+  your posterior probability for $H_d$ to exceed 0.5?
+
+```{r}
+post_d <- function(n){
+  a <- prior_Hf*dbinom(n,n,0.5)
+  b <- prior_Hd*dbinom(n,n,1.0)
+  b/(a+b)
+}
+post_d(13)
+post_d(14)   # need 14 successive heads
+```
+
+* (harder) Compare the results  with a conventional frequentist
+  analysis.
+
+```{r}
+freq <- function(n){dbinom(n,n,0.5)}
+freq(7)
+freq(8)
+freq(9)
+freq(13)
+freq(14)
+```
+
+```{asis}
+Frequentist analysis does not use prior information, which is why the pvalues are so strongly
+significant.  Many statisticians, including your lecturer, are unsure how to interpret
+this.
+```
+
+* Give an example of Bayes's theorem in your everyday life.  State 2
+  or 3 hypotheses _clearly_, state your priors _clearly_, state your
+  data _clearly_, state your likelihoods _clearly_ and apply Bayes's
+  theorem to your situation.  Comment briefly on whether Bayesian
+  logic is operating as expected in this situation.
+
+
