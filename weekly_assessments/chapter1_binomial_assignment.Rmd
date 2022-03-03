@@ -1,0 +1,49 @@
+---
+title: "The binomial distribution"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# The binomial distribution
+
+This assessment requires you to use R to describe some properties of
+the binomial distribution.  Each part has equal marks value; attempt
+them all.  Submit via Canvas.
+
+Before you start, execute the following R code which will give you a
+size and a probability of success.  Students who use my ID will
+receive zero credit.
+
+
+```{r}
+set.seed(1266402) # This is my student ID: replace with yours!
+sample(20:30,1)   # use this for the size
+rbeta(1,2,2)      # use this for the probability 'p' of success
+```
+
+Above we see that (for me) the size of the distribution is $n=24$ and
+the probability of success is $p=0.3974$ (use 4 decimal places).
+Remember to replace my student ID with yours to get your personal
+value for size and probability.  For the questions below, use the
+course manual as a guide.
+
+* Plot the probability mass function for your distribution
+* Check that the probabilities sum to one
+* Use `rbinom()` to generate a random sample from your distribution
+  and give a frequency plot of your observations
+* Define your own function [call it `mydbinom()`] that calculates
+  `dbinom()` and compare with R's `dbinom()`.  If you can, find a
+  value for `n,r,p` for which `mydinom(n,r,p)` differs from
+  `dbinom(n,r,p)`.
+* For extra credit, sample from the appropriate _Bernoulli_
+  distribution using R, and use this to verify that `dbinom()` is
+  approximately correct.
+
+
+
+
