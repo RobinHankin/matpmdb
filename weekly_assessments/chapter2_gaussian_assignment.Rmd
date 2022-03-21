@@ -1,0 +1,42 @@
+---
+title: "The Gaussian distribution"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# The Gaussian or normal distribution
+
+This assessment requires you to use R to describe some properties of
+the Gaussian distribution.
+
+Execute the following code which will give you a mean and standard
+deviation.  Students who use my ID will receive zero credit.
+
+
+```{r}
+set.seed(1266402)     # This is my student ID: replace with yours!
+rnorm(1,10,2)         # Use this for the mean
+sqrt(rchisq(1,df=2))  # Use this for the standard deviation
+```
+
+Above we see that the mean of the distribution is $\mu=11.40$ and the
+probability of success is $p=0.5656$ (use 4 sig figs).  For the
+questions below, use the course manual as a guide.
+
+* Plot the probability density function for your distribution
+
+* If random variable $X$ is drawn from your Gaussian distribution,
+  find the probability that $X$ lies in the range
+  $(\mu-\sigma,\mu+2\sigma)$
+* Use `rnorm()` to generate a random sample from your distribution
+  and give  a histogram  of your observations
+* Verify that `dnorm()` matches the density function given by
+
+$f(x) = \frac{\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)}{\sigma\sqrt{2\pi}}$
+
+* For extra credit, find the steepest point of the standard normal distribution
