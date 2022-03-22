@@ -1,0 +1,36 @@
+---
+title: "Bayes's theorem"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Bayesian analysis part 1
+
+A certain person buys a houseplant.  She buys either a cactus, with
+probability 0.2, or an orchid with probability 0.8.  She then goes on
+holiday and does not water her plants.  The plants get too dry and the
+cactus will die with probability 0.05 and the orchid with probability
+0.24.
+
+The plant dies.  Apply Bayes's theorem and show your working.  What is
+the posterior probability that it was a cactus?
+
+
+# Bayesian analysis part 2
+
+Give a situation from your everyday life and apply Bayes's theorem to
+it.  Use two or three hypotheses.  State your hypotheses _clearly_.
+State your prior probabilities _clearly_.  State your data _clearly_.
+State your likelihood function _clearly_.  Use Bayes's theorem to
+calculate posterior probabilities for your hypotheses and state your
+posterior probabilities _clearly_.  For an excellence grade, interpret
+the difference between the prior and posterior probabilities using
+non-mathematical reasoning.
+
+Credit will be given for the use of a plausible and novel scenario,
+the inventiveness shown, and the appropriateness of Bayes's theorem.
+

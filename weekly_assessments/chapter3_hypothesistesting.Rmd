@@ -58,7 +58,7 @@ the notional 100g mean weight.
     ``more extreme'' means in this context
  *  Is a one-sided or two-sided test needed? justify
  *  Perform a student $t$-test using R and interpret
- *  Give a 5\% and 99\% confidence interval for the mean.
+ *  Give a 95\% and 99\% confidence interval for the mean.
  *  For bonus credit, perform a $Z$ test and account for any differences you find
 
 
