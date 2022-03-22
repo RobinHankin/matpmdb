@@ -24,7 +24,7 @@ sqrt(rchisq(1,df=2))  # Use this for the standard deviation
 # Gaussian distribution
 
 Above we see that the mean of the distribution is $\mu=11.40$ and the
-standard deviation is about 0.704.  But use your values, not mine).
+standard deviation is about 0.704.  But use your values, not mine.
 For the questions below, use the course manual as a guide.
 
 * Plot the probability density function for your distribution
