@@ -1,0 +1,99 @@
+---
+title: "Poisson distribution and Bayes's theorem"
+output:
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Here is assignment 3 for comp616/stat601/stat805.  You are free to
+discuss the issues with your classmates but copying is not acceptable;
+see the AUT academic integrity guidelines.
+
+Some sections below contain an excellence question.  These are
+intended to challenge the very top students.  Have a go at these, but
+be aware that they are intended as thought-provoking cues, rather than
+course material reproduction.
+
+# Poisson distribution part 1
+
+Consider a random variable with a Poisson distribution with mean
+$\lambda = 6.5$.
+
+* plot the probability mass function for this random variable
+* Verify that the probabilities sum to 1
+* Sample from the distribution and plot a table of your results
+* Excellence question: compare this random variable with
+  $\operatorname{Bin}(20,0.325)$ (which has the same mean).  NB: for
+  high marks you will have to interpret ``compare'' intelligently.
+
+# Poisson distribution part 2
+
+A random variable $X$ is known to be drawn from a Poisson
+distribution.  An observation is made: $n=6$ is obtained.
+
+* State the precise definition of $p$-value and perform a one-sided
+  test for the null that $\lambda = 3.3$.
+* Calculate the likelihood ratio for $H_1\colon\lambda = 4.1$ and
+  $H_2\colon\lambda=2.2$.
+* Plot a log-likelihood function in the range $2\leq\lambda\leq 14$.
+* Calculate a credible interval for $\lambda$, using a
+  2-units-of-support criterion.
+* Excellence question: calculate a confidence interval as per the end
+  of chapter 3 in the course manual; compare the confidence interval
+  with the credible interval above.
+
+
+# Poisson distribution part 3
+
+Give an example drawn from your daily life of a random variable drawn
+from a Poisson distribution.
+
+* State _clearly_ in what way it is a limiting form of a binomial
+  distribution with large $n$ and small $p$
+* Interpret $n$ and $p$ the context of your example.
+* Give rough estimates for $n$ and $p$ [an order-of-magnitude estimate
+  is fine]
+* Give a reasonable value for $\lambda$.
+* Using `rpois(10,lambda)`, sample from your Poisson distribution and
+  interpret the meaning of the 10 numbers.
+* Excellence question: discuss whether your distribution really is a
+  Poisson distribution.  Are the statistical assumptions justified?
+  Discuss.
+
+
+# Bayesian analysis part 1
+
+A certain person buys a houseplant.  She buys either a cactus or an
+orchid.  From long experience I can say that it is a cactus with
+probability 0.2, or an orchid with probability 0.8.  She then goes on
+holiday and does not water her plants.  The plants get too dry and
+might die.  Under these circumstances, a cactus will die with
+probability 0.05 and an orchid with probability 0.24.
+
+The plant dies.  Apply Bayes's theorem and show your working.  What is
+the posterior probability that it was a cactus?
+
+Excellence question: consider the probability of the plant being a
+cactus.  Discuss how this probability changes from prior to posterior
+in the light of your observation and whether this is consistent with
+your intuition.
+
+# Bayesian analysis part 2
+
+Give a situation from your everyday life and apply Bayes's theorem to
+it.  Use two or three hypotheses.  State your hypotheses _clearly_.
+State your prior probabilities _clearly_.  State your data _clearly_.
+State your likelihood function _clearly_.  Use Bayes's theorem to
+calculate posterior probabilities for your hypotheses and state your
+posterior probabilities _clearly_.  For an excellence grade, interpret
+the difference between the prior and posterior probabilities using
+non-mathematical reasoning.
+
+Credit will be given for the use of a plausible and novel scenario,
+the inventiveness shown, and the appropriateness of Bayes's theorem.
+
+
+# Bayesian analysis part 3
