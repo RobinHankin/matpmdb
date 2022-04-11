@@ -2,9 +2,11 @@
 title: "Poisson distribution and Bayes's theorem"
 output:
   pdf_document: default
+params:
+  cutout: FALSE
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=TRUE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -23,11 +25,42 @@ Consider a random variable with a Poisson distribution with mean
 $\lambda = 6.5$.
 
 * plot the probability mass function for this random variable
+
+```{r, include = !params$cutout}
+a <- 0:20
+plot(a,dpois(a,6.5),type='h')
+```
+
+
 * Verify that the probabilities sum to 1
+
+```{r, include = !params$cutout}
+sum(dpois(0:10000,6.5)) # should equal 1 very closely
+```
+
+
 * Sample from the distribution and plot a table of your results
+
+```{r, include = !params$cutout}
+rpois(10,6.5)
+plot(table(rpois(1e6,6.5)))
+```
+
+
 * Excellence question: compare this random variable with
   $\operatorname{Bin}(20,0.325)$ (which has the same mean).  NB: for
   high marks you will have to interpret ``compare'' intelligently.
+
+```{r, include = !params$cutout}
+par(pty='s')
+bin <- dbinom(0:20,20,0.325)
+fish <- dpois(0:20,6.5)
+plot(bin,fish,pch=16,type="p",asp=1)
+abline(0,1)
+plot(0:20,bin,type='b',col='black')
+points(0:20,fish,type='b',col='red')
+legend("topright",col=c("black","red"),legend=c("binomial","poisson"),lty=1,pch=1)
+```
 
 # Poisson distribution part 2
 
@@ -36,29 +69,80 @@ distribution.  An observation is made: $n=6$ is obtained.
 
 * State the precise definition of $p$-value and perform a one-sided
   test for the null that $\lambda = 3.3$.
+
+```{r, include = !params$cutout}
+# the probability, if the null is true, of obtaining the observation or
+# an observation more extreme
+
+
+1-sum(dpois(0:5,3.3))
+ppois(5,3.3,lower.tail=FALSE)
+# pvalue exceeds 0.05, no strong evidence
+```
+
+
+
 * Calculate the likelihood ratio for $H_1\colon\lambda = 4.1$ and
   $H_2\colon\lambda=2.2$.
+  
+```{r, include = !params$cutout}
+dpois(6,4.1)/dpois(6,2.2)
+```
+  
 * Plot a log-likelihood function in the range $2\leq\lambda\leq 14$.
+
+```{r, include = !params$cutout}
+l <- seq(from=2,to=14,len=100)
+plot(l,dpois(6,l,log=TRUE))
+```
+
 * Calculate a credible interval for $\lambda$, using a
-  2-units-of-support criterion.
+  2-units-of-support criterion [hint: follow page 67 of the course manual].
+  An approximate answer is fine
+  
+```{r,include = !params$cutout}
+L <- dpois(6,l,log=TRUE) - dpois(6,6,TRUE)
+plot(l,L)
+abline(h=c(0,-2))
+## from the graph, about 2.3-12
+```  
 * Excellence question: calculate a confidence interval as per the end
   of chapter 3 in the course manual; compare the confidence interval
-  with the credible interval above.
+  with the credible interval above.  One decimal place sufficient.
 
+```{r, include = !params$cutout}
+1-sum(dpois(0:5,2.6))
+1-sum(dpois(0:5,2.7))
+
+sum(dpois(0:5,10.5))
+sum(dpois(0:5,10.6))
+## CI of about 2.6-10.6, narrower than credible interval
+## 
+
+## more accurate:
+f <- function(x){ppois(5,x,lower.tail=F)-0.05}
+uniroot(f,2:3)$root
+g <- function(x){ppois(5,x,lower.tail=T)-0.05}
+uniroot(g,10:11)$root
+```
 
 # Poisson distribution part 3
 
 Give an example drawn from your daily life of a random variable drawn
-from a Poisson distribution.
+from a Poisson distribution.  You will recall examples from the manual
+and lectures: but do not use these examples!  USe these examples to
+guide your understanding but I am looking for your own original
+examples.
 
 * State _clearly_ in what way it is a limiting form of a binomial
-  distribution with large $n$ and small $p$
-* Interpret $n$ and $p$ the context of your example.
+  distribution with large $n$ and small $p$.
 * Give rough estimates for $n$ and $p$ [an order-of-magnitude estimate
   is fine]
-* Give a reasonable value for $\lambda$.
-* Using `rpois(10,lambda)`, sample from your Poisson distribution and
-  interpret the meaning of the 10 numbers.
+* Give a reasonable value for $\lambda$ (a rough value is fine)
+* Using your value for $\lambda$, sample from your Poisson
+  distribution using `rpois(10,lambda)`.  Interpret the meaning of the
+  10 random numbers.  What does the first number mean?  What does the
+  second number mean?
 * Excellence question: discuss whether your distribution really is a
   Poisson distribution.  Are the statistical assumptions justified?
   Discuss.
@@ -68,7 +152,7 @@ from a Poisson distribution.
 
 A certain person buys a houseplant.  She buys either a cactus or an
 orchid.  From long experience I can say that it is a cactus with
-probability 0.2, or an orchid with probability 0.8.  She then goes on
+probability 0.4, or an orchid with probability 0.6.  She then goes on
 holiday and does not water her plants.  The plants get too dry and
 might die.  Under these circumstances, a cactus will die with
 probability 0.05 and an orchid with probability 0.24.
@@ -81,6 +165,14 @@ cactus.  Discuss how this probability changes from prior to posterior
 in the light of your observation and whether this is consistent with
 your intuition.
 
+
+```{r, include = !params$cutout}
+cactus <- 0.4*0.05
+orchid <- 0.6*0.24
+cactus/(cactus  + orchid)
+#  probability decreases from 40% to 12% as cacti do not die but orchids do
+```
+
 # Bayesian analysis part 2
 
 Give a situation from your everyday life and apply Bayes's theorem to
@@ -90,10 +182,9 @@ State your likelihood function _clearly_.  Use Bayes's theorem to
 calculate posterior probabilities for your hypotheses and state your
 posterior probabilities _clearly_.  For an excellence grade, interpret
 the difference between the prior and posterior probabilities using
-non-mathematical reasoning.
+common-sense or intuitive reasoning.
 
 Credit will be given for the use of a plausible and novel scenario,
 the inventiveness shown, and the appropriateness of Bayes's theorem.
 
 
-# Bayesian analysis part 3
