@@ -3,16 +3,18 @@ title: "Poisson distribution and Bayes's theorem"
 output:
   pdf_document: default
 params:
-  cutout: FALSE
+  cutout: TRUE
 ---
 
-```{r setup, include=TRUE}
+```{r setup, include=TRUE,echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Here is assignment 3 for comp616/stat601/stat805.  You are free to
 discuss the issues with your classmates but copying is not acceptable;
 see the AUT academic integrity guidelines.
+
+This assessment has five sections.  All have equal mark value.
 
 Some sections below contain an excellence question.  These are
 intended to challenge the very top students.  Have a go at these, but
@@ -24,7 +26,7 @@ course material reproduction.
 Consider a random variable with a Poisson distribution with mean
 $\lambda = 6.5$.
 
-* plot the probability mass function for this random variable
+* Plot the probability mass function for this random variable
 
 ```{r, include = !params$cutout}
 a <- 0:20
