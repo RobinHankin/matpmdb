@@ -2,6 +2,8 @@
 title: "Hypothesis testing"
 output:
   pdf_document: default
+params:
+  cutout: TRUE
 ---
 
 ```{r setup, include=FALSE}
@@ -29,14 +31,49 @@ For the questions below, use the course manual as a guide.
 
 * Plot the probability density function for your distribution
 
+```{r, include = !params$cutout}
+mu <- 10.4
+sigma <- 0.704
+x <- seq(from=8,to=13,len=100)
+plot(x,dnorm(x,mean=mu,sd=sigma))
+```
+
 * If random variable $X$ is drawn from your Gaussian distribution,
   find the probability that $X$ lies in the range
+
+
   $(\mu-\sigma,\mu+2\sigma)$
+
+```{r, include = !params$cutout}
+pnorm(mu+2*sigma,mu,sigma) - pnorm(mu-2*sigma,mu,sigma)
+pnorm(2)-pnorm(-2)   # slick
+x <- rnorm(1e6,mu,sigma)
+
+# numerical verification (not needed for full marks):
+sum((x<mu + 2*sigma) &(x>mu -2*sigma))/1e6 
+```
+
 * Use `rnorm()` to generate a random sample from your distribution
   and give  a histogram  of your observations
+
+```{r, include = !params$cutout}
+hist(rnorm(1e6,mu,sigma))
+```
+
 * For bonus credit, find the steepest point of the standard normal
   distribution (this is a numerical exercise, not calculus).
 
+```{r, include = !params$cutout}
+x <- seq(from=-2,to=2,len=1000)
+grad <- diff(dnorm(x))
+steepest_increasing_point <- x[which.max(c(0,grad))]
+steepest_decreasing_point <- x[which.min(c(0,grad))]
+steepest_increasing_point
+steepest_decreasing_point
+
+plot(x,dnorm(x))
+abline(v=c(steepest_increasing_point,steepest_decreasing_point))
+```
 
 #  Student t-test
 
@@ -54,12 +91,51 @@ wonders if this supermarket is selling bananas that are heavier than
 the notional 100g mean weight.
 
  *  State a sensible null hypothesis
+
+```{r, include = !params$cutout}
+# Null: mean weight of this sample is 100g
+```
+
  *  State the precise definition of $p$-value and explain what
     ``more extreme'' means in this context
+
+```{r, include = !params$cutout}
+# p-value equals the probability, if the null is true, of
+# obtaining the observation or an observation more extreme.
+# Here, the observation is the sample mean and "more extreme"
+# means "greater than the observed sample mean"
+```
+
  *  Is a one-sided or two-sided test needed? justify
+
+```{r, include = !params$cutout}
+# One-sided as we suspect the bananas are heavier
+```
+
  *  Perform a student $t$-test using R and interpret
+
+```{r, include = !params$cutout}
+t.test(w,mu=100,alternative="greater")
+```
+
  *  Give a 95\% and 99\% confidence interval for the mean.
+
+```{r, include = !params$cutout}
+t.test(w,mu=100,alternative="greater",conf.level=0.95)$conf.int
+t.test(w,mu=100,alternative="greater",conf.level=0.99)$conf.int
+```
+
  *  For bonus credit, perform a $Z$ test and account for any differences you find
+
+```{r, include = !params$cutout}
+Z <- (mean(w)-100)/sd(w)
+pnorm(Z,lower.tail=FALSE)
+
+# pvalue higher than student test, consistent with heavier tails of
+# the student t distribution [give credit for any remotely plausible
+# reasoning here ... note that I do not 100% buy the rationale for the
+# Student t test when compared with the Z test]
+```
 
 
 # Hypothesis testing: binomial distribution
@@ -72,14 +148,57 @@ another and you may use the binomial distribution.
 
   * Using `dbinom()` or otherwise, what is the probability
     that exactly one flower on a particular plant is fertilized?
+
+```{r, include = !params$cutout}
+dbinom(1,7,0.4)
+```
+
   * What is the probability that three or more flowers are fertilized?
+
+```{r, include = !params$cutout}
+sum(dbinom(3:7,7,0.4))
+pbinom(2,7,0.4,lower.tail=FALSE)
+# numerical verification (not needed for full credit but good practice):
+table(rbinom(1e6,7,0.4) >=3)
+```
+
   * A plant is found to be very near a beehive, and it is
     suspected that bees fertilize this kind of plant.  The scientist
     finds that $5$ flowers are fertilized.
   * State a sensible null hypothesis
-  * state the precise definition of $p$-value and define what "more extreme" means in this context.  
+
+```{r, include = !params$cutout}
+# Null: the beehive has no effect and p=0.4
+```
+
+  * state the precise definition of $p$-value and define what "more extreme" means in this context.
+
+```{r, include = !params$cutout}
+# p-value equals the probability, if the null is true, of
+# obtaining the observation or an observation more extreme.
+# Here, the observation is the sample mean and "more extreme"
+# means "greater than the observed sample mean"
+```
+
   * One-sided or two sided?  Justify
+
+```{r, include = !params$cutout}
+
+# One-sided, bees increase p
+```
+
   * Calculate the $p$-value.  Is it significant? 
+
+```{r, include = !params$cutout}
+sum(dbinom(5:7,7,0.4))
+# pvalue exceeds 0.05, not significant
+```
+
+
   * Interpret your finding in a way that a busy entomologist, who is not a statistician, could understand
+
+```{r, include = !params$cutout}
+# No evidence that the beehive affects pollination probabilities
+```
 
 
