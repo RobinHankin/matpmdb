@@ -29,7 +29,7 @@ and we can take $C=n!$ so $\mathcal{L}=e^{-\lambda}\lambda^n$.
 support functions (that is, the log of the likelihood function) for
 these observations.
 
-```{r}
+```{r,include=TRUE}
 l <- seq(from=0,to=10,len=100)
 plot(l,dpois(1,l),type="l",col='red')
 points(l,dpois(2,l),type="l",col='orange')
@@ -58,7 +58,7 @@ probabilities.
 
 
 
-```{r}
+```{r,include=TRUE}
 pA <- 0.6  #prior A
 pB <- 0.4  #prior B
 lA <- dpois(6,5.5)   # likelihood (A)   
@@ -79,7 +79,7 @@ with $\alpha=\beta=0.5$.
 
 * Our student observes two male patrons in the club.  What is is posterior PDF for gender balance?
 
-```{r}
+```{r,include=TRUE}
 p <- seq(from=0.01,to=0.99,by=0.01)
 plot(p,dbeta(p,0.5,0.5),main="prior")
 plot(p,dbeta(p,0.5+2,0.5),main="posterior")
@@ -89,8 +89,8 @@ plot(p,dbeta(p,0.5+2,0.5),main="posterior")
 being male exceeds 0.9.  What is the probability that our student has
 visited such a club?
 
-```{r}
-qbeta(0.9,0.5,2.5)
+```{r,include=TRUE}
+pbeta(0.9,2.5,0.5,lower.tail=FALSE)
 ```
 
 * Now suppose he visits another club and observes 2 males and 2 females
@@ -98,10 +98,10 @@ in the club.  What is his posterior for this club?  What is the
 probability that this too is a gay club?
 
 
-```{r}
+```{r,include=TRUE}
 p <- seq(from=0.01,to=0.99,by=0.01)
 plot(p,dbeta(p,2.5,2.5),main="posterior")
-qbeta(0.9,2.5,2.5)
+pbeta(0.9,2.5,2.5,lower.tail=FALSE)
 ```
 
 * (excellence question).  The following day our student conducts a
@@ -110,7 +110,7 @@ qbeta(0.9,2.5,2.5)
   that our student is in fact gay.  Use sensible priors and
   likelihoods.
 
-```{r}
+```{r,include=TRUE}
 pG <- 0.1  # prior 
 pH <- 0.9  # prior B
 lG <- 0.1
