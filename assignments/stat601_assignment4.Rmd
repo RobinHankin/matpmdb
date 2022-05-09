@@ -1,0 +1,113 @@
+---
+title: 'Assignment (statistics): Fisher''s exact test and Pearson''s chi square test'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE) # change to TRUE when rendering solutions; this changes
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=TRUE in chunk options) 
+```
+
+# Instructions
+
+Answer the following questions, which all have equal mark value.  Show
+your working by including output from your R session.
+
+
+# Question 1
+
+Consider the following dataset drawn from AUT student services:
+
+```{r}
+M <- matrix(c(10,2,11,7),2,2)
+dimnames(M) <- list(OS=c("windows","mac"),major=c("science","arts"))
+M
+```
+
+we suspect arts students are more likely to use a mac than science students.
+
+* State your null clearly
+* State the precise definition of p-value
+* state what "more extreme" means here
+* use `fisher.test()`, calculate your pvalue and interpret
+
+
+```{r,include=TRUE}
+fisher.test(M,alternative="greater")
+# no significant difference
+```
+
+# Question 2
+
+A medical researcher is investigating whether vitamin C helps to cure
+the common cold.  He takes a sample of 20 subjects, of whom
+7 are given vitamin C and 13 a placebo (a "placebo" is
+a dummy pill that has no medical effect).  The researcher interviews
+the subjects after one week, and 9 subjects report that their
+cold is cured.  Of these 9 subjects who are cured, 5
+were given real vitamin C.  We may represent the data in R as follows:
+  
+```{r}
+M <- matrix(c(5,4,2,9),2,2)
+dimnames(M) <- list(
+    given=c("vitamin C","placebo"),state=c("cured","cold")
+)
+M
+```
+
+* State a sensible null hypothesis
+* State the precise definition of $p$-value and explain what
+    ``more extreme'' means in this context
+* Is a one-sided or two-sided test needed? justify
+* Estimate the probability of: (a), a person who was given
+    vitamin C, and (b), a person given the placebo, of being cured.
+* Perform a Fisher test using `fisher.test()` and interpret
+
+```{r,include=TRUE}
+# p-value is the probability, if the null is true, of obtaining the observation or an observation more extreme.
+# Null: vitamin C has no effect on colds.  "more extreme" = more than 5 vit C patients cured
+fisher.test(M,alternative="greater")  # pvalue < 0.05 -> significant evidence for cure
+5/7  # prob of vit C group being cured
+4/13 # prob of placebo group being cured
+```
+
+# Question 3
+
+Consider a situation with 3 white and 5 black balls in a bag.  Four balls are drawn from the bag, without replacement.  Write down every possible sample and calculate its probability.
+
+```{r,include=TRUE}
+f <- function(n){
+  out <- matrix(c(n,3-n,4-n,1+n),2,2)
+  dimnames(out) <- list(cstate=c("drawn","left"),colour=c("white","black"))
+  out
+}
+
+f(0)
+f(1)
+f(2)
+f(3)
+dhyper(0:3,3,5,4)
+```
+
+# Question 4
+
+Three AUT students and four UoA students are given a problem in statistics.  All four of the AUT students answer the problem correctly, and none of the UoA students answer correctly.  Discuss.
+
+```{r}
+fisher.test(diag(3:4)) # two sided? . . . . . 
+# strong evidence
+```
+
+
+# Question 5
+
+Give an example of Fisher's exact test in your daily life.   Give a 2x2 contingency table, with labelled rows and columns.  State your null _clearly_, and your alternative.  State and justify your use of a one-sided or two-sided test.  Carry out your test, report the p-value, and interpret.  Excellence question: find the "most extreme" observation that is consistent with your marginal totals.
+
+
+
+
+
+
