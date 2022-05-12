@@ -94,9 +94,9 @@ dhyper(0:3,3,5,4)
 
 # Question 4
 
-Three AUT students and four UoA students are given a problem in statistics.  All four of the AUT students answer the problem correctly, and none of the UoA students answer correctly.  Discuss.
+Three AUT students and four UoA students are given a problem in statistics.  All three of the AUT students answer the problem correctly, and none of the UoA students answer correctly.  Discuss.
 
-```{r}
+```{r,include=TRUE}
 fisher.test(diag(3:4)) # two sided? . . . . . 
 # strong evidence
 ```
