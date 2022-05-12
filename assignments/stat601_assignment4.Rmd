@@ -8,7 +8,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(include = TRUE) # change to TRUE when rendering solutions; this changes
                                        # the default visibility (which is overridden by explicitly
-                                       # setting  include=TRUE in chunk options) 
+                                       # setting  include=FALSE in chunk options) 
 ```
 
 # Instructions
@@ -35,7 +35,7 @@ we suspect arts students are more likely to use a mac than science students.
 * use `fisher.test()`, calculate your pvalue and interpret
 
 
-```{r,include=TRUE}
+```{r,include=FALSE}
 fisher.test(M,alternative="greater")
 # no significant difference
 ```
@@ -48,15 +48,7 @@ the common cold.  He takes a sample of 20 subjects, of whom
 a dummy pill that has no medical effect).  The researcher interviews
 the subjects after one week, and 9 subjects report that their
 cold is cured.  Of these 9 subjects who are cured, 5
-were given real vitamin C.  We may represent the data in R as follows:
-  
-```{r}
-M <- matrix(c(5,4,2,9),2,2)
-dimnames(M) <- list(
-    given=c("vitamin C","placebo"),state=c("cured","cold")
-)
-M
-```
+were given real vitamin C. 
 
 * State a sensible null hypothesis
 * State the precise definition of $p$-value and explain what
@@ -66,9 +58,15 @@ M
     vitamin C, and (b), a person given the placebo, of being cured.
 * Perform a Fisher test using `fisher.test()` and interpret
 
-```{r,include=TRUE}
+```{r,include=FALSE}
 # p-value is the probability, if the null is true, of obtaining the observation or an observation more extreme.
 # Null: vitamin C has no effect on colds.  "more extreme" = more than 5 vit C patients cured
+M <- matrix(c(5,4,2,9),2,2)
+dimnames(M) <- list(
+    given=c("vitamin C","placebo"),state=c("cured","cold")
+)
+M
+
 fisher.test(M,alternative="greater")  # pvalue < 0.05 -> significant evidence for cure
 5/7  # prob of vit C group being cured
 4/13 # prob of placebo group being cured
@@ -78,7 +76,7 @@ fisher.test(M,alternative="greater")  # pvalue < 0.05 -> significant evidence fo
 
 Consider a situation with 3 white and 5 black balls in a bag.  Four balls are drawn from the bag, without replacement.  Write down every possible sample and calculate its probability.
 
-```{r,include=TRUE}
+```{r,include=FALSE}
 f <- function(n){
   out <- matrix(c(n,3-n,4-n,1+n),2,2)
   dimnames(out) <- list(cstate=c("drawn","left"),colour=c("white","black"))
@@ -96,7 +94,7 @@ dhyper(0:3,3,5,4)
 
 Three AUT students and four UoA students are given a problem in statistics.  All three of the AUT students answer the problem correctly, and none of the UoA students answer correctly.  Discuss.
 
-```{r,include=TRUE}
+```{r,include=FALSE}
 fisher.test(diag(3:4)) # two sided? . . . . . 
 # strong evidence
 ```
