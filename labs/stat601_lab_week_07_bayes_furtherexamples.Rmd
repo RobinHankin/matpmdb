@@ -1,0 +1,122 @@
+---
+output: pdf_document
+title: Priors and posteriors in the beta distribution
+fontsize: 12pt
+---
+# Bayes's theorem
+
+
+\newcommand{\prob}[1]{\operatorname{Prob}\left(#1\right)}
+
+
+\section{The Poisson distribution}
+
+You will recall from lectures that the Poission distribution has
+probability mass function
+
+$$\prob(X=n)=\frac{e^{-\lambda}\lambda^n}{n!}$$
+
+for some $\lambda>0$.  Here we will try to estimate $\lambda$ based on
+observations.
+
+* Calculate the likelihood function for an observation of $n$:
+
+$$\mathcal{L}(\lambda)=C\prob{X=n}=C\frac{e^{-\lambda}\lambda^n}{n!}$$
+
+and we can take $C=n!$ so $\mathcal{L}=e^{-\lambda}\lambda^n$.
+
+* Take observations of $n=1,2,3,4$ and plot likelihood functions and
+support functions (that is, the log of the likelihood function) for
+these observations.
+
+```{r,include=TRUE}
+l <- seq(from=0,to=10,len=100)
+plot(l,dpois(1,l),type="l",col='red')
+points(l,dpois(2,l),type="l",col='orange')
+points(l,dpois(3,l),type="l",col='green')
+points(l,dpois(4,l),type="l",col='blue')
+legend("topright",lty=1,col=c("red","orange","green","blue"),legend=1:4)
+```
+
+* Excellence question: consider $n=0$ from a statistical and
+common-sense perspective.  Construct a (one-sided) 95\% confidence
+interval for $\lambda$.
+
+
+# Bayesian analysis 1
+
+Suppose we are investigating parasites on frogs in the Amazon.  We
+have a frog but are uncertain if it is of species A or species B.
+Frogs have surface parasites; we can count them on the frog and
+observe $n=6$ parasites.  The number of parasites is Poisson with
+$\lambda=5.5$ for species A and $\lambda=2.2$ for species B.
+
+Consider two hypotheses $H_A$ and $H_B$ with prior probabilities
+$p_(H_A)=0.6$ and $p(H_B)=0.4$.  Calculate the posterior
+probabilities.
+
+
+
+
+```{r,include=TRUE}
+pA <- 0.6  #prior A
+pB <- 0.4  #prior B
+lA <- dpois(6,5.5)   # likelihood (A)   
+lB <- dpois(6,2.2)   # likelihood (B)
+
+posteriorA <- (pA*lA)/(pA*lA + pB*lB)  # observe how C cancels
+posteriorB <- (pB*lB)/(pA*lA + pB*lB)
+c(posteriorA,posteriorB)
+```
+
+# Bayesian analysis 2
+
+A stat601 student visits Auckland CBD and enters a randomly chosen
+club.  Our student tries to make inferences about this club from the
+gender balance of the patrons.  In this particular part of town, the
+prior PDF for gender balance is represented by a beta distribution
+with $\alpha=\beta=0.5$.
+
+* Our student observes two male patrons in the club.  What is is posterior PDF for gender balance?
+
+```{r,include=TRUE}
+p <- seq(from=0.01,to=0.99,by=0.01)
+plot(p,dbeta(p,0.5,0.5),main="prior")
+plot(p,dbeta(p,0.5+2,0.5),main="posterior")
+```
+
+* We define a _gay_ club to be one in which the probability of a patron
+being male exceeds 0.9.  What is the probability that our student has
+visited such a club?
+
+```{r,include=TRUE}
+pbeta(0.9,2.5,0.5,lower.tail=FALSE)
+```
+
+* Now suppose he visits another club and observes 2 males and 2 females
+in the club.  What is his posterior for this club?  What is the
+probability that this too is a gay club?
+
+
+```{r,include=TRUE}
+p <- seq(from=0.01,to=0.99,by=0.01)
+plot(p,dbeta(p,2.5,2.5),main="posterior")
+pbeta(0.9,2.5,2.5,lower.tail=FALSE)
+```
+
+* (excellence question).  The following day our student conducts a
+  literature review and discovers that both the clubs he visited were
+  indeed gay clubs.  Using this observation, perform a Bayesian analysis for the probability
+  that our student is in fact gay.  Use sensible priors and
+  likelihoods.
+
+```{r,include=TRUE}
+pG <- 0.1  # prior 
+pH <- 0.9  # prior B
+lG <- 0.1
+lH <- 0.0001
+
+posteriorG <- (pG*lG)/(pG*lG + pH*lH)  
+posteriorH <- (pH*lH)/(pG*lG + pH*lH)
+c(gay=posteriorG,straight=posteriorH)
+```
