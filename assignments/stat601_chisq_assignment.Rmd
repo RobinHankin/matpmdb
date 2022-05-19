@@ -1,0 +1,195 @@
+---
+title: "Assignment: Pearson's chi-square test"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = FALSE) # change to TRUE when rendering solutions; this changes
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=TRUE in chunk options) 
+```
+
+# Instructions
+
+Answer the following questions.  Show your working by including output
+from your R session.
+
+# Question 1.
+
+
+
+The students in a certain statistics class are asked which is their
+favourite colour among Red, Orange, Blue, and Green.  The results are
+as follows:
+
+```
+o <- c(red = 10, orange = 16, yellow = 24, green = 12)
+```
+
+* State a sensible null hypothesis
+* Calculate the Pearson's chi-square statistic `sum((o-e)^2/e)` and state what its approximate null distribution is
+* State the precise definition of p-value and explain what "more extreme" means in  this context.
+* Calculate the chi-square statistic
+* Calculate the pvalue using `pchisq()` and interpret.
+* Excellence question: using random simulation, or otherwise,  estimate the probability that all four colours have different numbers of students. 
+
+
+```{r}
+o <- c(red = 10, orange = 16, yellow = 24, green = 12)  # observed
+e <- mean(o)                                            # expected
+s <- sum((o-e)^2/e)                                     # Pearson's chi-square statistic
+pchisq(s,df=3,lower.tail=F)                             # pvalue
+ ## not significant
+```
+
+For the rider,
+
+```{r}
+table(replicate(1000,max(table(table(sample(1:4,62,replace=T))))))
+# About 64%
+```
+
+
+# Question 3
+
+A fire station logs the number of callouts occuring each day for a
+  year and tabulates the results:
+
+```{r,include=TRUE}
+o <- c(c0=8, c1=12, c2=36, c3=54, c4=67,c5=66, c6=41, c7=37, c8=23, c9=10, c10=11)
+o
+```
+
+This means that on 8 days there were zero callouts, on 12 days there
+was one callout, on 36 days there were two callouts, and so on up to
+11 days when there were 10 callouts.  We wish to test the hypothesis
+that the number of callouts is distributed as a Poisson distribution.
+
+* Give a plausible reason why the Poisson distribution might be appropriate
+
+```{asis}
+There are a large number $n$ of houses that might have a fire on a
+given day, each with a small probability $p$ of calling the fire
+service; but the product $np$ is moderate.
+```
+
+* Verify that the dataset contains 365 observations.  Calculate the
+number of callouts in the year and then calculate the average number
+of callouts per day.
+
+```{r}
+sum(o)   # number of days
+sum(o*(0:10)) # number of callouts
+sum(o*(0:10))/sum(o)  # callouts per day
+```
+
+* Use your estimated value of the mean number of callouts per day as
+$\lambda$ in the Poisson distribution to calculate the probability of
+having $0,1,2,\ldots,\geqslant 10$ callouts on any day.  Remember that
+the final probability is "10 callouts _or more_" so ensure that
+your probabilities sum to one.
+
+```{r}
+ 1740/365 -> lam
+ jj <- dpois(0:9,lam)
+ probs <- c(jj,1-sum(jj))
+ probs
+ sum(probs)   # verification
+```
+
+* Use R to calculate the expected number of callouts with
+$0,1,2,3,4,5,6,7,8,9,\geqslant 10$ in the year.
+
+```{r}
+e <- probs*365
+e
+sum(e)  # verification
+```
+
+* Use R to calculate the Badness-of-fit $B=\sum\frac{(o-e)^2}{e}$
+
+```{r}
+ B <- sum((o-e)^2/e)
+ B
+```
+
+* Calculate a $p$-value for your B and interpret (note that the
+degrees of freedom is now $11-1-1=9$: there are 11 categories, minus
+one because the total is known, minus another one because the
+expectation uses an estimated value for $\lambda$.
+
+```{r}
+ pchisq(B,df=11-1-1,lower.tail=FALSE)
+```
+
+```{asis}
+Value exceeds 5\% so not significant.  There is no reason to reject
+  the null and the data appear to be Poisson.
+```
+
+
+* Someone observes that the number of zero-callout days is quite high.
+Formulate a sensible null hypothesis and test it.  Interpret and give
+a plausible reason for your finding.
+
+```{asis}
+a sensible null would be that the number of days with zero callouts is
+binomial with size 365 and probability
+```
+
+```{r}
+dpois(0,1740/365)
+```
+
+```{asis}
+We can provide a p-value as follows
+```
+
+```{r}
+1-sum(dbinom(0:7,365,dpois(0,1740/365)))
+pbinom(7,365,dpois(0,1740/365),lower.tail=FALSE)
+```
+
+```{asis}
+The pvalue is less than 5\%, so the result is significant! This might
+be because phone lines were down or perhaps the data collection system
+was flawed.
+
+Note that the null cannot be exactly true if we condition on the total
+number of callouts (the probability of having zero zero-callout days
+(sic) is zero)
+
+It would be (equally?) plausible to say that the number of
+zero-callout days is Poisson with parameter $365e^{-1740/365}$,
+but to see this requires Stein-Chen method (which is only asymptotic,
+BTW).
+```
+
+```{r}
+ppois(7,365*exp(-1740/365),lower.tail=FALSE)
+```
+
+```{asis}
+The professional would condition on the total number of callouts and
+simulate a year using `sample()`
+
+```{r}
+table(replicate(1e4,365-length(unique(sort(sample(1:365,1740,replace=TRUE))))))
+```
+
+```{asis}
+So according to this simulation of ten thousand years, we see how many years had
+zero zero-callout days,  1 zero-callout days, and so
+on.  The p-value is then calculated by counting the years with the observed number, 8, or more:
+```
+
+```{r}
+n <- 1e4
+sum(replicate(n,365-length(unique(sort(sample(1:365,1740,replace=TRUE)))))>=8)/n
+sum(replicate(n,365-length(unique(sort(sample(1:365,1740,replace=TRUE)))))>=8)/n
+```
+
+```{asis}
+which is significant.
+```
+
