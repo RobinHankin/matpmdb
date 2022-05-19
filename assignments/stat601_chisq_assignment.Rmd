@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = FALSE) # change to TRUE when rendering solutions; this changes
+knitr::opts_chunk$set(include = TRUE)  # change to TRUE when rendering solutions; this changes
                                        # the default visibility (which is overridden by explicitly
                                        # setting  include=TRUE in chunk options) 
 ```
@@ -16,9 +16,7 @@ from your R session.
 
 # Question 1.
 
-
-
-The students in a certain statistics class are asked which is their
+62 students in a certain statistics class are asked which is their
 favourite colour among Red, Orange, Blue, and Green.  The results are
 as follows:
 
@@ -27,11 +25,16 @@ o <- c(red = 10, orange = 16, yellow = 24, green = 12)
 ```
 
 * State a sensible null hypothesis
-* Calculate the Pearson's chi-square statistic `sum((o-e)^2/e)` and state what its approximate null distribution is
-* State the precise definition of p-value and explain what "more extreme" means in  this context.
+
+* Calculate the Pearson's chi-square statistic `sum((o-e)^2/e)` and
+  state what its approximate null distribution is
+* State the precise definition of p-value and explain what "more
+  extreme" means in this context.
 * Calculate the chi-square statistic
 * Calculate the pvalue using `pchisq()` and interpret.
-* Excellence question: using random simulation, or otherwise,  estimate the probability that all four colours have different numbers of students. 
+* Excellence question: using random simulation, or otherwise, estimate
+  the probability that all four colours have different numbers of
+  students.
 
 
 ```{r}
@@ -50,9 +53,9 @@ table(replicate(1000,max(table(table(sample(1:4,62,replace=T))))))
 ```
 
 
-# Question 3
+# Question 2
 
-A fire station logs the number of callouts occuring each day for a
+A call centre logs the number of support calls received each day for a
   year and tabulates the results:
 
 ```{r,include=TRUE}
@@ -60,22 +63,22 @@ o <- c(c0=8, c1=12, c2=36, c3=54, c4=67,c5=66, c6=41, c7=37, c8=23, c9=10, c10=1
 o
 ```
 
-This means that on 8 days there were zero callouts, on 12 days there
-was one callout, on 36 days there were two callouts, and so on up to
-11 days when there were 10 callouts.  We wish to test the hypothesis
-that the number of callouts is distributed as a Poisson distribution.
+This means that on 8 days there were zero calls, on 12 days there was
+one call, on 36 days there were two call, and so on up to 11 days when
+there were 10 callouts.  We wish to test the hypothesis that the
+number of calls on any day has a Poisson distribution.
 
 * Give a plausible reason why the Poisson distribution might be appropriate
 
 ```{asis}
-There are a large number $n$ of houses that might have a fire on a
-given day, each with a small probability $p$ of calling the fire
-service; but the product $np$ is moderate.
+There are a large number $n$ of customers that might call on 
+given day, each with a small probability $p$ of calling;
+but the product $np$ is moderate.
 ```
 
 * Verify that the dataset contains 365 observations.  Calculate the
-number of callouts in the year and then calculate the average number
-of callouts per day.
+number of calls in the year and then calculate the average number
+of calls per day.
 
 ```{r}
 sum(o)   # number of days
@@ -83,10 +86,10 @@ sum(o*(0:10)) # number of callouts
 sum(o*(0:10))/sum(o)  # callouts per day
 ```
 
-* Use your estimated value of the mean number of callouts per day as
+* Use your estimated value of the mean number of calls per day as
 $\lambda$ in the Poisson distribution to calculate the probability of
 having $0,1,2,\ldots,\geqslant 10$ callouts on any day.  Remember that
-the final probability is "10 callouts _or more_" so ensure that
+the final probability is "10 calls _or more_" so ensure that
 your probabilities sum to one.
 
 ```{r}
@@ -97,7 +100,7 @@ your probabilities sum to one.
  sum(probs)   # verification
 ```
 
-* Use R to calculate the expected number of callouts with
+* Use R to calculate the expected number of calls with
 $0,1,2,3,4,5,6,7,8,9,\geqslant 10$ in the year.
 
 ```{r}
@@ -128,12 +131,12 @@ Value exceeds 5\% so not significant.  There is no reason to reject
 ```
 
 
-* Someone observes that the number of zero-callout days is quite high.
-Formulate a sensible null hypothesis and test it.  Interpret and give
-a plausible reason for your finding.
+* excellence question: Someone observes that the number of days with
+no calls at all is quite high.  Formulate a sensible null hypothesis
+and test it.  Interpret and give a plausible reason for your finding.
 
 ```{asis}
-a sensible null would be that the number of days with zero callouts is
+a sensible null would be that the number of days with zero calls is
 binomial with size 365 and probability
 ```
 
@@ -156,11 +159,11 @@ be because phone lines were down or perhaps the data collection system
 was flawed.
 
 Note that the null cannot be exactly true if we condition on the total
-number of callouts (the probability of having zero zero-callout days
+number of callouts (the probability of having zero zero-call days
 (sic) is zero)
 
 It would be (equally?) plausible to say that the number of
-zero-callout days is Poisson with parameter $365e^{-1740/365}$,
+zero-call days is Poisson with parameter $365e^{-1740/365}$,
 but to see this requires Stein-Chen method (which is only asymptotic,
 BTW).
 ```
@@ -178,9 +181,10 @@ table(replicate(1e4,365-length(unique(sort(sample(1:365,1740,replace=TRUE))))))
 ```
 
 ```{asis}
-So according to this simulation of ten thousand years, we see how many years had
-zero zero-callout days,  1 zero-callout days, and so
-on.  The p-value is then calculated by counting the years with the observed number, 8, or more:
+So according to this simulation of ten thousand years, we see how many
+years had zero zero-call days, 1 zero-call days, and so on.  The
+p-value is then calculated by counting the years with the observed
+number, 8, or more:
 ```
 
 ```{r}
@@ -192,4 +196,62 @@ sum(replicate(n,365-length(unique(sort(sample(1:365,1740,replace=TRUE)))))>=8)/n
 ```{asis}
 which is significant.
 ```
+
+# Question 3.
+
+This question requires you to use R for random sampling.
+
+Suppose we have a bag with one red, one green, and one blue ball in a
+bag.  We make 12 draws with replacement and tally the number of red,
+blue, and green balls in our sample.
+
+* How many red, green, and blue balls do you expect to observe?
+* For an observation of `c(r=5, g=3, b=4)`, calculate the chi-square
+  statistic.  Justify your number of degrees of freedom.
+* Using `sample()`, or otherwise, use R to generate a sequence of random draws.
+* Generate some sequences of random draws.  For these, calculate: the
+  chi-square statistic $B$ and the $p$-value and present histograms or
+  tables [you might find `tabulate(...,nbins=3)` useful]
+* Excellence question: compare your empirical distribution of $B$
+  above with its asymptotic distribution.
+
+```{asis}
+Expect four of each.
+
+```{r}
+o <- c(r=5, g=3, b=4)
+e <- c(4,4,4)  # could use "4"
+(B <- sum((o-e)^2/e))
+pchisq(B,df=2,lower.tail=FALSE)
+
+
+tabulate(sample(1:3,12,replace=TRUE),nbins=3)
+tabulate(sample(1:3,12,replace=TRUE),nbins=3)
+
+f <- function(o){sum((o-4)^2)/4}
+f(tabulate(sample(1:3,12,replace=TRUE),nbins=3))
+f(tabulate(sample(1:3,12,replace=TRUE),nbins=3))
+
+
+replicate(10,f(tabulate(sample(1:3,12,replace=TRUE),nbins=3)))
+o <- replicate(1000,f(tabulate(sample(1:3,12,replace=TRUE),nbins=3)))
+
+
+hist(o,freq=FALSE)
+x <- seq(from=0,to=20,len=100)
+points(x,dchisq(x,df=2))
+
+plot(ecdf(o))
+points(x,pchisq(x,df=2))
+```
+
+
+# Question 4
+
+Give an example of Pearson's chi-square test from your daily life.
+Have at least three categories.  State your observation _clearly_,
+state your null and expected values _clearly_.  Calculate and state
+the value of the chi-square statistic $B$.  State and justify the null
+distribution of $B$ (including number of degrees of freedom), give a
+$p$-value.  Interpret your findings.
 
