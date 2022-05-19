@@ -1,0 +1,52 @@
+Q1
+
+You are working as a quality engineer and you expect to receive a lot
+of 25,000 units of a product that is key in the production system of
+the company. The management office instructs you to consider the
+following specifications: an acceptable quality level of 0.005; a
+probability of rejecting a good lot of 0.05; a rejectable quality
+level of 0.07; and a probability of accepting a bad lot of 0.05.
+
+(a) Why would you use a sampling plan? [10 marks]
+
+(b) One of your colleagues suggests the following plan: "take a random
+sample of 33 units and reject the lot if there are at least two
+defective units".  The management office asks you to analyse this new
+plan. What would you conclude and advise? [30 marks]
+
+
+Q2
+
+A statistics lecturer decides whether or not to take his umbrella to
+work.  It might be: rainy or snowy or fine with probabilities 10%, 5%,
+0.85% respectively.  His loss function is:
+
+no umbrella--- rain: 8;  snow:  9; fine: 0
+umbrella-----  rain: 0;  snow:  0; fine: 1
+
+Analyse this situation in terms of expected loss.  Should he take the
+umbrella?
+
+
+Q3
+
+As per lectures, create an R package using Rstudio.  The package need
+only contain a single function, but this must not be the hello
+function created by RStudio.  A simple numerical function is fine, for
+example:
+
+f <- function(x){x^2+1}
+
+and something of equivalent complexity is fine.  Ensure that your
+package passes the checks, and also ensure that your function is
+documented adequately.  You will have to ensure that the DESCRIPTION
+file etc are correctly edited with correct information.
+
+Create a file using the "build source package" on Rstudio's "build"
+tab.  Submit the .tar.gz file to Canvas.
+
+
+Watch either the panopto recording on Canvas, or the following link
+on YouTube:
+
+https://www.youtube.com/watch?v=9PyQlbAEujY&ab_channel=trestletech
