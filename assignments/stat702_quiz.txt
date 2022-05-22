@@ -1,4 +1,43 @@
-Q1
+stat702 quiz 3
+
+due 3 June 2022
+
+
+0.  Submit your work via canvas.
+
+1. Submit documents in PDF form and R package in .tar.gz form.  You
+can use, e.g., LATEX, Word, knitr or Sweave to create your report, as
+well as RStudio as editor of the source files.  Formats other than pdf
+cannot be marked.
+
+2. The R code required to complete this assignment, which includes
+code to support your conclusions and answers, must be embedded in the
+document in the corresponding answer as text (not image).  This code
+will be marked.  Unsolicited R scripts submitted separately cannot be
+marked.
+
+3. It is not necessary to copy and paste the question text, just make
+reference to each question, e.g., Answer Question 1 (a), Answer
+Question 1 (b), ... , etc.
+
+4. Read carefully – Answer all the questions as requested.  Any
+material, R code, R output or information unrelated to the correct
+answer may result in a significant reduction of marks for that
+question.
+
+5.  No cover sheet is needed.
+
+6. If you need an extension or if your performance has been impacted
+by some extenuating circumstances, then you must complete the special
+consideration form.
+
+7. The comprehension of the questions is part of the assignment.
+
+
+
+QUESTIONS
+
+Q1 (30 marks)
 
 You are working as a quality engineer and you expect to receive a lot
 of 25,000 units of a product that is key in the production system of
@@ -7,28 +46,28 @@ following specifications: an acceptable quality level of 0.005; a
 probability of rejecting a good lot of 0.05; a rejectable quality
 level of 0.07; and a probability of accepting a bad lot of 0.05.
 
-(a) Why would you use a sampling plan? [10 marks]
+(a) Why would you use a sampling plan? 
 
 (b) One of your colleagues suggests the following plan: "take a random
 sample of 33 units and reject the lot if there are at least two
 defective units".  The management office asks you to analyse this new
-plan. What would you conclude and advise? [30 marks]
+plan. What would you conclude and advise? 
 
 
-Q2
+Q2  (30 marks)
 
 A statistics lecturer decides whether or not to take his umbrella to
 work.  It might be: rainy or snowy or fine with probabilities 10%, 5%,
 0.85% respectively.  His loss function is:
 
 no umbrella--- rain: 8;  snow:  9; fine: 0
-umbrella-----  rain: 0;  snow:  0; fine: 1
+umbrella------ rain: 0;  snow:  0; fine: 1
 
 Analyse this situation in terms of expected loss.  Should he take the
 umbrella?
 
 
-Q3
+Q3 (40 marks)
 
 As per lectures, create an R package using Rstudio.  The package need
 only contain a single function, but this must not be the hello
@@ -37,14 +76,14 @@ example:
 
 f <- function(x){x^2+1}
 
-and something of equivalent complexity is fine.  Ensure that your
-package passes the checks, and also ensure that your function is
-documented adequately.  You will have to ensure that the DESCRIPTION
-file etc are correctly edited with correct information.
+and something of equivalent complexity is fine.  Do not use this
+example, create your own.  Ensure that your package passes the R
+checks, and also ensure that your function is documented adequately.
+You will have to ensure that the DESCRIPTION file etc are correctly
+edited with correct information.
 
 Create a file using the "build source package" on Rstudio's "build"
 tab.  Submit the .tar.gz file to Canvas.
-
 
 Watch either the panopto recording on Canvas, or the following link
 on YouTube:
