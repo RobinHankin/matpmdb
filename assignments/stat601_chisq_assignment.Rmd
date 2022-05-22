@@ -27,13 +27,10 @@ o <- c(red = 10, orange = 16, yellow = 24, green = 12)
 ```
 
 * State a sensible null hypothesis
-
-* Calculate the Pearson's chi-square statistic `sum((o-e)^2/e)` and
-  state what its approximate null distribution is
-* State the precise definition of p-value and explain what "more
-  extreme" means in this context.
-* Calculate the chi-square statistic
-* Calculate the pvalue using `pchisq()` and interpret.
+* State the observed values and the expected values under your null.
+* Calculate the Pearson's chi-square statistic `sum((o-e)^2/e)` and show your working; state what its approximate null distribution is
+* State the precise definition of p-value and explain what "more extreme" means in this context.
+* Calculate the pvalue using `pchisq()` and your result from above, and interpret.
 * Excellence question: using random simulation, or otherwise, estimate
   the probability that all four colours have different numbers of
   students.
