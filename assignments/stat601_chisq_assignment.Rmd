@@ -1,10 +1,12 @@
 ---
-title: "Assignment: Pearson's chi-square test"
-output: html_document
+title: 'Assignment: Pearson''s chi-square test'
+output:
+  pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE)  # change to TRUE when rendering solutions; this changes
+knitr::opts_chunk$set(include = FALSE)  # change to TRUE when rendering solutions; this changes
                                        # the default visibility (which is overridden by explicitly
                                        # setting  include=TRUE in chunk options) 
 ```
@@ -12,7 +14,7 @@ knitr::opts_chunk$set(include = TRUE)  # change to TRUE when rendering solutions
 # Instructions
 
 Answer the following questions.  Show your working by including output
-from your R session.
+from your R session.  All four questions are of equal mark value.
 
 # Question 1.
 
@@ -41,11 +43,14 @@ o <- c(red = 10, orange = 16, yellow = 24, green = 12)
 o <- c(red = 10, orange = 16, yellow = 24, green = 12)  # observed
 e <- mean(o)                                            # expected
 s <- sum((o-e)^2/e)                                     # Pearson's chi-square statistic
+## Null: equal probability of choosing each colour
+## p-value is the probability, if the null is true, of obtaining the observation
+## or an observation more extreme.
+## Here "more extreme" means "a larger chi-square statistic"
 pchisq(s,df=3,lower.tail=F)                             # pvalue
- ## not significant
+ ## not significant (exceeds 0.05)
 ```
 
-For the rider,
 
 ```{r}
 table(replicate(1000,max(table(table(sample(1:4,62,replace=T))))))
@@ -88,7 +93,7 @@ sum(o*(0:10))/sum(o)  # callouts per day
 
 * Use your estimated value of the mean number of calls per day as
 $\lambda$ in the Poisson distribution to calculate the probability of
-having $0,1,2,\ldots,\geqslant 10$ callouts on any day.  Remember that
+having $0,1,2,\ldots,\geqslant 10$ calls on any day.  Remember that
 the final probability is "10 calls _or more_" so ensure that
 your probabilities sum to one.
 
