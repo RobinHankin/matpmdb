@@ -1,0 +1,127 @@
+---
+title: "The Gaussian distribution"
+output:
+  word_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(include = FALSE)  # change to TRUE when rendering solutions; this changes
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=TRUE in chunk options) 
+
+```
+
+# Final assessment:  stat601/stat805/comp616
+
+This assessment requires you to use R to demonstrate your
+understanding of probability and statistics.  Answer each question and
+show your working.  There are five questions, each of 20 marks.
+
+
+## Question 1
+
+Student's soda drinking habits are being studied at a schoool.  The
+probability of a student drinking coke is 0.4; and the probability of
+a student drinking pepsi is known to be 0.3.  If the probability of
+drinking both is known to be 0.25, calculate:
+
+* the probability of not drinking coke
+* the probability of drinking either coke or pepsi, or both
+* the probability of a student drinking coke, given that they
+* Are drinking coke and pepsi independent?  Justify
+* (excellence) a group of 20 randomly selected students attend a
+  special seminar on healthy eating, which would be expected to
+  decrease the likelihood of drinking soda.  After the seminar, these
+  20 students are questioned and 15 drink neither coke nor pepsi and
+  drink only water.  State a sensible null hypothesis, test it, and
+  interpret.
+
+
+
+```{r}
+1-0.4 # not coke
+```
+
+## Question 2
+
+A vetinarian is investigating a particular disease of cows.  She is
+interested in whether English cows differ from Scottish cows in their
+probability of suffering from this particular disease.  A sample of 15
+cows is taken, of which 9 are English and 6 are Scottish.  It is not
+known if English cows are more or less likely to have this disease.
+In the sample, there are 10 healthy cows, of which 8
+are English.  We may represent the data in R as follows:
+  
+
+```{r,include=TRUE}
+x <- 8  # healthy English (white drawn)
+k <- 9  # English (drawn)
+n <- 5  # diseased (black)
+m <- 10 # healthy (white)
+
+a <- matrix(c(x,k-x,m-x,n-k+x),2,2)
+dimnames(a) <- list(
+    country=c("England","Scotland"),state=c("healthy","diseased")
+)
+a
+```
+
+  * State a sensible null hypothesis
+  * State the precise definition of $p$-value and explain what
+    ``more extreme'' means in this context
+  * Is a one-sided or two-sided test needed? justify
+  * Perform a Fisher test using `fisher.test()` and interpret
+  * Estimate the probability of: (a), an English, and (b), a
+    Scottish cow, having the disease
+  * give a 95\% confidence interval for the probabilities of English and Scottish cows having the disease (you may use the normal approximation)
+  * excellence: verify your $p$-value given by `fisher.test()` using `dhyper()` directly.     
+
+
+```{r}
+fisher.test(a)
+f <- function(a,b){qnorm(c(0.025,0.5,0.975),a/(a+b),sqrt((a*b)/(a+b)^3))}
+
+f(x,m-x)      # English
+c(healthy=k-x,diseased=n-k+x)
+f(k-x,n-k+x)  # Scottish
+
+```
+
+## Question 3
+
+A computer scientist in Auckland has a large number of computers in
+his laboratory and suspects that more failures occur when the
+temperature outside is higher.
+
+He collects data on 23 days:
+
+
+```{r,include=TRUE}
+temp <- c(17.1, 19.2, 15.2, 18.1, 15, 17.8, 17.8, 15.2, 17.4, 15.7, 17.8, 
+16.9, 17.1, 17, 18, 15.9, 16.5, 17.3, 16.7, 15.9, 16.1, 19, 16)
+fail <- c(28, 30, 27, 33, 27, 34, 31, 29, 29, 26, 33, 31, 27, 31, 32, 
+28, 30, 33, 32, 26, 30, 34, 27)
+```
+
+Above, `temp` is the temperature in centigrade, and `fail` the number
+of failures on each day.
+
+  * State a sensible null hypothesis
+  * State the precise definition of $p$-value and explain what
+    ``more extreme'' means in this context
+  * Is a one-sided or two-sided test needed? justify
+  * Perform a linear regression using R and interpret.  Is there
+    evidence that more computer failures occur during hotter weather?
+
+
+```{r}
+plot(fail~temp,xlab="temperature (C)",ylab="failures")
+fit <- lm(fail~temp)
+abline(fit)
+summary(fit)  # one-sided test [slope of curve >0]; halve p-value
+
+```
+
+
