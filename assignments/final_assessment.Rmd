@@ -17,7 +17,8 @@ knitr::opts_chunk$set(include = FALSE)  # change to TRUE when rendering solution
 
 This assessment requires you to use R to demonstrate your
 understanding of probability and statistics.  Answer each question and
-show your working.  There are five questions, each of 20 marks.
+show your working, including your R code.  There are five questions,
+each of 20 marks.
 
 
 ## Question 1
@@ -121,7 +122,51 @@ plot(fail~temp,xlab="temperature (C)",ylab="failures")
 fit <- lm(fail~temp)
 abline(fit)
 summary(fit)  # one-sided test [slope of curve >0]; halve p-value
+```
 
+
+## Question 4
+
+Around 37 degrees Centigrade. is normal body temperature for children
+and adults.  _Fever_ is when your core body temperature is higher than
+38 degrees centigrade.  A certain medicine that aims to reduce body
+temperature has been applied to 80 patients that had a fever.  The
+temperatures after the medicine was administrated are the following:
+
+
+```{r,include=TRUE}
+y  <-  scan( text = "
+37.3 37.5 37.2 38.0 37.6 37.2 37.6 37.7 37.7 37.4 37.9 37.6 37.3
+36.8 37.8 37.5 37.5 37.8 37.7 37.7 37.8 37.7 37.5 36.9 37.7 37.5
+37.4 37.0 37.3 37.6 37.9 37.5 37.6 37.5 37.1 37.4 37.4 37.5 37.8
+37.7 37.4 37.4 37.7 37.7 37.3 37.3 37.6 37.7 37.5 37.8 37.6 37.3
+37.6 37.2 37.9 38.1 37.4 37.2 37.7 37.4 38.2 37.5 37.7 37.5 37.3
+37.5 36.9 37.9 37.5 38.1 37.6 37.3 37.7 37.2 37.1 37.6 37.4 37.5
+37.5 37.3")
+```
+
+We consider that the medicine is _effective_ if the temperature is
+lower or equal to 38.  Perform a Bayesian analysis assuming a
+skeptical position: we seek the probability that the medicine is
+effective.
+
+* Define the random variable and its distribution.
+* Define the prior and justify your choice.
+* Define the posterior distribution.
+* Plot the prior and posterior in a graph.  Comment on it.
+* Calculate a 95% credible interval and interpret it.
+
+
+```{r}
+# we seek p, the probability that T<38
+table(y<38)
+## uniform prior, alpha=beta=1:
+p <- seq(from=0,to=1,len=500)
+alpha <- 1
+beta <- 1
+plot(p,dbeta(p,alpha,beta),type='l',col='black',ylim=c(0,20))
+points(p,dbeta(p,alpha + 76 ,beta+4),type='l',col='red')
+legend("topleft",lty=1,col=c("black","red"),legend=c("prior","posterior"))
 ```
 
 
