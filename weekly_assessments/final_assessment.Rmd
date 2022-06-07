@@ -7,7 +7,7 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-knitr::opts_chunk$set(include = TRUE)  # change to TRUE when rendering solutions; this changes
+knitr::opts_chunk$set(include = FALSE)  # change to TRUE when rendering solutions; this changes
                                        # the default visibility (which is overridden by explicitly
                                        # setting  include=TRUE in chunk options) 
 
@@ -159,6 +159,10 @@ of failures on each day.
 
 
 ```{r}
+# Null: no relation between failures and temperature
+# pvalue is the probability, if the null is true, of obtaining the observation
+# or an observation more extreme. Here the observation is the fitted slope and
+# "more extreme" means "higher fitted slope"
 plot(fail~temp,xlab="temperature (C)",ylab="failures")
 fit <- lm(fail~temp)
 abline(fit)
