@@ -4,7 +4,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = FALSE) # change to TRUE when rendering solutions; this changes
+knitr::opts_chunk$set(include = TRUE) # change to TRUE when rendering solutions; this changes
                                        # the default visibility (which is overridden by explicitly
                                        # setting  include=TRUE in chunk options) 
 ```
