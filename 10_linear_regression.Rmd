@@ -43,7 +43,7 @@ plot(price~age, data=carprices)
 ```
 
 In the above R idiom, the "`~`" symbol is read "is a function of".
-See how the two variables age and price appear to be related, with
+See how the two variables `age` and `price` appear to be related, with
 older cars having a smaller price.  The scattergraph shows directly
 that a linear fit might be a good idea: the relationship is linear,
 there are no serious outliers, and the variability is roughly constant
@@ -145,9 +145,9 @@ strictly positive.
 ## Multiple and restricted regression
 
 The tilde device for formulae (that is, expressions such as
-"```y~x```") is a very powerful and flexible notation.
+"`y~x`") is a very powerful and flexible notation.
 
-Consider the ```swiss``` dataset, built in to R.  Type ```?swiss``` at
+Consider the `swiss` dataset, built in to R.  Type `?swiss` at
 the prompt to get more details.  Here, we are interested in infant
 mortality as a function of fertility and prevalence of Catholicism.
 Symbolically we would write
@@ -163,7 +163,7 @@ The R idiom is:
 summary(lm(Infant.Mortality ~ Fertility + Catholic, data=swiss))
 ```
 
-In the above, note how the "```+```" symbol is used to regress infant
+In the above, note how the "`+`" symbol is used to regress infant
 mortality against fertility *and* percentage of Catholics.  In this
 case, see that catholicism is not a significant factor as the p-value
 exceeds 5\%.  Note that it is difficult to draw a scattergraph with
@@ -179,7 +179,7 @@ hist(residuals(swissfit),col='gray')
 
 The above histogram shows that the residuals are roughly Gaussian, in
 line with the assumptions of linear modelling.  Note in passing that
-```fit``` is a perfectly legit R object and we can examine and
+`fit` is a perfectly legit R object and we can examine and
 manipulate it easily.  For example:
 
 ```{r}
