@@ -78,9 +78,9 @@ lwd=3,col=c("black","red","blue","green"))
 ```
 
 In the above figure, see how the different mean and sd arguments are
-passed to ```dnorm()```.  The green curve is higher than the others
+passed to `dnorm()`.  The green curve is higher than the others
 and is truncated at the top, but all the curves have the same area.
-From the R help page ```?dnorm``` we can see that the mean and
+From the R help page `?dnorm` we can see that the mean and
 standard deviation have default values of 0 and 1 respectively, which
 is what was plotted in black above.  This is known as the *standard
 Normal distribution* and is denoted $N(0,1)$.
@@ -182,7 +182,7 @@ rnorm(10)
 ```
 
 (in the above, the argument 10 specifies the number of observations to
-sample).  Function ```rnorm()``` takes arguments to specify the mean
+sample).  Function `rnorm()` takes arguments to specify the mean
 and standard deviation if necessary:
 
 ```{r}
