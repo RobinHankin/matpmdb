@@ -1,8 +1,8 @@
 ---
 title: "Final assessment"
 output:
-  word_document: default
   pdf_document: default
+  word_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,9 +16,16 @@ knitr::opts_chunk$set(include = FALSE)  # change to TRUE when rendering solution
 # Final assessment:  stat601/stat805/comp616
 
 This assessment requires you to use R to demonstrate your
-understanding of probability and statistics.  Answer each question and
-show your working, including your R code.  There are four questions,
+understanding of probability and statistics.
+There are four questions,
 each of 25 marks.
+
+
+* Answer each question and show your working, including your R code.
+* Submit in the form of a PDF document.  We cannot assess any other type of submission.
+* Study tips: review the notes, labs, and course manual
+*  Academic Integrity: This is an individual assessment, and standard requirements around academic integrity apply. Refer to the "Academic Integrity" module for further details. 
+* Submission: submit as for any other assignment
 
 
 ## Question 1
@@ -87,7 +94,7 @@ In the sample, there are 10 healthy cows, of which 8
 are English.  We may represent the data in R as follows:
   
 
-```{r,include=TRUE}
+```{r}
 x <- 8  # healthy English (white drawn)
 k <- 9  # English (drawn)
 n <- 5  # diseased (black)
