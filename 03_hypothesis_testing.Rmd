@@ -462,7 +462,7 @@ notations (but everyone does).
 The concept of *confidence interval* is a common one in statistics.
 The formal definition is quite hard, and the interpretation difficult.
 
-("Interval" is another word for "range".  The basic idea is that we
+("Interval" is another word for "range").  The basic idea is that we
 estimate a *range* of values, and we hope that the true value of our
 parameter is within this range.  We ensure that the probability of
 this range including the true value of the parameter is 95\% (other
