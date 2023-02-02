@@ -458,11 +458,10 @@ notations (but everyone does).
 <https://en.wikipedia.org/wiki/Confidence_interval>
 ```
 
-
 The concept of *confidence interval* is a common one in statistics.
 The formal definition is quite hard, and the interpretation difficult.
 
-("Interval" is another word for "range").  The basic idea is that we
+First of all: "Interval" is another word for "range".  The basic idea is that we
 estimate a *range* of values, and we hope that the true value of our
 parameter is within this range.  We ensure that the probability of
 this range including the true value of the parameter is 95\% (other
@@ -548,5 +547,9 @@ such intervals are shown in pink.  See how much of the R idiom you can
 understand.
 
 Note that although confidence interval has a univeral definition, it
-is not without it problems and many workers [including your lecturer!]
-question the validity of this form of reasoning.
+is not without problems and many workers [including your lecturer!]
+question the validity of this form of reasoning.  Actually, your
+lecturer harbours serious doubts as to the validity of the entire
+concept of $p$-values and indeed that of probability theory itself.
+
+
