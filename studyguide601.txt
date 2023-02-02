@@ -1,4 +1,4 @@
-hello everyone, welcome to STAT601!
+hello everyone, welcome to STAT601 and COMP616!
 
 My name is Robin Hankin, your lecturer.  I can be contacted on
 <robin.hankin@aut.ac.nz> -- although this should be viewed as a last
@@ -25,9 +25,8 @@ play with the system on your own laptop.  I also use Rstudio, freely
 available at https://www.rstudio.com/products/rstudio/download/ and
 this includes a nice front-end and display capabilities.
 
-
-STAT601 has one assignment, a portfolio, and an examination, due dates
-to be advised.
+The course has two assignments, a midsemester test, and an
+examination, due dates to be advised.
 
 
 Semester schedule
@@ -58,6 +57,8 @@ Video resources available for download under the 'video recordings'
 tab under 'Resources' on AUTonline, or on YouTube at
 
 https://www.youtube.com/playlist?list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84
+
+(Note that the material on Stirling's approximation is optional)
 
 
 Class_01_pt1_Binomial_distribution.mp4
