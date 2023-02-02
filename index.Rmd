@@ -8,7 +8,7 @@ documentclass: book
 biblio-style: apalike
 link-citations: yes
 github-repo: RobinHankin/STAT601
-description: "This is the course manual for STAT601 (statistical methods)"
+description: "This is the course manual for STAT601COMP616 (statistical inference)"
 ---
 
 
@@ -18,10 +18,10 @@ description: "This is the course manual for STAT601 (statistical methods)"
 
 # Overview {-}
 
-This is the handbook for STAT601.  Details of the course structure,
-including assessment and timetables, may be found on AUTonline.  The
-whole course is based around R and RStudio which may be downloaded
-from
+This is the handbook for STAT601/COMP616.  Details of the course
+structure, including assessment and timetables, may be found on
+Canvas.  The whole course is based around R and RStudio which may be
+downloaded from
 
 [https://cran.r-project.org/]
 
