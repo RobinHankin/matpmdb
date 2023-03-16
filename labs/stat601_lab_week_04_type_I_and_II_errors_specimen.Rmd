@@ -1,0 +1,172 @@
+---
+output: html_document
+title: "Type I and type II errors with Gaussian distributions"
+fontsize: 12pt
+---
+
+# Your first task
+
+Vary the number of observations (choose three or four representative
+values in the range 5-50), and find the power of the test against for
+the same null, $H_0\colon\mu=0$ against different alternatives:
+$H_A\colon\mu=0.1,0.2,0.5,1,2$.  Use `pnorm()` etc and then verify
+numerically.
+
+
+```{r}
+f <- function(mu1,n){pnorm(qnorm(0.95,sd=1/sqrt(n)),mean=mu1,sd=1/sqrt(n),lower.tail=FALSE)}
+m1 <- c(0.1,0.2,0.5,1,2)
+plot(m1,sapply(m1,f,n=30),type="b",ylab="power",main="n=30")
+plot(m1,sapply(m1,f,n=50),type="b",ylab="power",main="n=50")
+```
+
+
+Numerically:
+
+```{r}
+f(0.2,30)
+n <- 30
+table(rnorm(1e6,mean=0.2,sd=1/sqrt(n)) > qnorm(0.95,sd=1/sqrt(n)))
+```
+
+# Tradeoff between type I and type II errors.
+
+Suppose we have $n=5$ observations and wish to test $H_0\colon\mu=0$
+against $H_A\colon\mu=1$.  Here we use one-sided tests for simplicity.
+
+```{r}
+p <- 0.05 # pvalue
+u <- qnorm(1-p,0,sd=1/sqrt(5))  # u is the test: reject H0 if xbar > u
+pnorm(u,1,sd=1/sqrt(5),lower.tail=FALSE)  # power of the test
+```
+
+The above calculates directly the power of the test for $\alpha=0.05$
+
+# Task
+
+* For $H_0\colon\mu=0, H_A\colon\mu=1$.  Keeping $n=5$ for the moment,
+vary the size $\alpha$ of the test and investigate how the power
+changes in response.
+
+```{r}
+n <- 5
+f <- function(alpha){pnorm(qnorm(1-alpha,sd=1/sqrt(n)),mean=1,sd=1/sqrt(n),lower.tail=FALSE)}
+alpha <- seq(from=0.01,by=0.01,to=0.1)
+plot(alpha,sapply(alpha,f),type='b')
+```
+
+* For $H_0\colon\mu=0, H_A\colon\mu=1$.  Vary $n$ and see how the power
+  changes, for a fixed value of $\alpha$, in response.  Try $n=8$,
+  $n=15$, $n=20$ for a start.  Describe the effect of increasing $n$
+  on the power of the test.
+  
+```{r} 
+f <- function(n){pnorm(qnorm(1-0.05,sd=1/sqrt(n)),mean=1,sd=1/sqrt(n),lower.tail=FALSE)}
+n <- c(8,15,20)
+plot(n,sapply(n,f),type='b',ylab="power")
+```
+  
+
+* (harder) Consider a different alternative hypothesis, say
+  $H_A\colon\mu=0.5$.  How do the answers to the two questions above
+  change when we consider this new $H_A$?  How about
+  $H_A\colon\mu=0.1$ or $H_A\colon\mu=0.01$?
+
+```{r}
+f <- function(n,mu1){pnorm(qnorm(1-0.05,sd=1/sqrt(n)),mean=mu1,sd=1/sqrt(n),lower.tail=FALSE)}
+n <- c(8,15,20,50,100)
+plot(n,sapply(n,f,mu1=0.5),type='b',ylab="power")
+plot(n,sapply(n,f,mu1=0.01),type='b',ylab="power")
+```
+
+
+# Student t test
+
+```{r}
+hist(replicate(10000,sd(rnorm(n))))
+```
+
+Try this yourself with different values of $n$.
+
+```{r}
+hist(replicate(10000,sd(rnorm(3))))
+```
+
+# Task
+
+(in all the tasks below, use numerical simulation)
+
+* With $n=6$, what is the probability of overestimating the standard
+  deviation by a factor of 2 or more?  What is the probability of
+  underestimating by a factor of 2 or more? What is the probability of
+  estimating the sd correct to within a factor of 2? (use numerical
+  simulation)
+  
+```{r}
+table(replicate(1000,sd(rnorm(6))>2))
+```
+  
+  
+* What are the corresponding probabilities if $n=10$ and $n=15$?
+
+  
+```{r}
+table(replicate(1000,sd(rnorm(10))>2))
+table(replicate(1000,sd(rnorm(15))>2))
+```
+
+* (harder) How many observations do we need to make to ensure that the
+  probability of overestimating or underestimating by a factor of 2 or
+  more is less than 5\%? (use numerical simulation).
+
+```{r}
+OK <- function(n){
+  est <-sd(rnorm(n))
+   (est>0.5) & (est<2)
+}
+c(
+n5=sum(replicate(10000,OK(5))),
+n6=sum(replicate(10000,OK(6))),
+n7=sum(replicate(10000,OK(7))),
+n8=sum(replicate(10000,OK(8))),
+n9=sum(replicate(10000,OK(9)))
+)
+```
+
+(looks like you need $n\geq 7$)
+
+*  With $n=4$, what is the expected value of the estimated variance?
+  [hint: `var(x)` gives the estimated variance of `x`] 
+  
+```{r}
+  mean(replicate(100000,var(rnorm(4))))
+```
+
+* Again with $n=4$, what is the expected value of the estimated
+  standard deviation?  [this is not a trick question but can be
+  confusing.  Do not stress].
+
+
+```{r}
+mean(replicate(1e5,sd(rnorm(4))))
+```
+
+
+# Your task
+ 
+Calculate the power of the t-test, varying the number of observations
+from $n=5,10,20$ and the alternative hypothesis
+$\mu=0.1,0.2,0.5,1.0,2$.
+ 
+
+```{r}
+power <- function(n,mu){
+  sum(replicate(1000,t.test(rnorm(n),alternative="less",mu=mu)$p.value<0.05))/1000
+}
+power(10,0.2)
+power(10,0.2)
+power(10,1.0)
+o <- expand.grid(n=c(5,10,20),mu=c(0.1,0.2,0.5,1,2))
+cbind(o,power=apply(o,1,function(x){power(x[1],x[2])}))
+```
+
