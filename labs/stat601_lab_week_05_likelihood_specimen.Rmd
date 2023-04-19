@@ -91,6 +91,16 @@ likelihood; we only care about relative changes.
 **YOUR TASK** play around with different values of the mean and
 standard deviation until you find the *maximum likelihood estimate*
 
+```{r}
+prod(dnorm(D,mean=902,sd=141))
+prod(dnorm(D,mean=902,sd=151))
+prod(dnorm(D,mean=902,sd=161))
+prod(dnorm(D,mean=902,sd=171))
+prod(dnorm(D,mean=1070,sd=143))
+```
+
+
+
 ## Graphical methods
 
 See the following figure, in which vertical lines correspond to the
