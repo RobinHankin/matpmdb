@@ -127,10 +127,14 @@ fisher.test(M,alternative="greater")
 
 
 ```{r}
-sum(dhyper(7:9,9,6,8))
+sum(dhyper(7:8,9,6,8))
 ```
 
-(it is very easy to get this wrong)
+(it is very easy to get this wrong:  one possible answer is `sum(dhyper(7:9,9,6,8))`
+which gives the same answer because `dhyper(9,9,6,8)` is zero.  Enumerate the
+sample space by writing out all possible tables and see if you can discover why 
+`dhyper(9,9,6,8)==0`).
+
 
 \newpage
 
