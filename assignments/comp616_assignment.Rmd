@@ -1,0 +1,222 @@
+---
+title: 'Assignment (statistics): Fisher''s exact test, Pearson''s chi square test, linear regression and logistic regression'
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE) # change to TRUE when rendering solutions; this changes
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=FALSE in chunk options) 
+```
+
+# Instructions
+
+Answer the following four questions, which have equal mark value.
+Show your working by including output from your R session.
+
+
+
+# Question 1 part (a)
+
+Consider the following dataset drawn from AUT student services:
+
+```{r}
+M <- matrix(c(10,2,11,7),2,2)
+dimnames(M) <- list(OS=c("windows","mac"),major=c("science","arts"))
+M
+```
+
+we suspect arts students are more likely to use a mac than science students.
+
+* State your null clearly
+* State the precise definition of p-value
+* state what "more extreme" means here
+* use `fisher.test()`, calculate your pvalue and interpret
+
+
+```{r}
+fisher.test(M,alternative="greater")
+# no significant difference
+```
+
+# Question 1 part (b)
+
+A medical researcher is investigating whether vitamin C helps to cure
+the common cold.  He takes a sample of 20 subjects, of whom
+7 are given vitamin C and 13 a placebo (a "placebo" is
+a dummy pill that has no medical effect).  The researcher interviews
+the subjects after one week, and 9 subjects report that their
+cold is cured.  Of these 9 subjects who are cured, 5
+were given real vitamin C. 
+
+* State a sensible null hypothesis
+* State the precise definition of $p$-value and explain what
+    ``more extreme'' means in this context
+* Is a one-sided or two-sided test needed? justify
+* Estimate the probability of: (a), a person who was given
+    vitamin C, and (b), a person given the placebo, of being cured.
+* Perform a Fisher test using `fisher.test()` and interpret
+
+```{r}
+# p-value is the probability, if the null is true, of obtaining the observation or an observation more extreme.
+# Null: vitamin C has no effect on colds.  "more extreme" = more than 5 vit C patients cured
+M <- matrix(c(5,4,2,9),2,2)
+dimnames(M) <- list(
+    given=c("vitamin C","placebo"),state=c("cured","cold")
+)
+M
+
+fisher.test(M,alternative="greater")  # pvalue < 0.05 -> significant evidence for cure
+5/7  # prob of vit C group being cured
+4/13 # prob of placebo group being cured
+```
+
+
+
+# Question 1 part (c)
+
+Give an example of Fisher's exact test in your daily life.  Give a 2x2
+contingency table, with labelled rows and columns.  State your null
+_clearly_, and your alternative.  State and justify your use of a
+one-sided or two-sided test.  Carry out your test, report the p-value,
+and interpret.  Excellence question: find the "most extreme"
+observation that is consistent with your marginal totals.
+
+
+
+# Question 2 part (a)
+
+62 students in a certain statistics class are asked which is their
+favourite colour among Red, Orange, Blue, and Green.  The results are
+as follows:
+
+```
+o <- c(red = 10, orange = 16, yellow = 24, green = 12)
+```
+
+* State a sensible null hypothesis
+* State the observed values and the expected values under your null.
+* Calculate the Pearson's chi-square statistic `sum((o-e)^2/e)` and show your working; state what its approximate null distribution is
+* State the precise definition of p-value and explain what "more extreme" means in this context.
+* Calculate the pvalue using `pchisq()` and your result from above, and interpret.
+* Excellence question: using random simulation, or otherwise, estimate
+  the probability that all four colours have different numbers of
+  students.
+
+
+```{r}
+o <- c(red = 10, orange = 16, yellow = 24, green = 12)  # observed
+e <- mean(o)                                            # expected
+s <- sum((o-e)^2/e)                                     # Pearson's chi-square statistic
+## Null: equal probability of choosing each colour
+## p-value is the probability, if the null is true, of obtaining the observation
+## or an observation more extreme.
+## Here "more extreme" means "a larger chi-square statistic"
+pchisq(s,df=3,lower.tail=F)                             # pvalue
+ ## not significant (exceeds 0.05)
+```
+
+
+```{r}
+table(replicate(1000,max(table(table(sample(1:4,62,replace=T))))))
+# About 64%
+```
+
+
+
+# Question 2 part (b)
+
+
+Give an example of Pearson's chi-square test from your daily life.
+Have at least three categories.  State your observation _clearly_,
+state your null and expected values _clearly_.  Calculate and state
+the value of the chi-square statistic $B$.  State and justify the null
+distribution of $B$ (including number of degrees of freedom), give a
+$p$-value.  Interpret your findings.  Use clear, succinct, language.
+
+
+# Question 3
+
+[remember the golden rule: without a scattergraph, there is no point
+in performing any regression]
+
+A computer scientist in Auckland has a large number of computers in
+his laboratory and suspects that more failures occur when the
+temperature outside is higher.
+
+The dataset is as follows:
+
+`temp <- c(16.1, 18.2, 16.5, 14.1, 15.2, 17.2, 17.9, 17.5, 16.8, 14.3)`
+
+`fail <- c(9.90, 9.21, 10.01, 8.22, 9.33, 8.89, 9.58, 10.97, 10.38, 8.96)`
+
+The first dataset is the temperature in Auckland in Centigrade, the
+second is the percentage of computers that have a failure.
+
+* Remembering the golden rule, perform a linear regression of the above dataset.
+* State your null clearly.
+* One-sided or two-sided test?   Justify
+* Interpret your result using non-statistical language.
+
+
+```{r}
+temp <- c(16.1, 18.2, 16.5, 14.1, 15.2, 17.2, 17.9, 17.5, 16.8, 14.3)
+fail <- c(9.90, 9.21, 10.01, 8.22, 9.33, 8.89, 9.58, 10.97, 10.38, 8.96)
+plot(fail~temp)
+(fit <- summary(lm(fail~temp)))
+abline(fit)
+## Null: no relation between computer failure and temperature.
+## pvalue = 0.132/2=0.06 [one sided, expect temp to increas failure rate]; not significant.
+## No evidence for any association.
+```
+
+
+
+
+# Question 4
+
+A researcher is investigating the link between myocardial infarction
+(heart attack) and blood pressure.  He takes 30 patients drawn from a
+particular demographic and measures their systolic blood pressure.
+The results are as follows:
+
+`p <-  c(104, 109, 111, 114, 116, 120, 129, 132, 136, 138,`
+`140, 141, 142, 145, 148, 151, 153, 155, 156, 157, 160, `
+`161, 162, 166, 170, 173, 177, 193, 194, 195)`
+
+`H <- c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, `
+`0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1)`
+
+
+Above, `p` is the systolic blood pressure in mmHg and `H` shows
+whether or not that patient has had a heart attack before.  Use
+logistic regression to analyse this dataset.  Can we say that high
+blood pressure {\em causes} heart attacks?
+
+
+```{r}
+p <-  c(104, 109, 111, 114, 116, 120, 129, 132, 136, 138, 
+140, 141, 142, 145, 148, 151, 153, 155, 156, 157, 160, 
+161, 162, 166, 170, 173, 177, 193, 194, 195)
+
+H <- c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 
+0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 0, 1, 1, 1)
+
+plot(H~p)
+summary(glm(H~p,family="binomial"))
+
+LO <- function(p){log(p/(1-p))}
+p <- function(LO){1/(1+exp(-LO))}
+
+x <- 10:200
+points(x,p(-15.9 + 0.095*x),type="l")
+# pvalue = 0.0127/2 = 0.007 [one-sided, expect high P to increase prob], highly significant.
+# High blood pressure is associated with increased risk of heart attack.
+# Correlation does not imply causation.
+```
+
+
+
+
