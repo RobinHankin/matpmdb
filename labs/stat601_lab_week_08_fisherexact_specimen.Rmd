@@ -20,7 +20,7 @@ contingency
 
   What is the probability of a person being Left-handed?  9/21
 
-  What is the probability of a left handed person being male?  5/9
+  What is the probability of a left handed person being male?  4/9
 
   What is the probability of a female being right-handed? 11/16
 
