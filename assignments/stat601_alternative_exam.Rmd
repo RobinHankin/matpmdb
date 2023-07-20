@@ -1,0 +1,200 @@
+---
+title: "Assignment (statistics)"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(include = TRUE) # change to TRUE when rendering solutions; this changes
+                                       # the default visibility (which is overridden by explicitly
+                                       # setting  include=TRUE in chunk options) 
+```
+
+# Instructions
+
+Answer the following FIVE questions, which all have equal mark value.  Show
+your working by including output from your R session.
+
+
+# Question 1
+
+Consider the binomial distribution $X\sim\operatorname{Bin}(n,p)$.
+
+* If $n=9,p=0.3$, what is the probability that $X\leq 4$?  Verify your answer using direct numerical simulation.
+
+```{r}
+sum(dbinom(0:4,9,0.3))
+pbinom(4,9,0.3)
+table(rbinom(1e6,9,0.3) <= 4)/1e6
+```
+
+* If $n=100, p=0.4$, what is the probability that $X\geq 50$?  Calculate the exact probability, and the value obtained by 
+using the Gaussian approximation to the binomial. 
+
+
+```{r}
+sum(dbinom(50:100,100,0.4))
+pnorm(50,100*0.4,sqrt(100*0.4*(1-0.4)))
+# results quite close.
+```
+
+* Consider $X\sim\operatorname{Bin}(9,p)$ where $p$ is unknown.  Plot
+  a likelihood function for $p$ for the observation $X=3$.  Indicate
+  the maximum likelihood estimate $\hat{p}$ on the graph.  * Calculate
+  the likelihood ratio for $H_1\colon p=1/2$ against $H_2\colon
+  p=\hat{p}$.
+
+```{r}
+p <- seq(from=0,to=1,len=100)
+plot(p,dbinom(3,9,p))
+abline(v=1/3)
+dbinom(3,9,1/3)/dbinom(3,9,1/2)
+```
+
+# Question 2
+
+Consider a fire alarm which is intended to alert occupants of a
+building to the fact that there is a fire in the vicinity.  The fire
+alarm malfunctions occasionally.  Give a brief discussion of the
+operation of this fire alarm with regard to type I and type II errors.
+State clearly any null hypothesis you use.
+
+```{asis}
+null: no fire
+
+alternative: fire
+
+type I: reject null when true, alarm rings when no fire; false alarm
+
+type II: fail to reject null when false, alarm stays silent when there is a fire,
+alarm fails to alert occupants.
+```
+
+Now suppose that the following probabilities are correct for a given day:
+
+* Prob(fire) =0.0001
+
+* Prob(alarm rings if there is a fire) = 0.9
+
+*  Prob(alarm rings if there is no fire) = 0.1
+
+One day, the alarm rings.  Give a likelihood ratio for your null and
+alternative hypotheses.
+
+```{r}
+0.9/0.9
+```
+
+
+
+# Question 3 
+
+Consider the following dataset which refers to the weights, to the nearest kg,
+of six people who join a fitness program.  The figures refer to the participants'
+weights before and after the program. 
+
+```{r,include=TRUE}
+weights_before <- c(bill = 100, baz=67, bob=77, sandy=91, fred=94, kevin=60)
+weights_after <- c(bill = 101, baz=62, bob=75, sandy=90, fred=89, kevin=61)
+```
+
+
+* State a sensible null hypothesis
+* state the precise definition of $p$-value
+* State and justify your use of one- or two-sided tests
+* Perform the appropriate t-test and interpret the result
+* (harder) Using maximum likelihood estimates for the variance,
+  perform a $Z$-test on the same data and compare the result with the
+  $t$-test above.
+
+
+```{r}
+t.test(weights_before,weights_after,paired=TRUE,alternative="greater")
+```
+
+```{asis}
+$p$-value exceeds 0.05, no evidence.
+
+For the rider, there are different acceptable solutions.  Here is one:
+```
+
+```{r}
+residuals <- weights_before - weights_after
+S <- sd(residuals)*sqrt(6/5)
+pnorm(mean(residuals),sd=S)
+```
+
+
+
+
+# Question 4
+
+A sports statistician is studying the number of goals 
+scored by the home team in a particular football league.
+The results are as follows:
+
+```{r, include=TRUE}
+d <- c(goals0=6,goals1=3, goals2=7, goals3=6, goals4=7, goals5=3, goals6=3) 
+```
+
+Thus we observe 2 matches with zero goals ("`goals0=2"), 3 matches with one goal
+("`goals1=3`"), 7 matches with 3 goals, and so on.
+
+The statistician suspects that the number of goals scored follows a Poisson distribution.
+
+* Give a plausible reason why a Poisson distribution might be appropriate.
+* Assess this claim using Pearson's chi-square test.  State your null
+  clearly and state the precise definition of p-value.
+* Interpret your result.
+
+
+
+```{r}
+goals <- sum(d *( 0:6))
+matches <- sum(d)
+(lhat <- goals/matches)
+probs <- dpois(0:5,lambda=lhat)
+probs <- c(probs,1-sum(probs)) # >= 6
+probs
+o <- d
+e <- probs*matches
+o
+e
+B <- sum((o-e)^2/e)
+pchisq(B,df=7-1-1,lower.tail=FALSE)
+```
+
+  
+# Question 5
+
+Two police officers, A and B, conduct roadside sobriety testing of
+randomly selected drivers.  Officer A tests 21 drivers of whom 3 fail
+the test.  Officer B tests 33 drivers of whom 8 fail.  Is there any
+evidence that the police officers differ in their probability of
+failing a driver?
+
+* State a sensible null hypothesis
+* State the precise definition of $p$-value
+* Assess your hypothesis using Fisher's exact test.  Indicate and justify your use
+of one-sided or two-sided tests.
+* Interpret your result.
+
+
+
+```{asis}
+    Two-sided; the situation is symmetrical 
+```
+
+
+```{r}
+a <- matrix(c(18,25,3,8),2,2)
+dimnames(a) <- list(officer=c("A", "B"), test=c("sober","fail"))
+a
+fisher.test(a,alternative="two.sided")
+```
+
+```{asis}
+Significant, just.
+```
+
