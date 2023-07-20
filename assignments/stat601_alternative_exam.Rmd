@@ -6,7 +6,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(include = TRUE) # change to TRUE when rendering solutions; this changes
+knitr::opts_chunk$set(include = FALSE) # change to TRUE when rendering solutions; this changes
                                        # the default visibility (which is overridden by explicitly
                                        # setting  include=TRUE in chunk options) 
 ```
@@ -35,13 +35,14 @@ using the Gaussian approximation to the binomial.
 
 ```{r}
 sum(dbinom(50:100,100,0.4))
-pnorm(50,100*0.4,sqrt(100*0.4*(1-0.4)))
+pnorm(50,100*0.4,sqrt(100*0.4*(1-0.4)),lower.tail=FALSE)
 # results quite close.
 ```
 
 * Consider $X\sim\operatorname{Bin}(9,p)$ where $p$ is unknown.  Plot
   a likelihood function for $p$ for the observation $X=3$.  Indicate
-  the maximum likelihood estimate $\hat{p}$ on the graph.  * Calculate
+  the maximum likelihood estimate $\hat{p}$ on the graph.
+* Calculate
   the likelihood ratio for $H_1\colon p=1/2$ against $H_2\colon
   p=\hat{p}$.
 
@@ -83,10 +84,8 @@ One day, the alarm rings.  Give a likelihood ratio for your null and
 alternative hypotheses.
 
 ```{r}
-0.9/0.9
+0.9/0.1
 ```
-
-
 
 # Question 3 
 
@@ -101,7 +100,7 @@ weights_after <- c(bill = 101, baz=62, bob=75, sandy=90, fred=89, kevin=61)
 
 
 * State a sensible null hypothesis
-* state the precise definition of $p$-value
+* State the precise definition of $p$-value
 * State and justify your use of one- or two-sided tests
 * Perform the appropriate t-test and interpret the result
 * (harder) Using maximum likelihood estimates for the variance,
@@ -122,10 +121,8 @@ For the rider, there are different acceptable solutions.  Here is one:
 ```{r}
 residuals <- weights_before - weights_after
 S <- sd(residuals)*sqrt(6/5)
-pnorm(mean(residuals),sd=S)
+pnorm(mean(residuals),sd=S,lower.tail=FALSE)
 ```
-
-
 
 
 # Question 4
@@ -165,6 +162,10 @@ B <- sum((o-e)^2/e)
 pchisq(B,df=7-1-1,lower.tail=FALSE)
 ```
 
+
+```{asis}
+pvalue exceeds 0.05, not significant.
+```
   
 # Question 5
 
