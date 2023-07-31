@@ -62,7 +62,7 @@ dbinom(50,100,0.5)
 f <- function(n){1/sqrt(pi*n)} # from Stirling
 n <- seq(from=5,to=5000,by=10)
 plot(n,f(n),log='y')
-abline(v=1/(pi*0.01^2)). # invert 1/sqrt(pi*n)
+abline(v=1/(pi*0.01^2)) # invert 1/sqrt(pi*n)
 abline(h=0.01)
 ```
 
