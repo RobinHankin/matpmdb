@@ -50,7 +50,7 @@ pnorm(50,45,sqrt(100*0.45*(1-0.45)))
 ```
 
 (harder) If $n = 2r$ for some integer $r$, and $p = 0.5$, consider
-$p_\mathrm{half}(n) = Prob(X = n)$ (that is, exactly half the
+$p_\mathrm{half}(n) = Prob(X = r)$ (that is, exactly half the
 observations are successes and half are failures).  What is
 $p_\mathrm{half}(10)$ and $p_\mathrm{half}(100)$? For extra credit,
 find the minimum value of $n$ such that $p_\mathrm{half}(n)$ is less than
