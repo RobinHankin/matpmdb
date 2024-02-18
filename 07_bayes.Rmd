@@ -87,7 +87,7 @@ probability that it is raining, given that Robin cycles to work".  The
 value of the equation is that all the terms on the right hand side are
 available.  Note carefully how the causation operates: the fine
 weather *causes* Robin to cycle, and rain *causes* Robin to get the
-bus to AUT, and not cycle.  But we can use the observation that Robin
+bus to work, and not cycle.  But we can use the observation that Robin
 cycles to *infer* that it was a fine day, on the grounds that if it
 was raining he would have caught the bus.
 
