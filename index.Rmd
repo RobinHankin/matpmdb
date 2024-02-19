@@ -1,14 +1,13 @@
 --- 
 #title: "Course outline: STAT601"
 author: "Robin Hankin"
-date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
 biblio-style: apalike
 link-citations: yes
 github-repo: RobinHankin/STAT601
-description: "This is the course manual for STAT601COMP616 (statistical inference)"
+description: "This is the course manual for STAT601 (statistical inference)"
 ---
 
 
@@ -18,7 +17,7 @@ description: "This is the course manual for STAT601COMP616 (statistical inferenc
 
 # Overview {-}
 
-This is the handbook for STAT601/COMP616.  Details of the course
+This is the handbook for STAT601.  Details of the course
 structure, including assessment and timetables, may be found on
 Canvas.  The whole course is based around R and RStudio which may be
 downloaded from
@@ -46,15 +45,8 @@ of the links take you to a video which starts midway through a
 lecture; if this is a problem, look at the playlist at the link above
 and this will show all lectures in order.  Note, however, that each
 class is a reasonably self-contained unit, split into three or four
-parts.  The videos are also available in a slightly different format
-on Mediasite.  To view, log in to AUTonline and then
-
-`content system -> institution -> learn -> maths`
-
-takes you to a number of mathematical resources, including the videos
-which are at `STAT601`.
-
-This manual is distributed under the GNU GPL and is available at
+parts.  This manual is distributed under the GNU GPL and is available
+at
 
 [https://github.com/RobinHankin/stat601]
 
