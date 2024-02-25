@@ -114,7 +114,7 @@ critical region, we reject the null; observe that if the null is true
 we reject it only with a small probability.  Study the following
 diagram:
 
-```{r criticalfivepercent}
+```{r criticalfivepercent,fig.cap="A one-sided critical region"}
 x <- seq(from=-5,to=5,len=100)
 plot(x,dnorm(x),type='n',xlab='sample mean',ylab='probability density')
 abline(v=qnorm(0.95))
@@ -126,10 +126,11 @@ points(x,dnorm(x),type='l',lwd=2,col='black')
 legend("topright",col=c("black","gray"),lwd=c(1,10),legend=c("null","critical region"))
 ```
 
-In the figure above, the critical region is indicated in grey.  We
-reject the null if our test statistic (the sample mean) falls in the
-grey region.  If the null is true, the probability of rejecting it is
-0.05: in other words, the size of the test is 5\%
+In Figure \@ref(fig:criticalfivepercent), the critical region is
+indicated in grey.  We reject the null if our test statistic (the
+sample mean) falls in the grey region.  If the null is true, the
+probability of rejecting it is 0.05: in other words, the size of the
+test is 5\%
 
 ## Type II errors
 
