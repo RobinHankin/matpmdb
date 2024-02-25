@@ -10,8 +10,8 @@
 
 Up to now, all the techniques that have been used assume that the
 underlying distribution has got a particular form.  The Student
-t-test, for example, assumes that the observations are drawn from a
-Gaussian distribution.  Calculation of p-values in general requires
+$t$-test, for example, assumes that the observations are drawn from a
+Gaussian distribution.  Calculation of $p$-values in general requires
 knowledge of the null distribution, whether this is binomial,
 hypergeometric or another parametrically determined distribution.  In
 this chapter, we show some techniques that do not require any such
@@ -75,7 +75,7 @@ ks.test(fish_a,fish_b)
 showing, by virtue of the p-value of 3.5\%, that the difference is
 indeed statistically significant.
 
-Note carefully that the Student t-test does not reveal a difference:
+Note carefully that the Student $t$-test does not reveal a difference:
 
 ```{r}
 t.test(fish_a,fish_b)

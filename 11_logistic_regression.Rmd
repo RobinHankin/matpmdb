@@ -40,7 +40,7 @@ It is a little difficult to see, but we can perhaps detect a slight
 improvement in performance from left to right; the success points are
 a little thicker at the right of the graph compared with the left.
 
-In order to make sense of this dataset, we do not try and predict the
+In order to make sense of this dataset, we do not work with
 probability on the vertical axis; we consider instead the *odds*.
 Odds are defined as the probability of success divided by the
 probability of failure.  Thus an event which has probability $p$ has
@@ -113,7 +113,7 @@ summary(glm(y~x,family="binomial"))
 ```
 
 which gives more details.  See how the coefficients in the two methods
-match (which one is more accurate?).  Observe that the given p-value
+match (which one is more accurate?).  Observe that the given $p$-value
 is a two sided test.  We might argue that a one-sided test is more
 appropriate (why?) and, if so, we would simply halve it to give a
 one-sided value.
