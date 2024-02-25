@@ -35,10 +35,10 @@ $\mu$ and standard deviation 1], we may wish to test $H_0\colon\mu=0$.
 Our test statistics will be $\overline{x}$, the sample mean.  We know
 from previous chapters that, if $H_0$ is true we will have
 $\overline{x}\sim N\left(0,\frac{1}{\sqrt{n}}\right)$.  Suppose for
-concretness that $n=10$: we have 10 observations.  Then we reject
-$H_0$ if $\overline{x}$ exceeds a certain critical value.  We want to
-ensure that, if the null is true, the null is rejected only 5\% of the
-time, so the critical value is given by:
+concreteness that $n=10$: we have 10 observations.  Then we reject
+$H_0$ if $\overline{x}$ exceeds a certain critical value (a one-sided
+test).  We want to ensure that, if the null is true, the null is
+rejected only 5\% of the time, so the critical value is given by:
 
 ```{r}
 qnorm(0.95,0,1/sqrt(10))
@@ -106,14 +106,15 @@ than 0.01.
 
 ## Critical region
 
-The Pearsonian approach is to define a "critical region" for a test
-statistic.  This is usually the tail region of the null distribution
-of the test statistic, and has a small probability (usually 5\%).  The
-idea is that if the test statistic falls in the critical region, we
-reject the null; observe that if the null is true we reject it only
-with a small probability.  Study the following diagram:
+The above reasoning suggests that we define a "critical region" for a
+test statistic.  This is usually the tail region of the null
+distribution of the test statistic, and has a small probability
+(usually 5\%).  The idea is that if the test statistic falls in the
+critical region, we reject the null; observe that if the null is true
+we reject it only with a small probability.  Study the following
+diagram:
 
-```{r}
+```{r criticalfivepercent}
 x <- seq(from=-5,to=5,len=100)
 plot(x,dnorm(x),type='n',xlab='sample mean',ylab='probability density')
 abline(v=qnorm(0.95))
@@ -122,15 +123,21 @@ xx <- seq(from=qnorm(0.95),to=5,len=100)
 jj <- c(xx,rev(xx))
 polygon(x=jj,y=c(dnorm(xx),xx*0),border=NA,col='gray')
 points(x,dnorm(x),type='l',lwd=2,col='black')
+legend("topright",col=c("black","gray"),lwd=c(1,10),legend=c("null","critical region"))
 ```
+
+In the figure above, the critical region is indicated in grey.  We
+reject the null if our test statistic (the sample mean) falls in the
+grey region.  If the null is true, the probability of rejecting it is
+0.05: in other words, the size of the test is 5\%
 
 ## Type II errors
 
-The type I error has a converse:  a *type II error* is the failure to
-reject the null hypothesis when it is false.  If the null is false,
-the correct course of action is to reject it, and failure to do so is
-an error: a type II error.  A type II error is a sort of inverted
-version of a type I error.
+The type I error has a converse: the failure to reject the null
+hypothesis when it is false.  If the null is false, the correct course
+of action is to reject it, and failure to do so is an error: we call
+this a "type II error".  A type II error is a sort of inverted version
+of a type I error.
 
 ###  Power of a test
 
@@ -173,7 +180,7 @@ legend("topleft",
 ```
 
 Type I errors and type II errors have a mutual relationship in that
-making $\alpha$ larger forces $\beta$ to be smaller, although the
+making $\alpha$ smaller forces $\beta$ to be larger, although the
 relationship is not simple.
 
 In the limit, one may achieve $\alpha=0$ by never rejecting the null;
