@@ -352,7 +352,7 @@ distribution [see the wikipedia page for how to do this].  We can also
 calculate more abstract results; for example, we can find the
 posterior probability that $p<\frac{1}{2}$:
 
-```{r}
+```{r betahalf}
 pbeta(1/2, 4.3, 8.7)
 ```
 
@@ -381,14 +381,14 @@ p(H_A|D) = \frac{p(H_A)p(D|H_A)}{p(H_A)p(D|H_A)+p(H_B)p(D|H_B)}
 
 We can use R to calculate the likelihoods:
 
-```{r}
+```{r lalb}
 (LA <- dpois(5, 5.4))
 (LB <- dpois(5, 7.7))
 ```
 
 Then Bayes gives us the posterior probability $p(H_A|D)$ as
 
-```{r}
+```{r papb}
 prior_A <- 0.9
 prior_B <- 0.1
 posterior_A <- prior_A*LA/(prior_A*LA + prior_B*LB)
@@ -406,11 +406,14 @@ Men of a certain age will be familiar with different dice used in
 board games.  Suppose someone has three dice, d4,d6,d8.  In standard
 terminology, "d4" is a four-sided die in the shape of a tetrahedron
 with results $\{1,2,3,4\}$, "d6" is a cube that can give
-$\{1,2,3,4,5,6\}$, and "d8" is an octahedron with $\{1,2\ldots 8\}$.
-A person takes one of these dice and throws it, obtaining a 5.
-Suppose our priors are $p(H_4)=0.1, p(H_6)=0.8, p(H_8)=0.1$.  Then the
-likelihoods are $p(D|H_4)=0$ (think about it), $p(D|H_6)=\frac{1}{6}$
-and $p(D|H_8)=\frac{1}{8}$.  Bayes gives us
+$\{1,2,3,4,5,6\}$, and "d8" is an octahedron with $\{1,2\ldots, 8\}$.
+A person takes one of these dice and throws it, obtaining a 5.  We do
+not know which of the dice they threw but we have three hypotheses to
+consider: $H_4$, $H_6$, and $H_8$.  The observation of "5" is
+informative about these via Bayes's theorem.  Suppose our priors are
+$p(H_4)=0.1, p(H_6)=0.8, p(H_8)=0.1$.  Then the likelihoods are
+$p(D|H_4)=0$ (think about it), $p(D|H_6)=\frac{1}{6}$ and
+$p(D|H_8)=\frac{1}{8}$.  Bayes gives us
 
 \begin{eqnarray}
 p(H_4|D) = \frac{p(H_4)p(D|H_4)}{p(H_4)p(D|H_4) + p(H_6)p(D|H_6) + p(H_8)p(D|H_8)}=\frac{0.1\cdot 0}{0.1\cdot 0 + 0.8\cdot\frac{1}{6} + 0.1\cdot\frac{1}{8}}=0\nonumber\\
@@ -418,3 +421,5 @@ p(H_6|D) = \frac{p(H_6)p(D|H_6)}{p(H_4)p(D|H_4) + p(H_6)p(D|H_6) + p(H_8)p(D|H_8
 p(H_8|D) = \frac{p(H_4)p(D|H_4)}{p(H_4)p(D|H_4) + p(H_6)p(D|H_6) + p(H_8)p(D|H_8)}=\frac{0.1\cdot \frac{1}{8}}{0.1\cdot 0 + 0.8\cdot\frac{1}{6} + 0.1\cdot\frac{1}{8}}=9\%\nonumber
 \end{eqnarray}
 
+and we that Bayes has updated the priors for our three hypotheses and
+given three posterior probabilities.
