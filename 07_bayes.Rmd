@@ -36,9 +36,10 @@ more consistent and coherent than the frequentist approach (null
 hypotheses and type I/type II errors; confidence intervals).
 
 One feature of modern statistics is that statisticians are often
-expected to declare themselves as "bayesians" or "frequentists",
-depending on whether or not they buy into the Bayesian philosophy.  My
-estimate would be that 30\% of statisticians are Bayesians.
+expected to declare themselves as either "Bayesians" or
+"frequentists", depending on whether or not they buy into the Bayesian
+philosophy.  My estimate would be that 30\% of statisticians are
+Bayesians.
 
 ```{r venn, fig.cap='Two sets, $A$ and $B$ on a Venn diagram together with red areas marking set union ($A\\cup B$), set intersection ($A\\cap B$), complement of A ($\\overline{A}$) and symmetric difference ($A\\Delta B$)', echo=FALSE, message=FALSE, warning=FALSE}
 knitr::include_graphics("intersection_union.pdf")
@@ -58,13 +59,9 @@ Observe that this differs from $\prob{B|A}$, the probability of B
 given A, which would be the probability of cycling to work given that
 it is raining.
 
-It should be clear that $\prob{A} = \prob{B}\prob{A|B} +
-\prob{\overline{B}}\prob{A|\overline{B}}$, as set $A$ has two
-nonoverlapping components.
-
-We can see that
-$\prob{A|B}=\frac{\prob{A\cap B}}{\prob{B}}$, and also that
-$\prob{B|A}=\frac{\prob{B\cap A}}{\prob{A}}$.  Noting that $A\cap
+We can see that $\prob{A|B}=\frac{\prob{A\cap B}}{\prob{B}}$, and also
+that $\prob{B|A}=\frac{\prob{B\cap A}}{\prob{A}}$.  These relations
+are called the _law of conditional probability_.  Noting that $A\cap
 B\equiv B\cap A$, and rearranging, we arrive at *Bayes's theorem*:
 
 \begin{equation}
@@ -72,7 +69,11 @@ B\equiv B\cap A$, and rearranging, we arrive at *Bayes's theorem*:
 \frac{\prob{B|A}}{\prob{B}}
 \end{equation}
 
-In practice, we re-write $\prob{B}$ and rearrange:
+In practice, we re-write $\prob{B}$ and rearrange.  It should be clear
+that $\prob{B} = \prob{B\cap A} + \prob{B\cap\overline{A}}$.  Using
+the law of conditional probability once more, we obtain
+$\prob{B}=\prob{A}\prob{B|A} +
+\prob{\overline(A)}\prob{B|\overline{A}}$.  Rearranging:
 
 \begin{equation}
 \prob{A|B} = \prob{A}\frac{
@@ -180,7 +181,7 @@ three hypotheses one of which is true.  Then
 
 where $i$ is equal to 1,2 or 3 depending on which of $H_1,H_2, H_3$ we
 are interested in.  This may be extended further.  If we have
-hypotheses $H_1,H_2,\ldots H_n$ we would have
+hypotheses $H_1,H_2,\ldots, H_n$ we would have
 
 \begin{equation}
 (\#eq:bayesmultiple)
