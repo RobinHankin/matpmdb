@@ -1,13 +1,8 @@
-hello everyone, welcome to STAT601 and COMP616!
+hello everyone, welcome to MATPMDB!
 
 My name is Robin Hankin, your lecturer.  I can be contacted on
-<robin.hankin@aut.ac.nz> -- although this should be viewed as a last
+<rhankin@stir.ac.nz> -- although this should be viewed as a last
 resort (after asking your classmates and tutor).
-
-My office hours are 9-10am Tuesdays, which I reserve to help any
-student with any academic issue.  If you want to see me during this
-time no appointment is needed; simply come to WT level 1 reception and
-ask for me, I will be happy to see you.  
 
 The course material is covered by the following youtube series:
 
@@ -33,7 +28,7 @@ Semester schedule
 
 This is provisional, and might change slightly as the semester
 progresses.  Text in brackets refers to video resources, available on
-AUTonline or YouTube.
+YouTube.
 
 
 * Introduction to R and Rstudio; Bernoulli RVs and binomial distribution
@@ -52,9 +47,6 @@ AUTonline or YouTube.
 
 Teaching resources to be distributed via AUTonline as the semester
 progresses and will include printed materials and video recordings.
-
-Video resources available for download under the 'video recordings'
-tab under 'Resources' on AUTonline, or on YouTube at
 
 https://www.youtube.com/playlist?list=PL018X5Hlr4RkgE65Pg93TFY-32KCVpW84
 

@@ -7,7 +7,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## STAT601 Portfolio: mathematical resources
+## Portfolio: mathematical resources
 
 I collect and use mathematical puzzles for their intrinsic interest, and sometimes show these at open days and exhibitions.  These resources can inspire students with the power and beauty of mathematics.  Here I will analyse a small dataset which tabulates the resources I have and some information about each one of them.
 

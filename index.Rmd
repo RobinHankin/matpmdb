@@ -1,13 +1,12 @@
 --- 
-#title: "Course outline: STAT601"
+#title: "Course outline: MATPMDB"
 author: "Robin Hankin"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
 biblio-style: apalike
 link-citations: yes
-github-repo: RobinHankin/STAT601
-description: "This is the course manual for STAT601 (statistical inference)"
+description: "This is the course manual for MATPMDB (statistical inference)"
 ---
 
 
@@ -17,7 +16,7 @@ description: "This is the course manual for STAT601 (statistical inference)"
 
 # Overview {-}
 
-This is the handbook for STAT601.  Details of the course
+This is the handbook for MATPMBD (statistics).  Details of the course
 structure, including assessment and timetables, may be found on
 Canvas.  The whole course is based around R and RStudio which may be
 downloaded from
@@ -48,12 +47,12 @@ class is a reasonably self-contained unit, split into three or four
 parts.  This manual is distributed under the GNU GPL and is available
 at
 
-[https://github.com/RobinHankin/stat601]
+[https://github.com/RobinHankin/matpmdb]
 
 Please feel free to send corrections, bug reports, fanmail, etc to the
 issues page
 
-[https://github.com/RobinHankin/stat601/issues]
+[https://github.com/RobinHankin/matpmdb/issues]
 
 
 \newpage
