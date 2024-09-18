@@ -10,9 +10,9 @@ params:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Here is assignment 3 for comp616/stat601/stat805.  You are free to
+Here is assignment 3.  You are free to
 discuss the issues with your classmates but copying is not acceptable;
-see the AUT academic integrity guidelines.
+see the academic integrity guidelines.
 
 This assessment has five sections.  All have equal mark value.
 

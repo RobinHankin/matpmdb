@@ -160,7 +160,7 @@ This would indicate that $\log V = -3.68 + 0.79\log G + 0.43\log H +
 
 ## Task 1:  Height-weight analysis
 
-Download file `heightweight.txt` from AUTonline and load it into R, using
+Download file `heightweight.txt` from canvas and load it into R, using
 
 `a <- read.table(file.choose(),header=TRUE)`
 
@@ -181,7 +181,7 @@ transformed.
 
 ## Task 2: econometric dataset
 
-Download the file `e3mg.txt` from AUTonline and load it using
+Download the file `e3mg.txt` from canvas and load it using
 
 
 `e3mg <- read.table(file.choose(),header=TRUE)`

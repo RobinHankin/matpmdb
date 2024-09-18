@@ -31,7 +31,7 @@ a <- read.table("handedness.txt",header=TRUE)
 head(a)
 ```
 
-There is a  file called `handedness.txt` on AUTonline.  We can tabulate as follows:
+There is a  file called `handedness.txt` on canvas.  We can tabulate as follows:
 
 ```{r}
 contingency <- table(a$gender,a$handedness)
@@ -80,7 +80,7 @@ dimnames(M) <- list(professor=c(T,F),owns_car=c(T,F))
 M
 ```
 
-This shows incidence of car ownership among AUT academic staff.  One
+This shows incidence of car ownership among academic staff.  One
 might expect a professor, earning a massive salary, to be more likely
 to be able to afford a car than a mere Senior Lecturer earning just
 above minimum wage.

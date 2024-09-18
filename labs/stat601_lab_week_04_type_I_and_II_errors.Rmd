@@ -19,7 +19,10 @@ Recall the following definitions from lectures:
 
 * P-value: the probability, if the null is true, of obtaining the observation or an observation more extreme
 
-Recall that a Gaussian distribution $N(\mu,\sigma^2)$ is characterised by its mean $\mu$ and variance $\sigma^2$.  See the help page for details (`?rnorm`); you also have the screencasts on AUTonline for help.  Our first null is $H_0\colon\mu=0$.
+Recall that a Gaussian distribution $N(\mu,\sigma^2)$ is characterised
+by its mean $\mu$ and variance $\sigma^2$.  See the help page for
+details (`?rnorm`); you also have the screencasts for help.  Our first
+null is $H_0\colon\mu=0$.
 
 We will start by assuming the variance is known to be 1 exactly; and a sample size of 6:
 
