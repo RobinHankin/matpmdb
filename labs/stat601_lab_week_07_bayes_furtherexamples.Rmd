@@ -71,7 +71,7 @@ c(posteriorA,posteriorB)
 
 # Bayesian analysis 2
 
-A stat601 student visits Auckland CBD and enters a randomly chosen
+A student visits Auckland CBD and enters a randomly chosen
 club.  Our student tries to make inferences about this club from the
 gender balance of the patrons.  In this particular part of town, the
 prior PDF for gender balance is represented by a beta distribution

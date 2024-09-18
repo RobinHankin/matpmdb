@@ -1,5 +1,5 @@
 ---
-title: "stat601 lab, week 1, binomial distribution"
+title: "MATPMDB lab, week 1, binomial distribution"
 output: pdf_document
 ---
 
@@ -13,7 +13,7 @@ knitr::opts_chunk$set(include = FALSE) # change to TRUE when rendering solutions
 \newcommand{\bling}{XXXxxxXXxX}
 
 This tutorial focusses on the binomial distribution.  This tutorial
-builds on chapter 1 of the course manual for stat601.  You will need
+builds on chapter 1 of the course manual.  You will need
 to have R installed on your computer and be able to enter commands and
 interpret its output.
 
