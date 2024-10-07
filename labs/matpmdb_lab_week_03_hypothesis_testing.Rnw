@@ -104,8 +104,7 @@ baselinestretch=1}
 \begin{document}
 \hrule 
 \begin{center}
-Auckland University of Technology\\
-School of Engineering, Computer and Mathematical Sciences\\
+Computer and Mathematical Sciences\\
 \courseCode \; \courseName \\
 \textbf{Lab Week 3}\\
 \ifthenelse{\boolean{printanswers}}{\textcolor{solcol}{Outline Solutions}}{}
