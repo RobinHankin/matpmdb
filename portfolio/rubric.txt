@@ -1,0 +1,80 @@
+The document should be prepared using Rmarkdown format.  I am not
+looking for formal scholarly writing, but the wording should be clear
+and unambiguous.  There will be an individual five-minute conversation
+discussing the portfolio which is your chance to demonstrate your work
+to me.
+
+The canvas submission should include four files:
+
+1.  The Rmd file
+2.  The dataset in tab-separated txt format
+3.  A jpeg file illustrating the origin of the dataset
+4.  The compiled PDF as produced by "knit"
+
+
+Introduction (20 marks)
+
+Brief description of the dataset used; details of its origin, and why
+it is important to you.  Good portfolios show the first five or six
+lines of their datasets, to give readers an understanding of the
+variables used and the extent of the data. 
+
+
+Methods and results  (40 marks)
+
+A good portfolio will include:
+
+* t-test
+* Linear regression
+* Fisher's exact test
+* A log-likelihood/support function
+
+
+For the first three, the test should be appropriate to the aspect of
+the dataset considered.  State your null and alternative hypotheses
+clearly: these should be meaningful in context.  Use of one-sided or
+two-sided tests should be appropriate and justified.  P-values should
+be given and interpreted both statistically and in the context of the
+data.
+
+A log-likelihood function for a parameter of interest should be given
+and the credible range interpreted in context.
+
+Conclusions (20 marks)
+
+A conclusions section covers things like what aspects of the analysis
+were most surprising or unexpected.  What have you learned about your
+data?  General comments such as how a statistical mindset has helped
+you understand your dataset are also good here.  There should be
+nothing in the conclusions that is not supported by the main body of
+your portfolio.
+
+
+Spoken component (20 marks)
+
+The spoken component will be held via a Teams meeting at a time to be
+arranged.  
+
+
+
+Schedule: representative comments for grades A,B,C
+
+Grade A: dataset meets brief, appropriate picture included.  First 5
+lines of data given.  A structured, engaging sequence of correctly
+applied statistical analyses given, including R code, which are
+interpreted correctly.  Conclusions clear and supported by the text.
+Conversation reveals in-depth familiarity with dataset, visualisations
+and statistical analysis used.
+
+Grade B: dataset arguably meets brief.  Analyses mostly correct, but
+occasional lapses in application [e.g. applying discreted techniques
+to non-count data].  Material given in unclear or unmotivated order.
+Most obvious nulls not considered.  Conclusions sketchy.  Conversation
+shows some familiarity with dataset and analyses used.
+
+Grade C: Analysis includes some correct results but uses flawed
+calculations.  Material given in haphazard or unjustifed sequence;
+repetitions given.  p-values misinterpreted.  Regression analysis
+presented with no scattergraph.  Conclusions weak or unjustified.
+Conversation shows little familiarity with dataset or structure of
+portfolio; and flawed understanding of statistical analysis presented.
