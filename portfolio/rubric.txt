@@ -1,3 +1,5 @@
+matpmdb rubric
+
 The document should be prepared using Rmarkdown format.  I am not
 looking for formal scholarly writing, but the wording should be clear
 and unambiguous.  There will be an individual five-minute conversation
@@ -59,20 +61,20 @@ arranged.
 
 Schedule: representative comments for grades A,B,C
 
-Grade A: dataset meets brief, appropriate picture included.  First 5
+Distinction: dataset meets brief, appropriate picture included.  First 5
 lines of data given.  A structured, engaging sequence of correctly
 applied statistical analyses given, including R code, which are
 interpreted correctly.  Conclusions clear and supported by the text.
 Conversation reveals in-depth familiarity with dataset, visualisations
 and statistical analysis used.
 
-Grade B: dataset arguably meets brief.  Analyses mostly correct, but
+Merit: dataset arguably meets brief.  Analyses mostly correct, but
 occasional lapses in application [e.g. applying discreted techniques
 to non-count data].  Material given in unclear or unmotivated order.
 Most obvious nulls not considered.  Conclusions sketchy.  Conversation
 shows some familiarity with dataset and analyses used.
 
-Grade C: Analysis includes some correct results but uses flawed
+Pass: Analysis includes some correct results but uses flawed
 calculations.  Material given in haphazard or unjustifed sequence;
 repetitions given.  p-values misinterpreted.  Regression analysis
 presented with no scattergraph.  Conclusions weak or unjustified.
