@@ -1,5 +1,5 @@
 ---
-output: pdf_document
+output: html_document
 title: Priors and posteriors in the beta distribution
 fontsize: 12pt
 ---
@@ -16,12 +16,12 @@ proportional to $p^{\alpha-1}\left(1-p\right)^{\beta-1}$
 for $0\leqslant p\leqslant 1$.
 
 Look at the R help page for the beta distribution by typing 
-  ```?rbeta```
+  `?rbeta`
 
 We will sample from this distribution and play with it.
 
 * choose different values of alpha and beta and examine the
-  resulting histogram.  Use R idiom like ```hist(rbeta(10000,2,5)}```.
+  resulting histogram.  Use R idiom like `hist(rbeta(10000,2,5)}`.
   Try $\alpha=2,\beta=2$,
   $\alpha=4,\beta=4$, $\alpha=12,\beta=12$.  Try increasing the
   parameters and see what happens. See how the distribution is
@@ -31,14 +31,14 @@ We will sample from this distribution and play with it.
   $\frac{\alpha}{\alpha+\beta}$.  Is this reasonable?
 * Now try to verify the formula for the variance, given in
   the infobox on the wikipedia page.
-* Do the same for the median (use the approximate formula; use
-  either ``` median(rbeta(...))``` or (better; harder) ```
-    qbeta(0.5,alpha,beta)}```.  Try a range of alpha and beta values.
+* Do the same for the median (use the approximate formula; use either
+  ` median(rbeta(...))` or (better; harder) `qbeta(0.5,alpha,beta)}`.
+  Try a range of alpha and beta values.
 
 
 \section{Analytical formula}
 
-We can plot the analytical form of the beta distribution using ```dbeta()``` which gives the density of the beta distribution:
+We can plot the analytical form of the beta distribution using `dbeta()` which gives the density of the beta distribution:
 
 ```{r} 
 p <- seq(from=0,to=1,len=300)
@@ -70,11 +70,11 @@ $$\prob{p}=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\cdot
 
 where $\Gamma(x) = (x-1)!$ = ``factorial $x-1$'' is the gamma function.
 Look at the wikipedia page for the gamma function, and the R help page
-(type ```?rgamma```).  This term is present to ensure that the area
+(type `?rgamma`).  This term is present to ensure that the area
 under the graph is exactly one.
 
 Verify for yourself that this formula is correct by comparing it with
-R's internal function, ```dbeta()```.
+R's internal function, `dbeta()`.
 
 
 ```{r}

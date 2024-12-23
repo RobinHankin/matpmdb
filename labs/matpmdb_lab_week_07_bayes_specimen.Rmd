@@ -15,7 +15,7 @@ proportional to $p^{\alpha-1}\left(1-p\right)^{\beta-1}$
 for $0\leqslant p\leqslant 1$.
 
 Look at the R help page for the beta distribution by typing 
-  ```?rbeta```
+  `rbeta`
 
 We will sample from this distribution and play with it.
 
@@ -72,7 +72,7 @@ c(numerical_var,analytical_var)  # close match
 
 \section{Analytical formula}
 
-We can plot the analytical form of the beta distribution using ```dbeta()``` which gives the density of the beta distribution:
+We can plot the analytical form of the beta distribution using `dbeta()` which gives the density of the beta distribution:
 
 ```{r} 
 p <- seq(from=0,to=1,len=300)
@@ -102,13 +102,13 @@ The actual formula is
 $$\prob{p}=\frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)}\cdot
         p^{\alpha-1}\left(1-p\right)^{\beta-1}$$
 
-where $\Gamma(x) = (x-1)!$ = ``factorial $x-1$'' is the gamma function.
+where $\Gamma(x) = (x-1)!$ is the gamma function.  It is just the factorial function but with an offset of one.
 Look at the wikipedia page for the gamma function, and the R help page
-(type ```?rgamma```).  This term is present to ensure that the area
+(type `?rgamma`).  This term is present to ensure that the area
 under the graph is exactly one.
 
 Verify for yourself that this formula is correct by comparing it with
-R's internal function, ```dbeta()```.
+R's internal function, `dbeta()`.
 
 
 ```{r}
