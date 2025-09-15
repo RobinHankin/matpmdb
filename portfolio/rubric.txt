@@ -1,5 +1,7 @@
 matpmdb rubric
 
+The portfolio will be assessed on the Common Marking Scheme.
+
 The document should be prepared using Rmarkdown format.  I am not
 looking for formal scholarly writing, but the wording should be clear
 and unambiguous.  There will be an individual five-minute conversation
@@ -14,7 +16,7 @@ The canvas submission should include four files:
 4.  The compiled PDF as produced by "knit"
 
 
-Introduction (20 marks)
+Introduction
 
 Brief description of the dataset used; details of its origin, and why
 it is important to you.  Good portfolios show the first five or six
@@ -22,7 +24,7 @@ lines of their datasets, to give readers an understanding of the
 variables used and the extent of the data. 
 
 
-Methods and results  (40 marks)
+Methods and results
 
 A good portfolio will include:
 
@@ -42,7 +44,7 @@ data.
 A log-likelihood function for a parameter of interest should be given
 and the credible range interpreted in context.
 
-Conclusions (20 marks)
+Conclusions
 
 A conclusions section covers things like what aspects of the analysis
 were most surprising or unexpected.  What have you learned about your
@@ -52,14 +54,14 @@ nothing in the conclusions that is not supported by the main body of
 your portfolio.
 
 
-Spoken component (20 marks)
+Spoken component
 
 The spoken component will be held via a Teams meeting at a time to be
-arranged.  
+arranged.
 
 
 
-Schedule: representative comments for grades A,B,C
+Schedule: representative comments.
 
 Distinction: dataset meets brief, appropriate picture included.  First 5
 lines of data given.  A structured, engaging sequence of correctly
