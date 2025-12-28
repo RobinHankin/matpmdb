@@ -56,8 +56,6 @@ $p_(H_A)=0.6$ and $p(H_B)=0.4$.  Calculate the posterior
 probabilities.
 
 
-
-
 ```{r,include=TRUE}
 pA <- 0.6  #prior A
 pB <- 0.4  #prior B
@@ -71,52 +69,53 @@ c(posteriorA,posteriorB)
 
 # Bayesian analysis 2
 
-A student visits Auckland CBD and enters a randomly chosen
-club.  Our student tries to make inferences about this club from the
-gender balance of the patrons.  In this particular part of town, the
-prior PDF for gender balance is represented by a beta distribution
-with $\alpha=\beta=0.5$.
+Bob, a [male] student, goes out one night and enters a nightclub.  He
+tries to make inferences about $p$, the probability that a patron in
+this club is male.  In this particular part of town, Bob's prior PDF
+for $p$ is represented by a beta distribution with $\alpha=\beta=0.5$.
 
-* Our student observes two male patrons in the club.  What is is posterior PDF for gender balance?
+* Bob observes two male patrons in the club.  What is his
+  posterior PDF for $p$?
 
 ```{r,include=TRUE}
-p <- seq(from=0.01,to=0.99,by=0.01)
-plot(p,dbeta(p,0.5,0.5),main="prior")
-plot(p,dbeta(p,0.5+2,0.5),main="posterior")
+p <- seq(from=0.01, to=0.99, by=0.01)
+plot(p, dbeta(p,0.5,0.5), main="prior")
+plot(p, dbeta(p,0.5+2,0.5), main="posterior")
 ```
 
-* We define a _gay_ club to be one in which the probability of a patron
-being male exceeds 0.9.  What is the probability that our student has
-visited such a club?
+* Bob defines a _gay_ club to be one in which $p$ exceeds 0.9.  What
+  is Bob's posterior probability that this the case?
+
 
 ```{r,include=TRUE}
-pbeta(0.9,2.5,0.5,lower.tail=FALSE)
+pbeta(0.9, 2.5, 0.5, lower.tail=FALSE)
 ```
 
-* Now suppose he visits another club and observes 2 males and 2 females
-in the club.  What is his posterior for this club?  What is the
-probability that this too is a gay club?
-
+* Now suppose he visits another club and observes 2 males and 2
+females in the club.  What is Bob's posterior PDF for $p$ for this
+club?  What is the probability that this too is a gay club?
 
 ```{r,include=TRUE}
-p <- seq(from=0.01,to=0.99,by=0.01)
-plot(p,dbeta(p,2.5,2.5),main="posterior")
-pbeta(0.9,2.5,2.5,lower.tail=FALSE)
+p <- seq(from=0.01, to=0.99, by=0.01)
+plot(p, dbeta(p,2.5,2.5), main="posterior")
+pbeta(0.9, 2.5, 2.5, lower.tail=FALSE)
 ```
 
-* (excellence question).  The following day our student conducts a
-  literature review and discovers that both the clubs he visited were
-  indeed gay clubs.  Using this observation, perform a Bayesian analysis for the probability
-  that our student is in fact gay.  Use sensible priors and
-  likelihoods.
+* (excellence question).  Bob tells his friend Baz about his
+  experiences.  Baz is knowledgeable about these matters and happens
+  to know that both of the clubs that Bob visited are in fact gay
+  clubs.  Using this observation [that is, that Bob visited two clubs
+  that night, both of which were gay clubs], perform a Bayesian
+  analysis for Baz's posterior probability that Bob is in fact gay.
+  Use sensible priors and likelihoods.
 
 ```{r,include=TRUE}
-pG <- 0.1  # prior 
-pH <- 0.9  # prior B
+pG <- 0.1  # prior: prob(G)
+pH <- 1 - pG
 lG <- 0.1
 lH <- 0.0001
 
-posteriorG <- (pG*lG)/(pG*lG + pH*lH)  
-posteriorH <- (pH*lH)/(pG*lG + pH*lH)
-c(gay=posteriorG,straight=posteriorH)
+posteriorG <- (pG*lG)  / (pG*lG + pH*lH)  
+posteriorH <- (pH*lH) / (pG*lG + pH*lH)
+c(gay=posteriorG, straight=posteriorH)
 ```
