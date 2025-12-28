@@ -14,7 +14,7 @@ fontsize: 12pt
 You will recall from lectures that the Poission distribution has
 probability mass function
 
-$$\prob(X=n)=\frac{e^{-\lambda}\lambda^n}{n!}$$
+$$\prob{X=n}=\frac{e^{-\lambda}\lambda^n}{n!}$$
 
 for some $\lambda>0$.  Here we will try to estimate $\lambda$ based on
 observations.
